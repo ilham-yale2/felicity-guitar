@@ -1,0 +1,52 @@
+.bg-orange{
+    background-color: #CC6500;
+}
+
+.list-none{
+    list-style: none;
+}
+
+.category-list li{
+    margin: 5px 0px;
+}
+
+.btn-read{
+    color: white;
+}
+
+.btn-read:hover{
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.card-product p{
+    font-size: 14px;
+}
+
+.card-product{
+    margin-bottom: 3rem;
+}
+
+.brand-list li .parent{
+    font-size: 15px;
+}
+
+.brand-list li .child{
+    display: none;
+}
+
+.rotate{
+    transform: rotate(180deg);
+}
+
+.brand-list li{
+    margin: 7px 0px;
+}
+
+.brand-list li .child li{
+    margin: 5px 0px;
+}
+
+.text-orange{
+    color: #CC6500!important;
+}

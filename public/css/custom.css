@@ -1,0 +1,90 @@
+#body-home {
+    background: url(../images/bg.png) !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    min-height: 100vh;
+}
+
+#body-home:before {
+    background: url(../images/bg.png) !important;
+}
+
+
+#section-detail .details .title {
+    font-size: 36px;
+    font-weight: 700;
+}
+
+#section-detail .details .short-desc {
+    font-size: 14px;
+}
+
+#section-detail .details h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 40px;
+}
+
+#section-detail .details ul li {
+    font-size: 14px;
+}
+
+#section-detail .details .btn-outline {
+    font-size: 14px;
+    border: 1px solid white;
+    background: none !important;
+    color: white;
+    margin-top: 40px;
+}
+
+#section-detail .img-details {
+    border: 10px solid white;
+}
+
+#section-detail .price {
+    font-size: 36px;
+    color: white;
+    margin-bottom: 0 !important;
+}
+
+#section-detail span {
+    font-size: 12px;
+    color: white;
+    margin-top: 15px;
+}
+
+#section-detail .cta-product {
+    background: #CC6500;
+    color: white;
+    border-radius: none !important;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.detail-more-title {
+    color: #FDE799;
+    font-weight: 700;
+    font-size: 36px;
+    text-transform: uppercase;
+}
+
+.desc-more {
+    font-size: 14px;
+}
+
+.table-spec thead tr td {
+    color: #FDE799;
+    text-transform: uppercase;
+}
+
+.table-spec tr td {
+    border-bottom: 0.5px solid white;
+    padding-bottom: 5px;
+}
+
+.table-spec tbody tr td:first-child {
+    width: 20%;
+    vertical-align: top;
+    font-weight: 700;
+}
