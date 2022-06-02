@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Setting;
 use Illuminate\Http\Request;
-use Image;
-use Storage;
-use Str;
+use Intervention\Image\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
@@ -29,18 +29,18 @@ class SettingController extends Controller
         $setting->name = $request->name;
         $setting->phone = $request->phone;
         $setting->whatsapp_template = $request->whatsapp_template;
-        $setting->location = $request->location;
-        $setting->map = $request->map;
+        // $setting->location = $request->location;
+        // $setting->map = $request->map;
         $setting->description = $request->description;
         $setting->seo_keyword = $request->seo_keyword;
-        $setting->shopee = $request->shopee;
-        $setting->tokopedia = $request->tokopedia;
-        $setting->facebook = $request->facebook;
-        $setting->facebook_link = $request->facebook_link;
-        $setting->instagram = $request->instagram;
-        $setting->instagram_link = $request->instagram_link;
-        $setting->email = $request->email;
-        $setting->youtube = $request->youtube;
+        // $setting->shopee = $request->shopee;
+        // $setting->tokopedia = $request->tokopedia;
+        // $setting->facebook = $request->facebook;
+        // $setting->facebook_link = $request->facebook_link;
+        // $setting->instagram = $request->instagram;
+        // $setting->instagram_link = $request->instagram_link;
+        // $setting->email = $request->email;
+        // $setting->youtube = $request->youtube;
         $setting->save();
 
         if ($request->image) {

@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="col-lg-12 col-12 layout-spacing">
-        <h3 calss="mb-2">Edit Brand</h3>
+        <h3 calss="mb-2">Edit User</h3>
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
                 <div class="row">
@@ -22,39 +22,41 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group mb-4">
-                                <label for="name">Nama Brand</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}"
-                                    placeholder="Nama Brand" required="">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ $user->first_name }}"
+                                    placeholder="" required="">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
-                                <label for="owner">Pemilik</label>
-                                <input type="text" class="form-control" id="owner" name="owner" value="{{ $user->owner }}"
-                                    placeholder="Nama Pemilik" required="">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ $user->last_name }}"
+                                    placeholder="" required="">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
-                                <label for="phone">Telepon</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}"
-                                    placeholder="Nomor Whatsapp" required="">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control number" id="phone" name="phone" value="{{ $user->phone }}"
+                                    placeholder="Whatsapp number" required="">
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-4">
                             <div class="form-group mb-4">
-                                <label for="address">Alamat</label>
-                                <textarea class="form-control summernote" id="address" rows="3" name="address"
-                                    required="">{{ $user->address }}</textarea>
+                                <label for="Email">Email</label>
+                                <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}"
+                                placeholder="" required="">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4 mt-3">
-                                <label for="logo">Upload Logo</label>
-                                <img src="{{ asset('storage/' . $user->logo) }}" width="100%" class="mb-3" id="preview">
-                                <input type="file" class="form-control-file" onchange="loadFile(event, 0)" id="logo"
-                                    name="logo">
+                                <label for="logo">Upload avatar</label>
+                                <input type="file" class="form-control-file" onchange="loadFile(event, 0)" id="avatar"
+                                name="avatar">
                             </div>
+                        </div>
+                        <div class="col-md-4 text-center pt-4">
+                            <img src="{{ asset('storage/' . $user->avatar) }}" width="60%" class="mb-3" id="preview">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -68,6 +70,9 @@
             </div>
         </div>
     </div>
+@php
+    $menu = 'user'
+@endphp
 @endsection
 
 @section('script')

@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'fb72538bbf376ebf9ab6ca301ce0e62287b7c12f',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -385,12 +385,12 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'fb72538bbf376ebf9ab6ca301ce0e62287b7c12f',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
@@ -499,6 +499,15 @@
             'install_path' => __DIR__ . '/../opis/closure',
             'aliases' => array(),
             'reference' => '3d81e4309d2a927abbe66df935f4bb60082805ad',
+            'dev_requirement' => false,
+        ),
+        'orangehill/iseed' => array(
+            'pretty_version' => 'v3.0.2',
+            'version' => '3.0.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../orangehill/iseed',
+            'aliases' => array(),
+            'reference' => '11f4355cdffc570eb231259f8700d760215df3fe',
             'dev_requirement' => false,
         ),
         'phar-io/manifest' => array(

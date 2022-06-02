@@ -5,15 +5,16 @@ namespace App;
 use App\Product;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+
 
 class User extends Authenticatable
 {
     use Notifiable;
-
-    protected $fillable = [
-        'name', 'username', 'password', 'owner', 'phone', 'address', 'logo',
-    ];
-
+    // protected $fillable = [
+    //     'name', 'username', 'password', 'owner', 'phone', 'address', 'logo',
+    // ];
+    protected $guard = 'user';
     protected $hidden = [
         'password', 'remember_token',
     ];
@@ -36,9 +37,14 @@ class User extends Authenticatable
 
     public function getPhoneWithCodeAttribute()
     {
-        $phone = explode('08', $this->phone);
-        return '628' . $phone[1];
+        // $phone = explode('08', $this->phone);
+        // return '628' . $phone[1];
     }
+
+    // public function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = Hash::make($value);
+    // }
 
     public function products()
     {

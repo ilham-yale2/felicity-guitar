@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use DB;
-use Str;
-use Image;
-use Storage;
+use App\Brand;
 use App\Type;
 use App\User;
 use App\Product;
@@ -15,7 +12,11 @@ use App\Subcategory;
 use App\ProductImage;
 use App\ProductDetail;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage as FacadesStorage;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -32,19 +33,11 @@ class ProductController extends Controller
     {
         $data['menu'] = 'product';
         $data['page'] = 'list product';
-        $data['types'] = Type::all();
-        $data['users'] = User::all();
+        // $data['types'] = Type::all();
+        // $data['users'] = User::all();
+        // $data['users'] = User::all();
         $data['categories'] = Category::all();
-        $data_tags = [];
-        $tags = Product::where('tags', '!=', null)->pluck('tags');
-        foreach ($tags as $tag) {
-            foreach ($tag as $t) {
-                if (!in_array(strtolower($t), $data_tags)) {
-                    array_push($data_tags, strtolower($t));
-                }
-            }
-        }
-        $data['tags'] = $data_tags;
+        $data['brands'] = Brand::all();
 
         return view('product.create', $data);
     }
@@ -54,83 +47,78 @@ class ProductController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
+            // $product->type_id = $request->type_id;
+            // $product->subcategory_id = $request->sub_id;
             $product = new Product();
             $product->code = $request->code;
-            $product->user_id = $request->user_id;
-            $product->type_id = $request->type_id;
-            $product->category = $request->category;
-            $product->kondisi = $request->kondisi;
-            $product->name = $request->name;
-            $product->slug = Str::slug($request->slug);
+            $product->brand_id = $request->brand_id;
+            $product->category_id = $request->category_id;
             $product->description = $request->description;
-            $product->price = $request->price;
-            $product->disc = $request->disc;
-            $product->sell_price = $request->price - ($request->price * $request->disc / 100);
-            $product->tags = $request->tags;
-            $product->shopee = $request->shopee;
-            $product->tokopedia = $request->tokopedia;
-            // dd($product);
-            if ($product->save()) {
-                // if ($request->category_id) {
-                //     foreach ($request->category_id as $key => $category) {
-                //         ProductDetail::create(
-                //             [
-                //                 'product_id' => $product->id,
-                //                 'category_id' => $category,
-                //                 'subcategory_id' => $request->subcategory_id[$key] ?? null,
-                //             ]
-                //         );
-                //     }
-                // }
-                $data = ProductData::find(1);
-                $data->total = Product::all()->count();
-                // dd($data);
-                if ($product->category == 'atas') {
-                    $data->atas = $data->atas + 1;
-                }elseif ($product->category == 'bawah') {
-                    $data->bawah = $data->bawah + 1;
-                }
-                // dd($data);
-                $data->save();
-                if ($request->images) {
-                    foreach ($request->images as $key => $image) {
-                        $fileName = time() . rand(1, 1000) . '_' . Str::slug($request->name) . ".jpg";
+            $product->name = $request->name;
+            $product->slug = Str::slug($request->name);
+            $product->text = $request->text;
+            $price = $this->replaceDot($request->price);
+            $product->price = $price;
+            $product->discount = $request->discount;
+            $product->sell_price = $price - ($price * $request->discount / 100);
+            $fileName = 'thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
+            $image = Image::make($request->thumbnail);
+            $image->resize(500, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            Storage::put($fileName, (string) $image->encode());
+            $product->thumbnail = $fileName;
+            $product->save();
+            
+            if ($request->images) {
+                foreach ($request->images as $key => $item) {
+                    $fileName = 'product/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
 
-                        $image = Image::make($image);
-                        $image->resize(500, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        });
-                        $file_path = 'product/' . $fileName;
-                        Storage::put('product/' . $fileName, (string) $image->encode());
+                    $img = Image::make($item);
+                    $img->resize(500, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    Storage::put($fileName, (string) $img->encode());
 
-                        ProductImage::create(
-                            [
-                                'product_id' => $product->id,
-                                'image' => $file_path,
-                            ]
-                        );
-                    }
+                    ProductImage::create(
+                        [
+                            'product_id' => $product->id,
+                            'image' => $fileName,
+                        ]
+                    );
                 }
             }
 
+            // detail
+
+            $data = $request->all();
+            $data['product_id'] = $product->id;
+
+            ProductDetail::create($data);
             DB::commit();
 
             $status = [
                 'status' => 'success',
-                'msg' => 'Data berhasil di simpan',
+                'text' => 'Success to add product',
+                'data' => [
+                    'product' => $product,
+                ]
             ];
 
-            return redirect()->route('product.index')->with($status);
+            return redirect()->route('product.index')->with(['message' => $status]);
         } catch (\Throwable$th) {
             DB::rollback();
             throw $th;
 
             $status = [
                 'status' => 'success',
-                'msg' => 'Data berhasil di simpan',
+                'text' => 'Failed to add product',
+                'data' => [
+                    'product' => $product,
+                ]
             ];
 
-            return redirect()->route('product.index')->with($status);
+            return redirect()->route('product.index')->with(['message' => $status]);
         }
     }
 
@@ -138,25 +126,23 @@ class ProductController extends Controller
     {
         $data['menu'] = 'product';
         $data['page'] = 'list product';
-        $data['types'] = Type::all();
+        $data['brands'] = Brand::all();
         $data['product'] = Product::find($id);
-        $data['product_details'] = ProductDetail::whereProductId($id)->get();
+        $detail  = ProductDetail::where('product_id', $id)->first();
+        if($detail){
+            $data['detail'] = $detail;
+        }else{
+            $detail = new ProductDetail();
+            $detail->product_id = $id;
+            $detail->save();
+            $data['detail'] = $detail;
+        }
         $data['product_images'] = ProductImage::whereProductId($id)->get();
         $data['categories'] = Category::all();
+        $data['subs'] = Subcategory::where('category_id', $data['product']->id)->get();
         $data['users'] = User::all();
-
-        $data_tags = [];
-        $tags = Product::where('tags', '!=', null)->pluck('tags');
-        foreach ($tags as $tag) {
-            foreach ($tag as $t) {
-                if (!in_array(strtolower($t), $data_tags)) {
-                    array_push($data_tags, strtolower($t));
-                }
-            }
-        }
-        $data['tags'] = $data_tags;
-
         return view('product.edit', $data);
+
     }
 
     public function edit($id)
@@ -169,83 +155,62 @@ class ProductController extends Controller
 
         try {
             $product = Product::find($id);
-            $product->user_id = $request->user_id;
-            $product->type_id = $request->type_id;
-            $product->category = $request->category;
-            $product->kondisi = $request->kondisi;
+            $product->category_id = $request->category_id;
+            $product->brand_id = $request->brand_id;
+            // $product->category = $request->category;
+            $product->description = $request->description;
+            if($request->sold){
+                $product->status = 'sold';
+            }
             $product->name = $request->name;
             $product->slug = Str::slug($request->name);
-            $product->description = $request->description;
+            $product->text = $request->text;
             $product->price = $request->price;
-            $product->disc = $request->disc;
+            $product->discount = $request->discount;
             $product->sell_price = $request->price - ($request->price * $request->disc / 100);
-            if ($request->sold == 'on') {
-                $product->sold = true;
-            }else {
-                $product->sold = false;
-            }
-            $product->tags = $request->tags;
-            $product->shopee = $request->shopee;
-            $product->tokopedia = $request->tokopedia;
-            if ($product->save()) {
-                // if ($request->category_id) {
-                //     foreach ($request->category_id as $key => $category) {
-                //         ProductDetail::create(
-                //             [
-                //                 'product_id' => $product->id,
-                //                 'category_id' => $category,
-                //                 'subcategory_id' => $request->subcategory_id[$key],
-                //             ]
-                //         );
-                //     }
-                // }
-                
-                $data = ProductData::find(1);
-                $data->terjual = Product::where('sold', 1)->count();
-                $data->total = Product::all()->count();
-                $data->save();
-                $imgs = ProductImage::where('product_id', $id)->get();
-                // dd($request->photos);
-                foreach ($imgs as $img) {
-                    // dd($request->old);   
-                    if ($request->old == null) {
-                        $request->old = [];
-                    }
-                    if (!in_array($img->id, $request->old)) {
-                        # code...
-                        Storage::delete($img->image);
-                        $img->delete();
-                    }
+            if($request->file('thumbnail')){
+                if($this->existsFile($product->thumbnail)){
+                    Storage::delete($product->thumbnail);
                 }
-                if ($request->photos) {
-                    foreach ($request->photos as $key => $image) {
-                        $fileName = time() . rand(1, 1000) . '_' . Str::slug($request->name) . ".jpg";
+                $fileName = 'thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
+                $image = Image::make($request->thumbnail);
+                $image->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                Storage::put($fileName, (string) $image->encode());
+                $product->thumbnail = $fileName;
+            }
+            $product->save();
+            if ($request->images) {
+                foreach ($request->images as $key => $item) {
+                    $fileName = 'product/' . $this->makeCode(Str::slug($product->name), 4) . '.jpg';
+                    $img = Image::make($item);
+                    $img->resize(500, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    Storage::put($fileName, (string) $img->encode());
 
-                        $image = Image::make($image);
-                        $image->resize(500, null, function ($constraint) {
-                            $constraint->aspectRatio();
-                        });
-                        $file_path = 'product/' . $fileName;
-                        Storage::put('product/' . $fileName, (string) $image->encode());
-
-                        ProductImage::create(
-                            [
-                                'product_id' => $product->id,
-                                'image' => $file_path,
-                            ]
-                        );
-                    }
+                    ProductImage::create(
+                        [
+                            'product_id' => $product->id,
+                            'image' => $fileName,
+                        ]
+                    );
                 }
             }
-
+            $detail = ProductDetail::where('product_id', $id);
+            $detail->update($request->except(['_method','description','sold', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images']));
             DB::commit();
 
             $status = [
                 'status' => 'success',
-                'msg' => 'Data berhasil di simpan',
+                'text' => 'Success to Update Product',
+                'data' => [
+                    'product' => $product,
+            ]
             ];
 
-            return redirect()->route('product.index')->with($status);
+            return redirect()->route('product.index')->with(['message' => $status]);
         } catch (\Throwable$th) {
             DB::rollback();
             throw $th;
@@ -263,21 +228,40 @@ class ProductController extends Controller
     {
         $product_images = ProductImage::whereProductId($id)->get();
         foreach ($product_images as $product_image) {
-            Storage::delete($product_image->image);
+            if($this->existsFile($product_image)){
+                Storage::delete($product_image->image);
+            }
             $product_image->delete();
         }
 
-        Product::find($id)->delete();
+        $product = Product::find($id);
+        if($this->existsFile($product->thumbnail)){
+            Storage::delete($product->thumbnail);
+        }
+        $images = ProductImage::where('product_id', $product->id);
+
+        if(count($images->get()) > 0){
+            foreach($images as $img ){
+
+                Storage::delete($img->image);
+                $img->delete();
+            }
+        }
+
+        $product->delete();
         $data = ProductData::find(1);
-        $data->terjual = Product::where('sold', 1)->count();
-        $data->total = Product::all()->count();
+        // $data->terjual = Product::where('sold', 1)->count();
+        // $data->total = Product::all()->count();
         $data->save();
         $status = [
             'status' => 'success',
-            'msg' => 'Data berhasil di hapus',
+            'text' => 'Success delete data',
+            'data' => [
+                'product' => $product,
+            ]
         ];
 
-        return redirect()->route('product.index')->with($status);
+        return redirect()->route('product.index')->with(['message' => $status]);
     }
 
     public function imageDestroy(Request $request)
@@ -317,5 +301,30 @@ class ProductController extends Controller
         
 
         return response()->json($code);
+    }
+
+    public function getCode(){
+        $code = $this->makeCode('PRD', 10);
+        return response()->json($code);
+    }
+    public function deleteImage(Request $request){
+        DB::commit();
+        try {
+            $image = ProductImage::find($request->id);
+            if($this->existsFile($image->image)){
+                Storage::delete($image->image);
+                $image->delete();
+                $status = [
+                    'type' => 'success',
+                    'text' => 'Success delete image',
+                    'data' => [
+                        'product' => $image,
+                    ]
+                ];
+            }
+            return response()->json($status);
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

@@ -48,7 +48,7 @@
                                     rows="3">{{ $setting->seo_keyword }}</textarea>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group mb-4 mt-3">
                                 <label for="exampleFormControlFile1">Lokasi</label>
                                 <input type="text" class="form-control" id="location" name="location"
@@ -60,10 +60,10 @@
                                 <label for="exampleFormControlFile1">Link Google Maps</label>
                                 <input type="text" class="form-control" id="map" name="map" value="{{ $setting->map }}">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-md-4">
                             <div class="form-group mb-4 mt-3">
-                                <label for="exampleFormControlFile1">Telepon</label>
+                                <label for="exampleFormControlFile1">Whatsapp number</label>
                                 <input type="text" class="form-control" id="phone" name="phone"
                                     value="{{ $setting->phone }}">
                             </div>
@@ -75,7 +75,7 @@
                                     value="{{ $setting->whatsapp_template }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <div class="form-group mb-4 mt-3">
                                 <label for="exampleFormControlFile1">Email</label>
                                 <input type="text" class="form-control" id="email" name="email"
@@ -130,7 +130,7 @@
                                 <input type="text" class="form-control" id="youtube" name="youtube"
                                     value="{{ $setting->youtube }}">
                             </div>
-                        </div>
+                        </div> --}}
 
                     </div>
                     <div class="form-group row">

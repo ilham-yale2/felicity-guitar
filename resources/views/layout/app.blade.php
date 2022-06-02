@@ -24,7 +24,7 @@ $format_number = '628' . $format_number[1];
     <link rel="stylesheet" href="{{ asset('css/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
-
+    <link rel="stylesheet" href="{{asset('plugins/magnific-popup/dist/magnific-popup.css')}}">
     @yield('css')
     <script>
         const base_url = "{{ url('') }}";
@@ -33,6 +33,28 @@ $format_number = '628' . $format_number[1];
 </head>
 
 <body>
+
+    <style>
+        input,textarea, select{
+            color: white!important;
+            background: transparent!important
+        }
+        input:focus, textarea:focus, select:focus{
+            background: rgba(0, 0, 0, 0.45)!important;
+        }
+        .btn-primary.disabled, .btn-primary:disabled{
+            background-color: #CC6500 
+        }
+
+        .btn-primary:hover{
+            background-color: #cc6600c9
+        }
+        .img-product{
+            max-height: 207px;
+            width: 100%;
+            object-fit: cover
+        }
+    </style>
 
     <div id="wrap">
         <header class="header" id="header">
@@ -43,9 +65,9 @@ $format_number = '628' . $format_number[1];
                                     src="{{ asset('images/logo-felicity.png') }}" /></a></div>
                         <div class="col-md-6">
                             <div class="header_search">
-                                <form action="#">
+                                <form action="{{route('search')}}">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" name="header_search"
+                                        <input class="form-control" type="text" name="keyword"
                                             placeholder="search" />
                                         <button type="submit"><img src="{{ asset('images/ic-search.svg') }}"
                                                 alt="ic-search" class="ml-2" /></button>
@@ -66,10 +88,20 @@ $format_number = '628' . $format_number[1];
                                 <div class="header_right-icon"><a href="{{ route('cart') }}">
                                         <img src="{{ asset('images/ic-cart.svg') }}" alt="icon" /></a></div>
                                 <div class="header_right-icon">
-                                    @if (Auth::user())
-                                        <a href="{{ route('account-page') }}">
-                                            <img src="{{ asset('images/ic-user.svg') }}" alt="icon" />
-                                        </a>
+                                    @if (Auth::guard('user')->user())
+                                        <ul class="menu-wrap align-items-center">
+                                            <li class="has-sub pb-0">
+                                                <a href="#">
+                                                    <img src="{{ asset('images/ic-user.svg') }}" alt="icon" />
+                                                </a>
+                                                <div class="submenu">
+                                                    <ul>
+                                                        <li><a href="{{route('account-page')}}">Profile</a></li>
+                                                        <li><a href="#" onclick="logout()">Logout</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     @else
                                         <a href="{{ route('sign-in') }}"
                                             class="py-1 px-3 text-light border border-light bg-transparent">
@@ -84,23 +116,32 @@ $format_number = '628' . $format_number[1];
                     <ul class="menu-wrap">
                         <li class="has-sub"><a href="#">Browse by Category</a>
                             <div class="submenu">
+                                <?php $categories = \App\Category::all();?>
                                 <ul>
-                                    <li><a href="#">All Guitars</a></li>
-                                    <li><a href="#">Electric Guitars</a></li>
-                                    <li><a href="#">Accoustic Guitars</a></li>
-                                    <li><a href="#">Amplifiers</a></li>
-                                    <li><a href="#">Pedals</a></li>
-                                    <li><a href="#">Accessories</a></li>
-                                    <li><a href="#">Merchandise</a></li>
-                                    <li><a href="#">Local Instruments</a></li>
+                                    <li><a href="{{route('browse-category')}}">All Guitars</a></li>
+                                    @foreach ($categories as $c)
+                                        <li><a href="{{route('browse-category')}}?ctg={{$c->name}}">{{$c->name}}</a></li>
+                                    @endforeach
+                                    
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="{{ route('browse-brand') }}">Browse by Brand</a></li>
+                        <li class="has-sub"><a href="#">Browse by Brand</a>
+                            <div class="submenu">
+                                <?php $brands = \App\Brand::all();?>
+                                <ul>
+                                    <li><a href="{{route('browse-brand')}}">All Guitars</a></li>
+                                    @foreach ($brands as $b)
+                                        <li><a href="{{route('browse-brand')}}?brd={{$b->name}}">{{$b->name}}</a></li>
+                                    @endforeach
+                                    
+                                </ul>
+                            </div>
+                        </li>
                         <li><a href="{{ route('private-vault') }}">Private Vault</a></li>
-                        <li><a href="{{ route('trade') }}">Sell & Trade</a></li>
+                        <li><a href="{{ route('user.trade') }}">Sell & Trade</a></li>
                         <li><a href="{{ route('about-us') }}">About Us</a></li>
-                        <li><a href="{{ route('registration') }}">Registration</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -140,7 +181,7 @@ $format_number = '628' . $format_number[1];
                                     </div>
                                 </div>
                                 <div class="footer_logo"><a href="index.html"><img
-                                            src="images/logo-footer-felicity.png" alt="logo-footer" /></a></div>
+                                            src="{{asset('images/logo-footer-felicity.png')}}" alt="logo-footer" /></a></div>
                             </div>
                         </div>
                     </div>
@@ -153,6 +194,10 @@ $format_number = '628' . $format_number[1];
                     </p>
                 </div>
             </div>
+            <form action="{{route('user.logout')}}" method="POST" id="formLogout">
+                @csrf
+                @method('PATCH')
+            </form>
         </footer>
     </div>
 
@@ -163,10 +208,37 @@ $format_number = '628' . $format_number[1];
     <script src="{{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('plugins/lity/lity.min.js') }}"></script>
     <script src="{{ asset('plugins/autosize/autosize.min.js') }}"></script>
-    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{asset('plugins/magnific-popup/dist/jquery.magnific-popup.js')}}"></script>
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.13/dist/sweetalert2.all.min.js"></script>
     @yield('js')
+    <script src="{{ asset('js/mainJs.js') }}"></script>
+    @if (session()->has('message'))
+    <script>
+        var type = "{{session()->get('message')['status']}}"
+        if(type == 'success'){
+            var title = 'Well Done...'
+        }else{
+            var title = "Oops..."
+        }
+        setTimeout(() => {
+            Swal.fire({
+                icon: type,
+                title: title,
+                text: "{{session()->get('message')['text']}}",
+            })
+        }, 1000);
+    </script>
+    @endif
+    <script>
+         $('.number').on('keyup', function(){
+            var value = $(this).val().replace(/[^,\d]/g, '')
+            $(this).val(value)
+        })
+        function logout(){
+            $('#formLogout').submit()
+        }
+    </script>
 </body>
 
 </html>

@@ -16,27 +16,28 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-9">
-                        <form action="#">
+                        <form action="{{route('submit.contact')}}" method="POST">
+                            @csrf
                             <div class="form-group">
                                 <label>Name</label>
-                                <input class="form-control" type="text" placeholder="Name" />
+                                <input class="form-control" type="text" placeholder="Name" name="name" />
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input class="form-control" type="email" placeholder="email" />
+                                <input class="form-control" type="email" placeholder="email" name="email" />
                             </div>
                             <div class="form-group">
                                 <label>Subject </label>
-                                <input class="form-control" type="password" placeholder="Subject " />
+                                <input class="form-control" type="text" placeholder="Subject " name="subject"/>
                             </div>
                             <div class="form-group">
                                 <label>Message Filling </label>
-                                <textarea class="form-control" placeholder="message filling "></textarea>
+                                <textarea class="form-control" placeholder="message filling " name="message"></textarea>
+                            </div>
+                            <div class="form-action">
+                                <button class="btn btn-primary" type="submit"> Send</button>
                             </div>
                         </form>
-                        <div class="form-action">
-                            <button class="btn btn-primary" type="submit"> Send</button>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@
                         <div class="col-md-12"></div>
                         <div class="col-md-4">
                             <div class="form-group mb-4 mt-3">
-                                <label for="logo">Upload Logo</label>
+                                <label for="logo">Upload Avatar</label>
                                 <img src="{{ asset('storage/' . Auth::user()->logo) }}" width="100%" class="mb-3"
                                     id="preview">
                                 <input type="file" class="form-control-file" onchange="loadFile(event, 0)" id="logo"
@@ -41,14 +41,14 @@
                             <div class="form-group mb-4">
                                 <label for="address">Username</label>
                                 <input type="text" class="form-control" id="username" name="username"
-                                    value="{{ Auth::user()->username }}" placeholder="Username Pengrajin" required="">
+                                    value="{{ Auth::user()->username }}" placeholder="Username Admin" required="">
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
                                 <label for="address">Password</label>
                                 <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Password Pengrajin">
+                                    placeholder="Password">
                             </div>
                         </div>
                     </div>

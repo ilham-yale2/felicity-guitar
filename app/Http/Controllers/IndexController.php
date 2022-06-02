@@ -15,17 +15,17 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $data['banners'] = Banner::where('type_id', null)->get();
-        $categories = Type::whereHas('products')->get();
-        $categories->map(function ($q) {
-            $q->products = Product::where('type_id', $q->id)
-                ->inRandomOrder()->limit(4)->get();
-        });
+        // $data['banners'] = Banner::where('type_id', null)->get();
+        // $categories = Type::whereHas('products')->get();
+        // $categories->map(function ($q) {
+        //     $q->products = Product::where('type_id', $q->id)
+        //         ->inRandomOrder()->limit(4)->get();
+        // });
 
-        $data['types'] = collect($categories);
-        $data['articles'] = Article::inRandomOrder()->limit(3)->get();
-        $data['faq'] = Faq::all();
-        return view('index', $data);
+        // $data['types'] = collect($categories);
+        // $data['articles'] = Article::inRandomOrder()->limit(3)->get();
+        // $data['faq'] = Faq::all();
+        return view('index');
     }
 
     public function autocomplete(Request $request)

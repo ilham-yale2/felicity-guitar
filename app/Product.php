@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Str;
 
 class Product extends Model
@@ -23,11 +24,12 @@ class Product extends Model
 
     public function getWaLinkAttribute()
     {
-        $phone = "wa.me/" . Setting::first()->phone_with_code . "?text=";
+        $phone = "https://wa.me/" . Setting::first()->phone_with_code . "?text=";
         $text = Setting::first()->whatsapp_template . "\n";
-        $text .= '*' . $this->user->name . " - " . $this->name . "*\n";
-        $text .= route('product.web.detail', ['id' => $this->id, 'name' => Str::slug($this->name)]);
+        $text .= '*'  . $this->name . "*\n";
+        $text .= route('detail-product', ['name' => $this->slug]);
         return $phone . urlencode($text);
+            
     }
 
     public function productImages()
@@ -48,5 +50,12 @@ class Product extends Model
     public function details()
     {
         return $this->hasMany('App\ProductDetail');
+    }
+
+    public function category(){
+        return $this->belongsTo('App\Category');
+    }
+    public function brand(){
+        return $this->belongsTo('App\Brand');
     }
 }

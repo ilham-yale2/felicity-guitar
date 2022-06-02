@@ -6,7 +6,7 @@
 
 @section('content')
     <div class="col-lg-12">
-        <h3 calss="mb-2">Daftar Produk</h3>
+        <h3 calss="mb-2">Product List</h3>
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
                 <div class="row">
@@ -23,16 +23,15 @@
                             <line x1="12" y1="8" x2="12" y2="16"></line>
                             <line x1="8" y1="12" x2="16" y2="12"></line>
                         </svg>
-                    </i> Tambah Produk</a>
+                    </i> Add Product</a>
                 <div class="table-responsive mb-4">
                     <table id="zero-config" class="table style-3 table-hover">
                         <thead>
                             <tr>
-                                <th class="text-center">Image</th>
-                                <th>Pengrajin</th>
-                                <th>Kategori</th>
-                                <th>Nama Produk</th>
-                                <th>Deskripsi</th>
+                                <th class="text-center">Thumbnail</th>
+                                <th>Category</th>
+                                <th>Product Name</th>
+                                <th>Brand</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -40,18 +39,18 @@
                             @forelse($products as $b)
                             {{-- @dd($b->productImages->isEmpty()) --}}
                                 <tr>
+                                    <style>
+                                        .img-product{
+                                            max-height: 200px
+                                        }
+                                    </style>
                                     <td class="text-center product-img">
-                                        <span><img src="
-                                            @if ($b->productImages->isEmpty())
-                                            @else
-                                            {{ asset('storage/' . $b->productImages[0]->image) }}
-                                            @endif
-                                            "width="100px"></span>
+                                        <img class="img-product" src="{{asset('storage/' . $b->thumbnail)}}" alt="">
                                     </td>
-                                    <td>{{ $b->user->name }}</td>
-                                    <td>{{ $b->type->name }}</td>
+                                    <td>{{ $b->category->name }}</td>
                                     <td>{{ $b->name }}</td>
-                                    <td>{{ substr(strip_tags($b->description), 0, 200) }}...</td>
+                                    {{-- <td>{{ substr(strip_tags($b->description), 0, 200) }}...</td> --}}
+                                    <td>{{$b->brand->name}}</td>
                                     <td class="text-center">
                                         <ul class="table-controls">
                                             <li><a href="{{ route('product.show', $b->id) }}" class="bs-tooltip"
@@ -65,7 +64,7 @@
                                                         </path>
                                                     </svg></a></li>
                                             <li>
-                                                <a href="#" onclick="deleteData({{ $b->id }})" class="bs-tooltip"
+                                                <a href="#" onclick="doDelete({{$b->id}}, `{{$b->name}}`)" class="bs-tooltip"
                                                     data-toggle="tooltip" data-placement="top" title=""
                                                     data-original-title="Delete"><svg xmlns="http://www.w3.org/2000/svg"
                                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -78,7 +77,7 @@
                                                     </svg>
                                                 </a>
                                                 <form action="{{ route('product.destroy', ['product' => $b->id]) }}"
-                                                    method="POST" id="form-delete{{ $b->id }}">
+                                                    method="POST" id="form-delete-{{ $b->id }}">
                                                     <input type="hidden" name="_method" value="DELETE">
                                                     @csrf
                                                 </form>
@@ -94,34 +93,41 @@
             </div>
         </div>
     </div>
+    @if(session()->has('message'))
+        <script>
+            var type = "{{session()->get('message')['status']}}"
+            if(type == 'success'){
+                var title = 'Well Done...'
+            }else{
+                var title = "Oops..."
+            }
+            setTimeout(() => {
+                Swal.fire({
+                    icon: type,
+                    title: title,
+                    text: "{{session()->get('message')['text']}}",
+                })
+            }, 1000);
+        </script>
+    @endif
 @endsection
 
 @section('script')
     <script>
-        function doDelete(id) {
+        function doDelete(id, name) {
 
             Swal.fire({
-                title: 'Yakin?',
-                text: "Data yang terhapus tidak dapat di restore",
+                title: `Are you sure to delete this product?`,
+                text: 'Deleted data cannot be restored' ,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Hapus',
-                cancelButtonText: 'Batal'
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.ajax({
-                        url: global_url + '/product/' + id,
-                        method: 'DELETE',
-                        data: {
-                            _token: token
-                        },
-                        dataType: 'json',
-                        success: function(resp) {
-                            window.location.href = global_url + '/product?&del_suc=1';
-                        }
-                    });
+                    $(`#form-delete-${id}`).submit()
                 }
             });
 

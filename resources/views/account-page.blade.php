@@ -1,6 +1,13 @@
 @extends('layout.app')
 @section('title', 'Account page')
 @section('content')
+   
+    <style>
+        .upload-file .add-photo .image-preview{
+            background-image: url('{{asset("storage")."/".Auth::guard("user")->user()->avatar}}') ;
+            background-size: cover;
+        }
+    </style>
     <div class="form-page accountpage">
         <section class="section-1 animate animate--up">
             <div class="container">
@@ -17,32 +24,34 @@
                 <div class="account_form">
                     <div class="row">
                         <div class="col-lg-9">
-                            <form action="#">
+                            <form action="{{route('update.account', ['id' => Auth::guard('user')->user()->id])}}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('put')
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="upload-file">
-                                            <input class="inputfile" id="photo1" type="file" name="file" />
+                                            <input class="inputfile profile" disabled id="photo1" type="file" name="file" onchange="uploadAvatar()"/>
                                             <label class="btn add-photo label-btn" for="photo1"><span
                                                     class="image-preview"></span></label><a class="btn-del"
-                                                href="#">Delete</a>
+                                                href="#">Change</a>
                                         </div>
                                     </div>
                                     <div class="col-md-9">
                                         <div class="form-group">
                                             <label>Name Display</label>
-                                            <input class="form-control" type="text" placeholder="username" />
+                                            <input class="form-control profile" type="text" id="username" placeholder="username" value="{{Auth::guard('user')->user()->name}}" name="name" disabled/>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>First Name *</label>
-                                                    <input class="form-control" type="text" placeholder="first name" />
+                                                    <input class="form-control profile" type="text" placeholder="first name" value="{{Auth::guard('user')->user()->first_name}}" name="first_name" disabled/>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label>Last Name *</label>
-                                                    <input class="form-control" type="text" placeholder="last name" />
+                                                    <input class="form-control profile" type="text" placeholder="last name" disabled name="last_name" value="{{Auth::guard('user')->user()->last_name}}"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -50,15 +59,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Email address *</label>
-                                    <input class="form-control" type="email" placeholder="" />
+                                    <input class="form-control" type="email" placeholder="" value="{{Auth::guard('user')->user()->email}}" disabled/>
                                 </div>
                                 <div class="form-group">
                                     <label>Phone *</label>
-                                    <input class="form-control" type="email" placeholder="" />
+                                    <input class="form-control profile number" type="text" placeholder="" value="{{Auth::guard('user')->user()->phone}}" name="phone" disabled/>
                                 </div>
-                                <div class="form-action">
-                                    <button class="btn btn-primary" type="submit"> Send</button><a class="btn btn-white"
-                                        href="#">Edit</a>
+                                <div class="form-action d-flex">
+                                    <button class="btn btn-primary d-none" id="submit_profile" type="submit"> Send</button>
+                                    <button class="btn btn-white d-none mx-3" id="cancel_profile" onclick="cancelProfile()"  type="button"> Cancel</button>
+                                    <button type="button" onclick="editProfile()" id="edit_profile"  class="btn btn-white ml-0"
+                                        >Edit</button>
                                 </div>
                             </form>
                         </div>
@@ -68,53 +79,60 @@
                     <h3>SHIPPING ADDRESS</h3>
                     <div class="row">
                         <div class="col-lg-9">
-                            <form action="#">
+                            <form action="{{route('add.address')}}" id="formAddress" method="POST">
+                                @csrf
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Title</label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <input class="form-control address_input" required autocomplete="off" id="title" type="text" placeholder="" name="title" />
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Name</label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <input class="form-control address_input" required autocomplete="off" id="name_address" type="text" placeholder="" name="name_address" />
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Street Address </label>
-                                    <input class="form-control" type="text" placeholder="" />
+                                    <input class="form-control address_input" required autocomplete="off" id="street_address" type="text" placeholder="" name="street_address" />
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Town / City </label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <label>Sub Distric </label>
+                                            <input class="form-control address_input" required autocomplete="off" id="sub_distric" type="text" placeholder="" name="sub_distric" />
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Town / City </label>
+                                            <input class="form-control address_input" required autocomplete="off" id="city" type="text" placeholder="" name="city" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Province </label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <input class="form-control address_input" required autocomplete="off" id="province" type="text" placeholder="" name="province"/>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Country / Region </label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <input class="form-control address_input" required autocomplete="off" id="country" type="text" placeholder="" name="country" />
                                         </div>
                                     </div>
                                     <div class="col-md-8">
                                         <div class="form-group">
                                             <label>Postcode / ZIP </label>
-                                            <input class="form-control" type="text" placeholder="" />
+                                            <input class="form-control address_input" required autocomplete="off" id="postcode" type="text" placeholder=""  name="postcode"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-action">
-                                    <button class="btn btn-primary" type="submit"> Add Address</button>
+                                    <button class="btn btn-primary" id="submit_address" type="submit"> Add Address</button>
                                 </div>
                             </form>
                         </div>
@@ -122,25 +140,19 @@
                 </div>
                 <div class="addresslist">
                     <div class="row">
-                        <div class="col-lg-9">
-                            <div class="addresslist_item">
-                                <div class="addresslist_address">
-                                    <h5>Home</h5>
-                                    <address>Stevie David Jl. Medokan Asri Barat, Medokan Ayu, Kec. Rungkut, Surabaya, Jawa
-                                        Timur <br>
-                                        Indonesia, 60295</address>
+                        <div class="col-lg-9" id="addressList">
+                            @foreach ($address as $a)
+                                <div class="addresslist_item" id="address-{{$a->id}}">
+                                    <div class="addresslist_address">
+                                        <h5>{{$a->title}}</h5>
+                                        <address>{{$a->name}} {{$a->street_address}}, {{$a->sub_distric}}, {{$a->town}},{{$a->province}} <br>
+                                            {{$a->country}}, {{$a->postcode}}</address>
+                                    </div>
+                                    <div class="addresslist_edit">
+                                        <button type="button" class="btn btn-white" onclick="editAddress({{$a->id}})">Edit</button>
+                                    </div>
                                 </div>
-                                <div class="addresslist_edit"><a class="btn btn-white" href="#">Edit</a></div>
-                            </div>
-                            <div class="addresslist_item">
-                                <div class="addresslist_address">
-                                    <h5>Office</h5>
-                                    <address>Stevie David Jl. Medokan Asri Barat, Medokan Ayu, Kec. Rungkut, Surabaya, Jawa
-                                        Timur <br>
-                                        Indonesia, 60295</address>
-                                </div>
-                                <div class="addresslist_edit"><a class="btn btn-white" href="#">Edit</a></div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -148,8 +160,11 @@
                     <h3>SEE PURCHASE HSTORY</h3>
                     <div class="cart_header">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-6">
                                 <h4>Item Detail Name</h4>
+                            </div>
+                            <div class="col-md-2">
+                                <h4>Status</h4>
                             </div>
                             <div class="col-md-2">
                                 <h4>Quantity</h4>
@@ -160,62 +175,37 @@
                         </div>
                     </div>
                     <div class="cart_wrap">
-                        <div class="cart_item">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="cart_product">
-                                        <div class="cart_product-img"><img src="images/cart-product-img-1.jpg"
-                                                alt="cart-prodcut-img" />
-                                        </div>
-                                        <div class="cart_product-name">
-                                            <h4><a href="#">2004 RICKENBACKER 360/12 SEMI-HOLLOWBODY IN MONTEZUMA BROWN
-                                                    FINISH</a></h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"><span>1</span></div>
-                                <div class="col-md-2"><span class="price">Rp 90.000.000</span></div>
-                            </div>
-                        </div>
-                        <div class="cart_item">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="cart_product">
-                                        <div class="cart_product-img"><img src="images/cart-product-img-2.jpg"
-                                                alt="cart-prodcut-img" />
-                                        </div>
-                                        <div class="cart_product-name">
-                                            <h4><a
-                                                    href="#">2014-Ibanez-Japan-PM200-NT-Pat-Metheny-Sig-Natural-Sitka-Spruce-SN-F1406915</a>
-                                            </h4>
+                        @if (count($transactions) > 0)
+                            @foreach ($transactions as $item)
+                            <div class="cart_item">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="cart_product">
+                                            <div class="cart_product-img">
+                                                <img src="{{asset('storage/'. $item->product->thumbnail)}}" alt="cart-prodcut-img" />
+                                            </div>
+                                            <div class="cart_product-name">
+                                                <h4><a href="{{route('detail-product', ['name' => $item->product->slug])}}">{{$item->product->name}}</a></h4>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-2"><span>{{$item->transaction->status}}</span></div>
+                                    <div class="col-md-2"><span>{{$item->qty}}</span></div>
+                                    <div class="col-md-2"><span class="price">Rp {{number_format($item->total)}}</span></div>
                                 </div>
-                                <div class="col-md-2"><span>1</span></div>
-                                <div class="col-md-2"><span class="price">Rp 90.000.000</span></div>
                             </div>
+                            @endforeach
+                        @else
+                        <div class="w-100 text-center my-5">
+                            <h3>No item</h3>
                         </div>
-                        <div class="cart_item">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <div class="cart_product">
-                                        <div class="cart_product-img"><img src="images/cart-product-img-3.jpg"
-                                                alt="cart-prodcut-img" />
-                                        </div>
-                                        <div class="cart_product-name">
-                                            <h4><a
-                                                    href="#">2015-Gretsch-G5191BK-Tim-Armstrong-Sig-Archtop-Flat-Black-SN-K516063251</a>
-                                            </h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-2"><span>1</span></div>
-                                <div class="col-md-2"><span class="price">Rp 90.000.000</span></div>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </section>
     </div>
+@endsection
+@section('js')
+<script src="{{asset('js/account-page.js')}}"></script>
 @endsection

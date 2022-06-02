@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
 use App\Produkdata;
 use Illuminate\Http\Request;
 use Session;
@@ -12,8 +13,9 @@ class Dashboardcontroller extends Controller
     {
         $data['menu'] = 'dashboard';
         $data['name'] = Session::get('name');
-        $data['total'] = Produkdata::find(1)->total;
-        $data['terjual'] = Produkdata::find(1)->terjual;
+        $data['total'] = count(Product::all());
+        $data['ready'] = count(Product::whereNull('status')->get());
+        $data['sold'] = count(Product::where('status', 'sold')->get());
 
         return view('dashboard.index', $data);
     }

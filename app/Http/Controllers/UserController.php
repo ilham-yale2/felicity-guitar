@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Admin;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Image;
 use Storage;
 use Str;
@@ -43,6 +44,7 @@ class UserController extends Controller
             $user->owner = $request->owner;
             $user->phone = $request->phone;
             $user->address = $request->address;
+            $user->email = 'okok';
             $user->save();
 
             $file = $request->file('logo');
@@ -88,38 +90,35 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        // return $request->all();
         try {
-            $user = User::find($id);
+            $user = User::find(Auth::guard('user')->user()->id);
             $user->name = $request->name;
-            $user->owner = $request->owner;
             $user->phone = $request->phone;
-            $user->address = $request->address;
-            $user->save();
-
-            if ($request->file('logo')) {
-                Storage::delete($user->logo);
-                $file = $request->file('logo');
-                $fileName = date('YmdHis') . '_' . Str::slug($request->name) . ".jpg";
-
-                $image = Image::make($file);
-                $image->resize(1000, null, function ($constraint) {
+            $user->first_name = $request->first_name;
+            $user->last_name = $request->last_name;
+            if($request->file != null){
+                if(Auth::guard('user')->user()->avatar != '/user/user.png'){
+                    Storage::delete(Auth::guard('user')->user()->avatar);
+                }
+                $fileName = '/user/' . $this->makeCode(Str::slug($user->name), 4) . '.jpg';
+                // return $fileName;
+                $img = Image::make($request->file);
+                $img->resize(300, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
+                Storage::put($fileName, (string) $img->encode());
 
-                Storage::put('user/' . $fileName, (string) $image->encode());
-                $image_path = 'user/' . $fileName;
-
-                $user->update(
-                    [
-                        'logo' => $image_path,
-                    ]
-                );
+                $user->avatar = $fileName;
             }
+            $user->save();
 
             $status = [
                 'status' => 'success',
-                'msg' => 'Data berhasil di simpan',
+                'text' => 'Success to update account',
+                'data' => $user
             ];
+            return redirect()->back()->with(['message' => $status]);
         } catch (\Throwable$th) {
             throw $th;
         }
@@ -184,5 +183,19 @@ class UserController extends Controller
         ];
 
         return redirect()->route('user.index')->with($status);
+    }
+
+    public function logout( Request $request )
+    {
+        if(Auth::guard('user')->check())
+        {
+            Auth::guard('user')->logout();
+            return redirect()->route('index');
+        }
+
+        $this->guard('user')->logout();
+        $request->session()->invalidate();
+
+        return $this->loggedOut($request) ?: redirect('/');
     }
 }

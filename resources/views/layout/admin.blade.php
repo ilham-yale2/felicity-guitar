@@ -30,12 +30,18 @@ $setting = App\Setting::first();
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/plugins/table/datatable/dt-global_style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/plugins/table/datatable/custom_dt_custom.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('admin/plugins/select2/select2.min.css') }}">
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{asset('plugins/magnific-popup/dist/magnific-popup.css')}}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
 
     <style>
         .layout-px-spacing {
             min-height: calc(100vh - 166px) !important;
         }
 
+        .bg-purple{
+            background-color: #5c1ac3;;
+        }
     </style>
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
@@ -50,7 +56,7 @@ $setting = App\Setting::first();
     <div id="load_screen">
         <div class="loader">
             <div class="loader-content">
-                <img src="{{ asset('storage/' . $setting->image) }}" alt="Rumah Batik Probolinggo" srcset="" width="200px">
+                <img src="{{ asset('storage/' . $setting->image) }}" srcset="" width="200px">
             </div>
         </div>
     </div>
@@ -188,10 +194,76 @@ $setting = App\Setting::first();
     <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('admin/plugins/image-uploader/image-uploader.min.js') }}"></script>
     <script src="/admin/assets/js/app.js"></script>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://github.com/dimsemenov/Magnific-Popup/blob/master/dist/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="https://rawgit.com/enyo/dropzone/master/dist/dropzone.css" />
+    <script src="https://rawgit.com/enyo/dropzone/master/dist/dropzone.js"></script>
+    <script src="{{asset('plugins/magnific-popup/dist/jquery.magnific-popup.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+    <script>
+        function readURL(input, target) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    target.attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+
+            }
+        }
+
+    </script>
+    @yield('js')
     <script>
         $(document).ready(function() {
             App.init();
         });
+        function formatRupiah(angka, prefix)
+        {
+            var number_string = angka.replace(/[^,\d]/g, '').toString(),
+                split    = number_string.split(','),
+                sisa     = split[0].length % 3,
+                rupiah     = split[0].substr(0, sisa),
+                ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+                
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+            
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+        }
+
+        $('.money').on('keyup', function(){
+            var value = formatRupiah($(this).val(), '')
+            $(this).val(value)
+            
+        })
+
+        $('.discount').on('keyup', function(){
+            var value = $(this).val().replace(/[^,\d]/g, '')
+            if(Number(value) > 100){
+                $(this).val(100)
+            }else{
+                $(this).val(value)
+            }
+            
+        })
+
+        $('.number').on('keyup', function(){
+            var value = $(this).val().replace(/[^,\d]/g, '')
+            $(this).val(value)
+        })
+
+        
+        // $('.comma').mask("#,##0.00", {
+        //     reverse: true
+        // });
+
+
     </script>
     <script>
         $('#zero-config').DataTable({
@@ -208,6 +280,18 @@ $setting = App\Setting::first();
             "stripeClasses": [],
             "lengthMenu": [7, 10, 20, 50],
             "pageLength": 7
+        });
+        $('.summernote').summernote({
+            height: 300,
+            tabDisable: true,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ]
         });
     </script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
