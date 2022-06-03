@@ -40,9 +40,12 @@
                                 <a href="<?php echo e($product->wa_link); ?>"  class="btn cta-product w-100">Buy Now</a>
                             </div>
                             <?php if(Auth::guard('user')->user()): ?>
+                                <?php if($type == 'detail'): ?>
+                                    
                                 <div class="col-md-6">
                                     <button type="button" class="btn cta-product w-100" onclick="addToCart(`<?php echo e(\Crypt::encryptString($product->code)); ?>`)">Add to Cart </button>
                                 </div>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </div>
                            <?php endif; ?>
@@ -478,7 +481,7 @@
         });
     $("#read-more-detail").click(function () {
 
-        $("#wrap-detail").slideDown();
+        $("#wrap-detail").slideToggle();
     })
     $('#gallery').magnificPopup({
         delegate: 'a',

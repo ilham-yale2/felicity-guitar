@@ -27,10 +27,11 @@
                                 @endforeach
                             </ul>
                         </li>
-                        <li class="text-capitalize mt-4">
-                            <a class="filter" href="{{route('browse-brand')}}?brd={{$brand['name']}}&country=U.S.A"><span class="text-country">{{$brand['name']}}</span> U.S.A</a>
-                        </li>
-                        <li class="text-capitalize" >
+                    </ul>
+                    <ul class="list-none mt-4 brand-list" id="country">
+
+                        
+                        {{-- <li class="text-capitalize" >
                             <a class="filter" href="{{route('browse-brand')}}?brd={{$brand['name']}}&country=Custom"><span class="text-country">{{$brand['name']}}</span> Custom</a>
                         </li>
                         <li class="text-capitalize">
@@ -38,8 +39,10 @@
                         </li>
                         <li class="text-capitalize">
                             <a class="filter" href="{{route('browse-brand')}}?brd={{$brand['name']}}&country=Montana"><span class="text-country">{{$brand['name']}}</span> Montana</a>
-                        </li>
-                        <li class="mt-4">
+                        </li> --}}
+                    </ul>
+                    <ul class="list-none brand-list mt-4">
+                        <li class="">
                             <a class="filter" href="{{route('browse-brand')}}?brd={{$brand['name']}}&condition=new"><span>New</span></a>
                         </li>
                         <li class="mt-0">
@@ -142,7 +145,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6 pr-0 d-flex flex-wrap" style="min-height: 250px">
-                                        <p class="mb-1 w-100">{!! strip_tags(\Illuminate\Support\Str::limit($product->text, 250,'...')) !!}
+                                        <p class="mb-1 w-100">{{ \Illuminate\Support\Str::limit(strip_tags($product->text), 250,'...') }}
                                         </p>
                                         <a class="w-100 mt-auto" href="{{route('detail-product',['name' => $product->slug])}}"><button class="btn border border-white btn-read w-100">Read
                                                 More</button></a>
@@ -162,40 +165,9 @@
     </div>
 @endsection
 @section('js')
+    <script src="{{asset('js/brand.js')}}"></script>
     <script>
         var brand = '{{$brand["name"]}}'
-        $('.brand-list li').click(function() {
-            if ($(this).find('.child').css('display') == 'none') {
-                $(this).find('.child').slideDown();
-                $(".brand-list li").not(this).find('.child').slideUp();
-                $(this).find('.arr').addClass('rotate')
-                $(".brand-list li").not(this).find('.arr').removeClass('rotate');
-                $(this).find('.main').addClass('text-orange')
-                $(".brand-list li").not(this).find('.main').removeClass('text-orange');
-            } else {
-                $(this).find('.iconify').removeClass('rotate')
-                $(this).find('.main').removeClass('text-orange')
-            }
-            $('.parent').click(function() {
-                $('.child').slideUp()
-            })
-        });
-        function redirect(url){
-            window.location.href=url
-        }
-
-        function changeBrand(id,name, img){
-            $('#brandImg').attr('src', `${base_url}/storage/${img}`)
-
-            $('.child li').removeClass('text-orange')
-            $(`.list-${id}`).addClass('text-orange')
-            $('.text-country').text(`${name}`)
-            $('.filter').each(function(index){
-                var url = $(this).attr('href').replace(brand, name)
-                $(this).attr('href', url)
-            })
-
-            brand = name
-        }
+        setCountry(`{{$brand['name']}}`)
     </script>
 @endsection

@@ -69,7 +69,9 @@ class PageController extends Controller
 			}
 
 			if($request->condition){
-				// $products->
+				$products->whereHas('details', function ($c) use ($request){
+					$c->where('condition', 'LIKE' ,"%{$request->condition}%");
+				});
 			}
 
 			if($request->type){
@@ -149,6 +151,7 @@ class PageController extends Controller
 			$data['product']= $product;
 			$data['detail'] = ProductDetail::where('product_id', $product->id)->first();
 			$data['images'] = ProductImage::where('product_id', $product->id)->get();
+			$data['type'] = 'detail';
 		}else{
 			abort(404);
 		}

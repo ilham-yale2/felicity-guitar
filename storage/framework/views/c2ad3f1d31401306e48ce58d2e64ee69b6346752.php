@@ -27,19 +27,14 @@
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </li>
-                        <li class="text-capitalize mt-4">
-                            <a class="filter" href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($brand['name']); ?>&country=U.S.A"><span class="text-country"><?php echo e($brand['name']); ?></span> U.S.A</a>
-                        </li>
-                        <li class="text-capitalize" >
-                            <a class="filter" href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($brand['name']); ?>&country=Custom"><span class="text-country"><?php echo e($brand['name']); ?></span> Custom</a>
-                        </li>
-                        <li class="text-capitalize">
-                            <a class="filter" href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($brand['name']); ?>&country=Memphis"><span class="text-country"><?php echo e($brand['name']); ?></span> Memphis</a>
-                        </li>
-                        <li class="text-capitalize">
-                            <a class="filter" href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($brand['name']); ?>&country=Montana"><span class="text-country"><?php echo e($brand['name']); ?></span> Montana</a>
-                        </li>
-                        <li class="mt-4">
+                    </ul>
+                    <ul class="list-none mt-4 brand-list" id="country">
+
+                        
+                        
+                    </ul>
+                    <ul class="list-none brand-list mt-4">
+                        <li class="">
                             <a class="filter" href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($brand['name']); ?>&condition=new"><span>New</span></a>
                         </li>
                         <li class="mt-0">
@@ -163,41 +158,10 @@
     </div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('js'); ?>
+    <script src="<?php echo e(asset('js/brand.js')); ?>"></script>
     <script>
         var brand = '<?php echo e($brand["name"]); ?>'
-        $('.brand-list li').click(function() {
-            if ($(this).find('.child').css('display') == 'none') {
-                $(this).find('.child').slideDown();
-                $(".brand-list li").not(this).find('.child').slideUp();
-                $(this).find('.arr').addClass('rotate')
-                $(".brand-list li").not(this).find('.arr').removeClass('rotate');
-                $(this).find('.main').addClass('text-orange')
-                $(".brand-list li").not(this).find('.main').removeClass('text-orange');
-            } else {
-                $(this).find('.iconify').removeClass('rotate')
-                $(this).find('.main').removeClass('text-orange')
-            }
-            $('.parent').click(function() {
-                $('.child').slideUp()
-            })
-        });
-        function redirect(url){
-            window.location.href=url
-        }
-
-        function changeBrand(id,name, img){
-            $('#brandImg').attr('src', `${base_url}/storage/${img}`)
-
-            $('.child li').removeClass('text-orange')
-            $(`.list-${id}`).addClass('text-orange')
-            $('.text-country').text(`${name}`)
-            $('.filter').each(function(index){
-                var url = $(this).attr('href').replace(brand, name)
-                $(this).attr('href', url)
-            })
-
-            brand = name
-        }
+        setCountry(`<?php echo e($brand['name']); ?>`)
     </script>
 <?php $__env->stopSection(); ?>
 

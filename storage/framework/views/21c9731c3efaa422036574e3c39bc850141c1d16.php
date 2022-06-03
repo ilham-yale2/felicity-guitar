@@ -18,7 +18,7 @@
                                                 <h2>PRIVATE VAULT</h2>
                                                 <article>
                                                     <h3><?php echo e($item->name); ?></h3>
-                                                    <?php echo $item->text; ?>
+                                                    <?php echo \Illuminate\Support\Str::limit($item->text, 1000,'...'); ?>
 
                                                 </article>
                                             </div>

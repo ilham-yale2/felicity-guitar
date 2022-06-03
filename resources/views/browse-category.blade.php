@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6 pr-0 d-flex flex-wrap" style="min-height: 250px">
-                                    <p class="mb-1 w-100">{!! strip_tags(\Illuminate\Support\Str::limit($product->text, 250,'...')) !!}
+                                    <p class="mb-1 w-100">{{ \Illuminate\Support\Str::limit(strip_tags($product->text), 250,'...') }}
                                     </p>
                                     <a class="w-100 mt-auto" href="{{route('detail-product',['name' => $product->slug])}}"><button class="btn border border-white btn-read w-100">Read
                                             More</button></a>

@@ -52,62 +52,6 @@
                         </div>
                     </div>
                     @endforeach
-                    <div class="aboutus_friends-item">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="aboutus_friends-thumbnail"><img src="images/image 1.jpg" alt="thumbnail" />
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="aboutus_friends-detail">
-                                    <h2>Name Sellers</h2>
-                                    <p>Lörem ipsum nest rent delningsekonomi parasemak: pankrati yrad såsom hygisk: i
-                                        lokator egont
-                                        örat. Däda van mikroren men gölingar tetrare bonus malus: vin, ett kanurtad omåss.
-                                        Us multise
-                                        negiska kroplada tranat kektiga soråsk prekrosade kroskapet. Virebelt krost,
-                                        pomiligt, nyren
-                                        tranågt. Svennekoloni van och dossade ramanar, antisk nyvälig nyligt tin,
-                                        tempokrati. Disåktig
-                                        fengar inklusive mafona egilig or suprasåktig om heteroledes, av autor om semitt.
-                                        Spen dedyhet
-                                        melil. Spes nuligen adöd trinunas eller akasam med girira sedan deling plar: beskap,
-                                        eurovigt.
-                                        Mav pungar vir såsom dede bengen kafanåskapet. Vävis pelig. Fadull lan osk i para
-                                        samt lagen.
-                                        Trena tabärat dekäheten apograf prere, men vasa: </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aboutus_friends-item">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="aboutus_friends-thumbnail"><img src="images/image 1.jpg" alt="thumbnail" />
-                                </div>
-                            </div>
-                            <div class="col-md-7">
-                                <div class="aboutus_friends-detail">
-                                    <h2>Name Sellers</h2>
-                                    <p>Lörem ipsum nest rent delningsekonomi parasemak: pankrati yrad såsom hygisk: i
-                                        lokator egont
-                                        örat. Däda van mikroren men gölingar tetrare bonus malus: vin, ett kanurtad omåss.
-                                        Us multise
-                                        negiska kroplada tranat kektiga soråsk prekrosade kroskapet. Virebelt krost,
-                                        pomiligt, nyren
-                                        tranågt. Svennekoloni van och dossade ramanar, antisk nyvälig nyligt tin,
-                                        tempokrati. Disåktig
-                                        fengar inklusive mafona egilig or suprasåktig om heteroledes, av autor om semitt.
-                                        Spen dedyhet
-                                        melil. Spes nuligen adöd trinunas eller akasam med girira sedan deling plar: beskap,
-                                        eurovigt.
-                                        Mav pungar vir såsom dede bengen kafanåskapet. Vävis pelig. Fadull lan osk i para
-                                        samt lagen.
-                                        Trena tabärat dekäheten apograf prere, men vasa: </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </section>
         </div>

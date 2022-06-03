@@ -38,7 +38,7 @@
                                 <a href="{{$product->wa_link}}"  class="btn cta-product w-100">Buy Now</a>
                             </div>
                             @if (Auth::guard('user')->user())
-                                @if ($type != 'private-vault')
+                                @if ($type == 'detail')
                                     
                                 <div class="col-md-6">
                                     <button type="button" class="btn cta-product w-100" onclick="addToCart(`{{ \Crypt::encryptString($product->code) }}`)">Add to Cart </button>
@@ -481,7 +481,7 @@
         });
     $("#read-more-detail").click(function () {
 
-        $("#wrap-detail").slideDown();
+        $("#wrap-detail").slideToggle();
     })
     $('#gallery').magnificPopup({
         delegate: 'a',

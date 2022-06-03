@@ -18,7 +18,7 @@
                                                 <h2>PRIVATE VAULT</h2>
                                                 <article>
                                                     <h3>{{$item->name}}</h3>
-                                                    {!!$item->text!!}
+                                                    {!! \Illuminate\Support\Str::limit($item->text, 1000,'...') !!}
                                                 </article>
                                             </div>
                                             <div class="col-md-5 ml-auto">
