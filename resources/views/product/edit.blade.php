@@ -155,7 +155,7 @@
                             <div class="form-group mb-4">
                                 <label for="description">Description</label>
                                 <textarea class="form-control summernote" rows="3" name="description"
-                                 id="description">{{$product->description}}</textarea>
+                                 id="description">{{$detail->description}}</textarea>
                             </div>
                         </div>
                          {{-- PRODUCT SPECIFICATION --}}

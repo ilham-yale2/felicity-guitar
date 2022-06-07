@@ -28,5 +28,26 @@
     .header_logo{
         display: none
     }
+
+    @media(max-width:767px){
+        .header_top{
+        margin-top: 2.5rem;
+        }
+        .header_right{
+            justify-content: center!important;
+            padding-right: 0px!important 
+        }
+        body::before{
+            background-image: url("{{asset('images/body-top.jpg')}}") ;
+            background-position: top;
+            background-size: cover;
+        }
+        #wrap{
+            padding-top: 0px;
+        }
+    }
 </style>
+<div class="d-flex align-items-center justify-center w-100 px-5 d-block d-md-none" style="min-height: 100vh">
+    <img src="{{asset('images/logo-felicity.png')}}" class="w-100" alt="">
+</div>
 @endsection

@@ -53,7 +53,7 @@ class ProductController extends Controller
             $product->code = $request->code;
             $product->brand_id = $request->brand_id;
             $product->category_id = $request->category_id;
-            $product->description = $request->description;
+            // $product->description = $request->description;
             $product->name = $request->name;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
@@ -199,7 +199,7 @@ class ProductController extends Controller
                 }
             }
             $detail = ProductDetail::where('product_id', $id);
-            $detail->update($request->except(['_method','description','sold', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images']));
+            $detail->update($request->except(['_method','sold', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images']));
             DB::commit();
 
             $status = [

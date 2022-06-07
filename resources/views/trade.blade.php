@@ -2,7 +2,7 @@
 @section('title', 'Trade')
 
 @section('content')
-    <div class="form-page">
+    <div class="form-page" style="overflow-x: hidden">
         <section class="section-1 animate animate--up">
             <div class="container">
                 <div class="text-description">

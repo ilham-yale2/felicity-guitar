@@ -24,6 +24,7 @@ $format_number = '628' . $format_number[1];
     <link rel="stylesheet" href="<?php echo e(asset('css/main.css')); ?>" />
     <link rel="stylesheet" href="<?php echo e(asset('css/custom.css')); ?>" />
     <link rel="stylesheet" href="<?php echo e(asset('css/style.css')); ?>" />
+    <link rel="stylesheet" href="<?php echo e(asset('css/main-mobile.css')); ?>" />
     <link rel="stylesheet" href="<?php echo e(asset('plugins/magnific-popup/dist/magnific-popup.css')); ?>">
     <?php echo $__env->yieldContent('css'); ?>
     <script>
@@ -144,6 +145,8 @@ $format_number = '628' . $format_number[1];
                         
                     </ul>
                 </div>
+                <div class="mobile-menu"><span></span><span></span><span></span></div>
+
             </div>
         </header>
         <main>
@@ -238,6 +241,9 @@ $format_number = '628' . $format_number[1];
         function logout(){
             $('#formLogout').submit()
         }
+        $('.mobile-menu').click(function(){
+            $('body').toggleClass('menu-open')
+        })
     </script>
 </body>
 

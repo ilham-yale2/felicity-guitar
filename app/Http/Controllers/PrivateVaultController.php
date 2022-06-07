@@ -62,7 +62,6 @@ class PrivateVaultController extends Controller
              $product->code = $request->code;
              $product->brand_id = $request->brand_id;
              $product->category_id = $request->category_id;
-             $product->description = $request->description;
              $product->name = $request->name;
              $product->slug = Str::slug($request->name);
              $product->text = $request->text;
@@ -225,7 +224,7 @@ class PrivateVaultController extends Controller
                 }
             }
             $detail = PrivateVaultDetail::where('product_id', $id);
-            $detail->update($request->except(['_method','description', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images', 'sold']));
+            $detail->update($request->except(['_method', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images', 'sold']));
             DB::commit();
 
             $status = [

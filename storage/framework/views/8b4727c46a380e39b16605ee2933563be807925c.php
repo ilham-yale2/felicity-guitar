@@ -156,7 +156,7 @@
                             <div class="form-group mb-4">
                                 <label for="description">Description</label>
                                 <textarea class="form-control summernote" rows="3" name="description"
-                                 id="description"><?php echo e($product->description); ?></textarea>
+                                 id="description"><?php echo e($detail->description); ?></textarea>
                             </div>
                         </div>
                          

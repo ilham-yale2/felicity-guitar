@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-md-5 offset-md-1">
                             <img src="<?php echo e(asset('storage').'/'.$product->thumbnail); ?>" class="w-100 img-details" alt="">
-                            <p class="price mt-3 mb-2">IDR <?php echo e(number_format($product->price)); ?></p>
+                            <p class="price mt-3 pb-3">IDR <?php echo e(number_format($product->price)); ?></p>
                             <span>Price inclusive of VAT ● Shipping costs will be calculated at check out</span>
                            <?php if($product->status != 'sold'): ?>
                            <div class="row mt-3">
@@ -445,6 +445,7 @@
                 </section>
             </div>
             <div class="container">
+                <button type="button" class=" border-white border text-white btn btn-outline mb-4" id="read-less-detail">Read Less</button>
                 <h2>Gallery</h2>
                 
             </div>
@@ -482,6 +483,15 @@
     $("#read-more-detail").click(function () {
 
         $("#wrap-detail").slideToggle();
+        $(this).hide()
+        $("#read-less-detail").show()
+    })
+    $('#read-less-detail').hide()
+    $("#read-less-detail").click(function () {
+
+        $("#wrap-detail").slideToggle();
+        $(this).hide()
+        $("#read-more-detail").show()
     })
     $('#gallery').magnificPopup({
         delegate: 'a',
