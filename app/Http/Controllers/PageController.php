@@ -64,19 +64,19 @@ class PageController extends Controller
 			})->whereNull('status');
 			if($request->country){
 				$products->whereHas('details', function ($c) use ($request){
-					$c->where('made_in', $request->country);
+					$c->where('title', 'LIKE' ,"%Country of Origin%")->where('value', $request->country);
 				});
 			}
 
 			if($request->condition){
 				$products->whereHas('details', function ($c) use ($request){
-					$c->where('condition', 'LIKE' ,"%{$request->condition}%");
+					$c->where('title','condition')->where('value', 'LIKE' ,"%{$request->condition}%");
 				});
 			}
 
 			if($request->type){
 				$products->whereHas('details', function ($t) use ($request){
-					$t->where('type', $request->type);
+					$t->where('title', 'body type')->where('value', $request->type);
 				});
 			}
 
@@ -90,22 +90,22 @@ class PageController extends Controller
 				$products->where('sell_price', '>=', intval($request->up_to));
 			}
 
-			if($request->from_year || $request->to_year){
+			if($request->from_year){
 				$products->whereHas('details', function ($y) use ($request){
-					$y->where('year', '>=', $request->from_year)->where('year', '<=', $request->to_year);
+					$y->where('title', 'year')->where('value', '>=', $request->from_year)->where('value', '<=', $request->to_year);
 				});
 			}
 			if($request->up_year){
 				$products->whereHas('details', function ($y) use ($request){
-					$y->where('year', '>=', $request->up_year);
+					$y->where('title', 'year')->where('value', '>=', $request->up_year);
 				});
 			}
 
-			$data['products'] = $products->get();
+			$data['products'] = $products->paginate(14);
 
 			$data['brand'] = Brand::where('name' , $request->brd)->first();	
 		}else{
-			$data['products'] = Product::whereNull('status')->get();
+			$data['products'] = Product::whereNull('status')->paginate(14);
 			$data['brand'] = [ 'name' => 'Brand', 'image' => null];
 		}
 		$data['brands'] = Brand::all();
@@ -124,10 +124,18 @@ class PageController extends Controller
 		if($request->ctg){
 			$data['products'] = Product::whereHas('category', function ($p) use ($request){
 				$p->where('name', $request->ctg);
-			})->whereNull('status')->get();
+			})->whereNull('status')->paginate(14);
+
+		    if($request->ctg == 'Pedals'){
+				$data['col'] = 'col-md-3';
+			}
+			if($request->ctg == 'Amplifiers'){
+				$data['col'] = 'col-md-4';
+			}
 		}else{
-			$data['products'] = Product::whereNull('status')->get();
+			$data['products'] = Product::whereNull('status')->paginate(14);
 		}
+
 		$data['categories'] = Category::all();
 
 		return view('browse-category',$data);	
@@ -149,26 +157,34 @@ class PageController extends Controller
 		$product = Product::where('slug', $code)->first();
 		if($product){
 			$data['product']= $product;
-			$data['detail'] = ProductDetail::where('product_id', $product->id)->first();
+			$data['general'] = ProductDetail::where('product_id', $product->id)->where('type', 'general')->get();
+			$data['electronic'] = ProductDetail::where('product_id', $product->id)->where('type', 'electronic')->get();
+			$data['neck'] = ProductDetail::where('product_id', $product->id)->where('type', 'neck')->get();
+			$data['body'] = ProductDetail::where('product_id', $product->id)->where('type', 'body')->get();
+			$data['hardware'] = ProductDetail::where('product_id', $product->id)->where('type', 'hardware')->get();
+			$data['miscellaneous'] = ProductDetail::where('product_id', $product->id)->where('type', 'miscellaneous')->get();
 			$data['images'] = ProductImage::where('product_id', $product->id)->get();
-			$data['type'] = 'detail';
 		}else{
 			abort(404);
 		}
 		return view('product_detail', $data);
 	}
 
-	public function detailVault($code){
-		$product = PrivateVault::where('slug', $code)->first();
+	public function detailVault($slug){
+		$product = PrivateVault::where('slug', $slug)->first();
 		if($product){
 			$data['product']= $product;
-			$data['detail'] = PrivateVaultDetail::where('product_id', $product->id)->first();
+			$data['general'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'general')->get();
+			$data['electronic'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'electronic')->get();
+			$data['neck'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'neck')->get();
+			$data['body'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'body')->get();
+			$data['hardware'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'hardware')->get();
+			$data['miscellaneous'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'miscellaneous')->get();
 			$data['images'] = PrivateVaultImage::where('product_id', $product->id)->get();
-			$data['type'] = 'private-vault';
 		}else{
 			abort(404);
 		}
-		return view('product_detail', $data);
+		return view('private_vault_detail', $data);
 
 	}
 

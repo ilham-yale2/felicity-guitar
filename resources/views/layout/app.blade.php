@@ -16,7 +16,31 @@ $format_number = '628' . $format_number[1];
     <meta property="og:title" content="@yield('title') - {{ $setting->name }}">
     <meta name="twitter:title" content="@yield('title') - {{ $setting->name }}">
     <meta property="og:url" content="{{ Request::url() }}">
-    @yield('meta')
+    
+    
+    <meta name="description" content="{{ $setting->description }}">
+    <meta name="keyword" content="{{ $setting->seo_keyword }}">
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="description" content="{{ $tags['description'] ?? $setting->description }}">
+    <meta itemprop="image" content="{{ asset('storage') }}/{{ $tags['image'] ?? $setting->image}}">
+
+    <!-- Facebook Meta Tags -->
+
+    <meta property="og:url" content="{{route('index')}}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{$tags['title'] ?? $setting->name}}">
+    <meta property="og:description" content="{{ $tags['description'] ?? $setting->description }}">
+    <meta property="og:image" content="{{ asset('storage') }}/{{ $tags['image'] ?? $setting->image}}?time=1656324492">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="{{ $tags['description'] ?? $setting->description }}">
+    <meta name="twitter:image" content="{{ asset('storage') }}/{{ $tags['image'] ?? $setting->image}}">
+
+    {{-- <meta property="og:updated_time" content="1440432930" /> --}}
+
+
     <title>@yield('title') - {{ $setting->name }}</title>
     <link rel="shortcut icon" href="{{ asset('images/logo-felicity.png') }}" />
     <link rel="stylesheet" href="{{ asset('css/plugins.css') }}" />
@@ -49,11 +73,6 @@ $format_number = '628' . $format_number[1];
 
         .btn-primary:hover{
             background-color: #cc6600c9
-        }
-        .img-product{
-            max-height: 207px;
-            width: 100%;
-            object-fit: cover
         }
     </style>
 
@@ -183,7 +202,7 @@ $format_number = '628' . $format_number[1];
                                         <input class="form-control" type="text" placeholder="enter your email" />
                                     </div>
                                 </div>
-                                <div class="footer_logo"><a href="index.html"><img
+                                <div class="footer_logo"><a href="/"><img
                                             src="{{asset('images/logo-footer-felicity.png')}}" alt="logo-footer" /></a></div>
                             </div>
                         </div>

@@ -18,7 +18,7 @@
         padding-top: 25px;
     }
     body::before{
-        background-image: url("<?php echo e(asset('images/bg.png')); ?>") ;
+        background-image: url("<?php echo e(asset('images/landing-background.jpg')); ?>") ;
         background-position: top;
         background-size: cover;
     }
@@ -48,7 +48,7 @@
     }
 </style>
 <div class="d-flex align-items-center justify-center w-100 px-5 d-block d-md-none" style="min-height: 100vh">
-    <img src="<?php echo e(asset('images/logo-felicity.png')); ?>" class="w-100" alt="">
+    <img src="<?php echo e(asset('images/Felicitys-Logo-Primary.png')); ?>" class="w-100" alt="">
 </div>
 <?php $__env->stopSection(); ?>
 

@@ -2,11 +2,6 @@
 <?php $__env->startSection('title', 'Trade'); ?>
 
 <?php $__env->startSection('content'); ?>
-<style>
-    #header{
-        /* width:auto!important */
-    }
-</style>
     <div class="form-page" style="overflow-x: hidden">
         <section class="section-1 animate animate--up">
             <div class="container">

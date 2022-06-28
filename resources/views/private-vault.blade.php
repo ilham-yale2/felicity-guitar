@@ -16,14 +16,14 @@
                                         <div class="row w-100">
                                             <div class="col-md-6">
                                                 <h2>PRIVATE VAULT</h2>
-                                                <article>
+                                                <article class="text-private-vault">
                                                     <h3>{{$item->name}}</h3>
-                                                    {!! \Illuminate\Support\Str::limit($item->text, 1000,'...') !!}
+                                                    {!! $item->text !!}
                                                 </article>
                                             </div>
                                             <div class="col-md-5 ml-auto">
                                                 <div class="privatevault_img">
-                                                    <img src="{{asset('storage/'.$item->thumbnail)}}" alt="img" />
+                                                    <img src="{{asset('storage/'.$item->thumbnail_2)}}" alt="img" />
                                                 </div>
                                             </div>
                                         </div>
@@ -51,7 +51,7 @@
                                 </div>
                                 <div class="textbox">
                                     <h3> 
-                                        <a class="d-inline-block text-truncate" style="max-width: 220px"href="{{route('detail-product', ['name' => $item->slug] )}}">
+                                        <a class="d-inline-block text-truncate" style="max-width: 220px"href="{{route('detail-vault', ['name' => $item->slug] )}}">
                                             {{$item->name}} 
                                             
                                         </a>

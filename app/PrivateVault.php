@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class PrivateVault extends Model
 {
 
-    public $appends = ['wa_link'];
+    public $appends = ['wa_link', 'alt_image'];
     
     public function category(){
         return $this->belongsTo(Category::class);
@@ -23,5 +23,10 @@ class PrivateVault extends Model
         $text .= route('detail-product', ['name' => $this->slug]);
         return $phone . urlencode($text);
             
+    }
+
+    public function getAltImageAttribute(){
+        $detail = PrivateVaultDetail::where('product_id', $this->id)->where('title', 'year');
+        return $detail->value ?? '' .'-' . str_replace(' ', '-', $this->name );
     }
 }

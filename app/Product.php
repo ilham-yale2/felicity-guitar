@@ -10,7 +10,7 @@ class Product extends Model
 {
     protected $casts = ['tags' => 'array'];
     protected $guarded = ['id'];
-    protected $appends = ['sell_price_format', 'name_slug', 'wa_link'];
+    protected $appends = ['sell_price_format', 'name_slug', 'wa_link', 'year', 'alt_image'];
 
     public function getSellPriceFormatAttribute()
     {
@@ -57,5 +57,18 @@ class Product extends Model
     }
     public function brand(){
         return $this->belongsTo('App\Brand');
+    }
+
+    public function getYearAttribute(){
+        $year = ProductDetail::where('title', 'year')->where('product_id', $this->id)->first();
+        if($year){
+            return $year->value;
+        }else{
+            return '';
+        }
+    }
+    public function getAltImageAttribute(){
+        $detail = ProductDetail::where('product_id', $this->id)->where('title', 'year');
+        return $this->year .'-' . str_replace(' ', '-', $this->name );
     }
 }

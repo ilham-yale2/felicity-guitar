@@ -246,7 +246,7 @@
         // STICKY HEADER
         if ($('.header').length > 0) {
             var header = $('.header'),
-                pos = 122;
+                pos = 10;
             $(window).on('scroll', function() {
                 var scroll = $(window).scrollTop();
                 if (scroll >= pos) {

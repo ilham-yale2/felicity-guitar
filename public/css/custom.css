@@ -12,8 +12,8 @@
 
 
 #section-detail .details .title {
-    font-size: 36px;
-    font-weight: 700;
+    font-size: 30px;
+    /* font-weight: 700; */
 }
 
 #section-detail .details .short-desc {
@@ -39,7 +39,6 @@
 }
 
 #section-detail .img-details {
-    border: 10px solid white;
 }
 
 #section-detail .price {
@@ -50,7 +49,7 @@
 
 #section-detail span {
     font-size: 12px;
-    color: white;
+    /* color: white; */
     margin-top: 15px;
 }
 

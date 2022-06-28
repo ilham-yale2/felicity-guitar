@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\UserContact;
 use App\Http\Controllers\Controller;
+use App\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -52,7 +53,14 @@ class UserContactController extends Controller
                 'text' => 'Success to submit your message',
             ];
             DB::commit();
-            return redirect()->route('contact')->with('message', $message);
+            $txt  = "*Hello Admin*"."\n";
+            $txt .= "Nama : "   .$contact->name ."\n";
+            $txt .= "Email : "  .$contact->email ."\n";
+            $txt .= "Subject : ".$contact->subject."\n";
+            $txt .= "Message : ".$contact->message."\n";
+            $phone = 'https://wa.me/' . Setting::first()->phone_with_code .'?text=';
+            return redirect($phone.urlencode($txt));
+            // return redirect()->route('contact')->with('message', $message);
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -62,7 +62,7 @@ class TransactionController extends Controller
             $txt .= 'Email: '.$request->email."\n";
             $txt .= 'Phone: '.$request->phone."\n";
 
-            $txt .= '*SHIPPING ADDRESS*'."\n";
+            $txt .= "\n".'*SHIPPING ADDRESS*'."\n" ;
             
             if($request->different){
                 $txt .= 'Street Adddress: '. $request->shipping_address."\n";
@@ -82,11 +82,11 @@ class TransactionController extends Controller
             foreach($request->product_id as $key => $value){
                 $cart = Cart::find(Crypt::decryptString($request->product_id[$key]));
                 $product = Product::find($cart->product_id);
-                $text = '*' .$product->name ."*\n";
+                $text = "\n".'*' .$product->name ."*\n";
                 $text .= route('detail-product', ['name' => $product->slug]) ."\n";
                 $txt .= $text;
             }
-            $phone = 'https://wa.me/' . Setting::first()->phone .'?text=';
+            $phone = 'https://wa.me/' . Setting::first()->phone_with_code .'?text=';
             $data['link'] = $phone.$txt;
             return redirect($phone.urlencode($txt));
 

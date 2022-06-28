@@ -16,7 +16,31 @@ $format_number = '628' . $format_number[1];
     <meta property="og:title" content="<?php echo $__env->yieldContent('title'); ?> - <?php echo e($setting->name); ?>">
     <meta name="twitter:title" content="<?php echo $__env->yieldContent('title'); ?> - <?php echo e($setting->name); ?>">
     <meta property="og:url" content="<?php echo e(Request::url()); ?>">
-    <?php echo $__env->yieldContent('meta'); ?>
+    
+    
+    <meta name="description" content="<?php echo e($setting->description); ?>">
+    <meta name="keyword" content="<?php echo e($setting->seo_keyword); ?>">
+
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="description" content="<?php echo e($tags['description'] ?? $setting->description); ?>">
+    <meta itemprop="image" content="<?php echo e(asset('storage')); ?>/<?php echo e($tags['image'] ?? $setting->image); ?>">
+
+    <!-- Facebook Meta Tags -->
+
+    <meta property="og:url" content="<?php echo e(route('index')); ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="<?php echo e($tags['title'] ?? $setting->name); ?>">
+    <meta property="og:description" content="<?php echo e($tags['description'] ?? $setting->description); ?>">
+    <meta property="og:image" content="<?php echo e(asset('storage')); ?>/<?php echo e($tags['image'] ?? $setting->image); ?>?time=1656324492">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:description" content="<?php echo e($tags['description'] ?? $setting->description); ?>">
+    <meta name="twitter:image" content="<?php echo e(asset('storage')); ?>/<?php echo e($tags['image'] ?? $setting->image); ?>">
+
+    
+
+
     <title><?php echo $__env->yieldContent('title'); ?> - <?php echo e($setting->name); ?></title>
     <link rel="shortcut icon" href="<?php echo e(asset('images/logo-felicity.png')); ?>" />
     <link rel="stylesheet" href="<?php echo e(asset('css/plugins.css')); ?>" />
@@ -49,11 +73,6 @@ $format_number = '628' . $format_number[1];
 
         .btn-primary:hover{
             background-color: #cc6600c9
-        }
-        .img-product{
-            max-height: 207px;
-            width: 100%;
-            object-fit: cover
         }
     </style>
 
@@ -183,7 +202,7 @@ $format_number = '628' . $format_number[1];
                                         <input class="form-control" type="text" placeholder="enter your email" />
                                     </div>
                                 </div>
-                                <div class="footer_logo"><a href="index.html"><img
+                                <div class="footer_logo"><a href="/"><img
                                             src="<?php echo e(asset('images/logo-footer-felicity.png')); ?>" alt="logo-footer" /></a></div>
                             </div>
                         </div>

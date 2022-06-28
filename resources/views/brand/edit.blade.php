@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 text-center">
-                        <img src="{{asset('storage').'/'.$brand->image}}" id="preview-image" alt="">
+                        <img src="{{asset('storage').'/'.$brand->image}}" id="preview-image" class="w-100" alt="">
                     </div>
                     {{-- <div class="col-md-12 d-flex align-items-center">
                         <label for="">Sub Category</label>

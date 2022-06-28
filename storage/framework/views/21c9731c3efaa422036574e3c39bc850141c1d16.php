@@ -16,9 +16,9 @@
                                         <div class="row w-100">
                                             <div class="col-md-6">
                                                 <h2>PRIVATE VAULT</h2>
-                                                <article>
+                                                <article class="text-private-vault">
                                                     <h3><?php echo e($item->name); ?></h3>
-                                                    <?php echo \Illuminate\Support\Str::limit($item->text, 1000,'...'); ?>
+                                                    <?php echo $item->text; ?>
 
                                                 </article>
                                             </div>
@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="textbox">
                                     <h3> 
-                                        <a class="d-inline-block text-truncate" style="max-width: 220px"href="<?php echo e(route('detail-product', ['name' => $item->slug] )); ?>">
+                                        <a class="d-inline-block text-truncate" style="max-width: 220px"href="<?php echo e(route('detail-vault', ['name' => $item->slug] )); ?>">
                                             <?php echo e($item->name); ?> 
                                             
                                         </a>

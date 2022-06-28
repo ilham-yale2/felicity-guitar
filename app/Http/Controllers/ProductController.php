@@ -44,30 +44,40 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // dd($request);
+        if($request->images){
+            if(count($request->images) > 10){
+                return redirect()->back()->with('images', 'Maximum upload 10 files');
+            }
+        }
+
+
         DB::beginTransaction();
         try {
-            // $product->type_id = $request->type_id;
-            // $product->subcategory_id = $request->sub_id;
             $product = new Product();
-            $product->code = $request->code;
+            $product->code = $this->makeCode('PRD', 10);
+            $product->meta_text = $request->meta_text;
             $product->brand_id = $request->brand_id;
             $product->category_id = $request->category_id;
-            // $product->description = $request->description;
+            $product->description = $request->description;
             $product->name = $request->name;
+            $product->name_2 = $request->name_2;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
             $price = $this->replaceDot($request->price);
             $product->price = $price;
             $product->discount = $request->discount;
             $product->sell_price = $price - ($price * $request->discount / 100);
-            $fileName = 'thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
+            $fileName = 'thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
             $image = Image::make($request->thumbnail);
-            $image->resize(500, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
             Storage::put($fileName, (string) $image->encode());
             $product->thumbnail = $fileName;
+
+            $thumbnail_2 = 'thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
+            $image = Image::make($request->thumbnail_2);
+            Storage::put($thumbnail_2, (string) $image->encode());
+            $product->thumbnail_2 = $thumbnail_2;
+
+
             $product->save();
             
             if ($request->images) {
@@ -75,9 +85,9 @@ class ProductController extends Controller
                     $fileName = 'product/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
 
                     $img = Image::make($item);
-                    $img->resize(500, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+                    // $img->resize(1000, null, function ($constraint) {
+                    //     $constraint->aspectRatio();
+                    // });
                     Storage::put($fileName, (string) $img->encode());
 
                     ProductImage::create(
@@ -91,10 +101,14 @@ class ProductController extends Controller
 
             // detail
 
-            $data = $request->all();
-            $data['product_id'] = $product->id;
-
-            ProductDetail::create($data);
+            foreach($request->type as $key => $item){
+                $detail = new ProductDetail();
+                $detail->product_id = $product->id;
+                $detail->type = $request->type[$key];
+                $detail->title = Str::lower($request->title[$key]);
+                $detail->value = $request->value[$key];
+                $detail->save();
+            }
             DB::commit();
 
             $status = [
@@ -128,15 +142,12 @@ class ProductController extends Controller
         $data['page'] = 'list product';
         $data['brands'] = Brand::all();
         $data['product'] = Product::find($id);
-        $detail  = ProductDetail::where('product_id', $id)->first();
-        if($detail){
-            $data['detail'] = $detail;
-        }else{
-            $detail = new ProductDetail();
-            $detail->product_id = $id;
-            $detail->save();
-            $data['detail'] = $detail;
-        }
+        $data['general']  = ProductDetail::where('product_id', $id)->where('type', 'general')->get();
+        $data['body']  = ProductDetail::where('product_id', $id)->where('type', 'body')->get();
+        $data['neck']  = ProductDetail::where('product_id', $id)->where('type', 'neck')->get();
+        $data['hardware']  = ProductDetail::where('product_id', $id)->where('type', 'hardware')->get();
+        $data['miscellaneous']  = ProductDetail::where('product_id', $id)->where('type', 'miscellaneous')->get();
+        $data['electronic']  = ProductDetail::where('product_id', $id)->where('type', 'electronic')->get();
         $data['product_images'] = ProductImage::whereProductId($id)->get();
         $data['categories'] = Category::all();
         $data['subs'] = Subcategory::where('category_id', $data['product']->id)->get();
@@ -150,19 +161,28 @@ class ProductController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        DB::beginTransaction();
+    { 
+        
+        if($request->images){
+            if(count($request->images) > 10){
+                return redirect()->back()->with('images', 'Maximum upload 10 files');
+            }
+        }
 
+        DB::beginTransaction();
+        
         try {
+            
             $product = Product::find($id);
             $product->category_id = $request->category_id;
             $product->brand_id = $request->brand_id;
-            // $product->category = $request->category;
             $product->description = $request->description;
             if($request->sold){
                 $product->status = 'sold';
             }
             $product->name = $request->name;
+            $product->name = $request->name_2;
+            $product->meta_text = $request->meta_text;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
             $product->price = $request->price;
@@ -172,22 +192,29 @@ class ProductController extends Controller
                 if($this->existsFile($product->thumbnail)){
                     Storage::delete($product->thumbnail);
                 }
-                $fileName = 'thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
+                $fileName = 'thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
                 $image = Image::make($request->thumbnail);
-                $image->resize(500, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
                 Storage::put($fileName, (string) $image->encode());
                 $product->thumbnail = $fileName;
             }
+            if($request->file('thumbnail_2')){
+                if($this->existsFile($product->thumbnail_2)){
+                    Storage::delete($product->thumbnail_2);
+                }
+                $thumbnail_2 = 'thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
+                $image = Image::make($request->thumbnail_2);
+                Storage::put($thumbnail_2, (string) $image->encode());
+                $product->thumbnail_2 = $thumbnail_2;
+            }
+           
             $product->save();
             if ($request->images) {
                 foreach ($request->images as $key => $item) {
                     $fileName = 'product/' . $this->makeCode(Str::slug($product->name), 4) . '.jpg';
                     $img = Image::make($item);
-                    $img->resize(500, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+                    // $img->resize(1000, null, function ($constraint) {
+                    //     $constraint->aspectRatio();
+                    // });
                     Storage::put($fileName, (string) $img->encode());
 
                     ProductImage::create(
@@ -198,8 +225,25 @@ class ProductController extends Controller
                     );
                 }
             }
-            $detail = ProductDetail::where('product_id', $id);
-            $detail->update($request->except(['_method','sold', '_token','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images']));
+            if($request->old_id){
+                foreach($request->old_id as $key => $item){
+                    $detail = ProductDetail::where('id', $request->old_id[$key])->first();
+                    $detail->value = $request->old_value[$key];
+                    $detail->title = $request->old_title[$key];
+                    $detail->save();
+                }
+            }
+
+            if($request->title){
+                foreach($request->title as $key => $item){
+                    $detail = new ProductDetail();
+                    $detail->value = $request->value[$key];
+                    $detail->title = $request->title[$key];
+                    $detail->type = $request->type[$key];
+                    $detail->product_id = $product->id;
+                    $detail->save();
+                }
+            }
             DB::commit();
 
             $status = [
@@ -325,6 +369,20 @@ class ProductController extends Controller
             return response()->json($status);
         } catch (\Throwable $th) {
             throw $th;
+        }
+    }
+
+    public function deleteDetail(Request $request){
+        try {
+            $detail = ProductDetail::where('product_id', $request->product_id)->where('id', $request->id)->delete();
+            $data = [
+                'status' => 'success',
+                'data' => $detail
+            ];
+            return response()->json($data);
+        
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }

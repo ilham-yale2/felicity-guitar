@@ -101,7 +101,7 @@ function deleteImage(id) {
    
 }
 
-function deleteDetail(id) {
+function deleteDetail(id, product) {
     $.ajax({
         url: `${base_url}/product/detail/destroy`,
         method: "POST",
@@ -110,17 +110,21 @@ function deleteDetail(id) {
         },
         data: {
             id: id,
+            product_id: product
         },
-        success: function (response) {
-            $("#detail" + id).remove();
+        success: function (res) {
+            if(res.status == 'success'){
+                $(".old-" + id).remove();
+            }
         },
     });
 }
 
 function replaceDot(input){
     input =  input.replace(/\./g,'')
-    return input 
+    return input.replace(/,/g, '')
 }
+
 
 function getSellPrice() {
     var price = replaceDot($('#price').val());
@@ -150,6 +154,10 @@ $('#thumbnail').change(function () {
 
     readURL(this, $('#preview-photo'))
 })
+$('#thumbnail-2').change(function () {
+
+    readURL(this, $('#preview-photo2'))
+})
 
 
 $('#myForm').submit(function() {
@@ -177,3 +185,43 @@ $('.year').datepicker({
     viewMode: "years",
     minViewMode: "years"
 });
+
+
+function addColumn(target){
+    var html = '';
+    var title = $(`#${target}-title`)
+    var value = $(`#${target}-value`)
+    if(title.val() == '' || value.val() == ''){
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops..!!',
+            text: 'Title and Value is required'
+        })
+    }else{
+
+        html += `<div class="col-md-4 ${target}-${count}">
+                    <div class="form-group mb-2">
+                        <input type="text" name="title[]" class="form-control" value="${title.val()}">
+                        <input type="hidden" name="type[]" value="${target}" class="form-control " required>
+                    </div>
+                </div>
+                <div class="col-md-7 ${target}-${count}">
+                    <div class="form-group mb-2">
+                        <input type="text" name="value[]" value="${value.val()}" class="form-control " required>
+                    </div>
+                </div>
+                <div class="${target}-${count}">
+                    <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteRow('${target}-${count}')">
+                     <span class="iconify" data-icon="ic:round-remove"></span>
+                    </button>
+                </div>`
+        $(`#${target}`).append(html)
+        value.val('')
+        title.val('')
+        count++
+    }
+}
+
+function deleteRow(target){
+    $(`.${target}`).remove()
+}

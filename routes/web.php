@@ -90,6 +90,7 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('product/category/{id}', 'ProductController@category');
 	Route::get('product/subcategory/{id}', 'ProductController@subcategory');
 	Route::post('product/delete-image', 'ProductController@deleteImage');
+	Route::post('product/detail/destroy', 'ProductController@deleteDetail');
 	Route::get('profile', 'UserController@profile')->name('profile');
 	Route::put('profile-update/{user}', 'UserController@profileUpdate')->name('profile.update');
 
@@ -120,6 +121,8 @@ Route::group(['middleware' => 'admin'], function () {
 			'create' => 'vault.create',
 		]
 	]);
+	Route::post('private-vault/delete-image', 'PrivateVaultController@deleteImage');
+
 
 	Route::resource('user-contact', 'UserContactController');
 

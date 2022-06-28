@@ -281,7 +281,13 @@ $setting = App\Setting::first();
             "lengthMenu": [7, 10, 20, 50],
             "pageLength": 7
         });
-        $('.summernote').summernote({
+        
+
+        var summernote = {
+           
+        }
+
+        $('.summernote-color').summernote({
             height: 300,
             tabDisable: true,
             toolbar: [
@@ -291,8 +297,24 @@ $setting = App\Setting::first();
                 ['color', ['color']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['height', ['height']]
-            ]
+            ],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '15','16','17', '18', '24', '36', '48' , '64', '82', '150'],
+            disableDragAndDrop: true
         });
+        $('.summernote').summernote({
+            height: 300,
+            tabDisable: true,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '15','16','17', '18', '24', '36', '48' , '64', '82', '150'],
+            disableDragAndDrop: true
+        });
+
     </script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 

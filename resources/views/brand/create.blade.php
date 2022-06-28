@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="col-md-4 text-center">
-                        <img src="" id="preview-image" alt="">
+                        <img src="" id="preview-image" class="w-100" alt="">
                     </div>
                 </div>
 

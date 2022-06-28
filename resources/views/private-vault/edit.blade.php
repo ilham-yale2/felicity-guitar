@@ -57,7 +57,13 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>               
+                        </div> 
+                        <div class="col-md-12">
+                            <div class="form-group mb-4">
+                                <label for="meta_text">Meta Text</label>
+                                <input type="text" class="form-control" name="meta_text" value="{{$product->meta_text}}" required id="meta_text">
+                            </div>
+                        </div>              
                         <div class="col-md-4">
                             <div class="form-group mb-4" >
                                 <label for="price">Price (IDR)</label>
@@ -76,7 +82,7 @@
                             <div class="form-group mb-4">
                                 <label for="price">Sell Price</label>
                                 <input type="text" class="form-control" id="sell_price" name="sell_price" required=""
-                                    readonly value="{{ number_format($product->sell_price) }}">
+                                    readonly value="{{ $product->sell_price }}">
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -94,23 +100,27 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail Product</label>
+                                <label for="thumbnail">Thumbnail 1</label>
                                 <input type="file" name="thumbnail" class="form-control-file" id="thumbnail" >
                             </div>
                         </div>
-                        <style>
-                            #preview-photo{
-                                /* max-height: 150px; */
-                                width: 100%
-                            }
-                        </style>
-                        <div class="col-md-6 text-center">
-                            <img src="{{asset('storage/'.$product->thumbnail)}}" id="preview-photo" alt="">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="thumbnail">Thumbnail 2</label>
+                                <input type="file" name="thumbnail_2" class="form-control-file" id="thumbnail-2" >
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-6 text-center preview">
+                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail)}}" id="preview-photo" alt="">
+                        </div>
+                        <div class="col-md-6 text-center preview">
+                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail_2)}}" id="preview-photo2" alt="">
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-4">
                                 <label for="text">Text</label>
-                                <textarea class="form-control summernote" rows="3" name="text"
+                                <textarea class="form-control summernote-color" rows="3" name="text"
                                  id="text">{{$product->text}}</textarea>
                             </div>
                         </div>
@@ -155,11 +165,277 @@
                             <div class="form-group mb-4">
                                 <label for="description">Description</label>
                                 <textarea class="form-control summernote" rows="3" name="description"
-                                 id="description">{{$detail->description}}</textarea>
+                                 id="description">{{$product->description}}</textarea>
+                            </div>
+                        </div>
+                        {{-- PRODUCT SPECIFICATION --}}
+                        <h4 class="col-12 mt-5 mb-2 text-center">Specification Product</h4>
+                        <div class="col-12 mt-4 d-flex align-items-end mb-4">
+                            <h5 class="mb-0">General</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="general-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="general-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('general')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="general">
+                                @foreach ($general as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Body</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="body-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="body-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('body')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="body">
+                                @foreach ($body as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Neck</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="neck-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="neck-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('neck')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="neck">
+                                @foreach ($neck as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Hardware</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="hardware-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="hardware-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('hardware')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="hardware">
+                                @foreach ($hardware as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Electronic</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="electronic-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="electronic-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('electronic')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="electronic">
+                                @foreach ($electronic as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Miscellaneous</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="miscellaneous-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="miscellaneous-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('miscellaneous')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="miscellaneous">
+                                @foreach ($miscellaneous as $item)
+                                    <div class="col-md-4 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_title[]" class="form-control" value="{{$item->title}}">
+                                            <input type="hidden" name="old_id[]" value="{{$item->id}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7 old-{{$item->id}}">
+                                        <div class="form-group mb-2">
+                                            <input type="text" name="old_value[]" value="{{$item->value}}" class="form-control ">
+                                        </div>
+                                    </div>
+                                    <div class="old-{{$item->id}}">
+                                        <button class="btn btn-danger ml-3 py-1 px-2" type="button" onclick="deleteDetail('{{$item->id}}')">
+                                        <span class="iconify" data-icon="ic:round-remove"></span>
+                                        </button>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                          {{-- PRODUCT SPECIFICATION --}}
-                         <h4 class="col-12 mt-5 mb-2 text-center">Specification Product</h4>
+                         {{-- <h4 class="col-12 mt-5 mb-2 text-center">Specification Product</h4>
                          <div class="col-12 mt-4"><h5>General</h5></div>
                          <div class="col-md-4">
                              <div class="form-group mb-4">
@@ -682,7 +958,7 @@
                                  <label for="disclosure">Disclosure</label>
                                  <input type="text" value="{{$detail->disclosure ?? '-'}} " name="disclosure" class="mt-input form-control" id="disclosure" >
                              </div>
-                         </div>
+                         </div> --}}
                     </div>
                     
                     <div class="form-group row">
@@ -704,18 +980,60 @@
 // ]; --}}
 
 @section('script')
+    @if (\Session::has('images'))
+        <script>
+            
+            setTimeout(() => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops ...!',
+                    text: "{!! \Session::get('images') !!}",
+                })
+            }, 1000);
+        </script>    
+    @endif
     <script src="{{ asset('js/product.js') }}"></script>
     <script type="text/javascript">
-        let preloaded = [
-            @foreach ( $product_images as $product_image )
-                {id: {{ $product_image->id }}, src: '{{ asset("storage/" . $product_image->image) }}'},
-            @endforeach
-        ];
-
-        
-
+      
         $('.input-images-1').imageUploader();
 
+        function deleteImage(id) {
+            Swal.fire({
+                title: `Are you sure to delete this image?`,
+                text: 'Deleted data cannot be restored' ,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Delete',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    console.log(id);
+                    $.ajax({
+                        url: `${base_url}/private-vault/delete-image`,
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": token,
+                        },
+                        data: {
+                            id: id,
+                        },
+                        success: function (response) {
+                            if(response.type == 'success'){
+                                Swal.fire({
+                                    icon: response.type,
+                                    title: response.title,
+                                    text: response.text,
+                                })
+                                $("#image-" + id).remove();
+                            }
+                            
+                        },
+                    });
+                }
+            });
         
+        }
     </script>
 @endsection

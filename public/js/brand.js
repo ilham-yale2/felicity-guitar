@@ -36,34 +36,34 @@ function changeBrand(id,name, img){
 function setCountry(brand){
     var html;
     var usa = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=U.S.A"><span class="text-country">${brand}</span> U.S.A</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=U.S.A"><span class="text-country">${brand}</span> U.S.A</a>
                 </li>`
     var mexico = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Mexico"><span class="text-country">${brand}</span> Mexico</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Mexico"><span class="text-country">${brand}</span> Mexico</a>
                 </li>`
     var china = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=China"><span class="text-country">${brand}</span> China</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=China"><span class="text-country">${brand}</span> China</a>
                 </li>`
     var custom = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Custom"><span class="text-country">${brand}</span> Custom</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Custom"><span class="text-country">${brand}</span> Custom</a>
                 </li>`
     var historic = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Custom Historic"><span class="text-country">${brand}</span> Custom Historic</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Custom Historic"><span class="text-country">${brand}</span> Custom Historic</a>
                 </li>`
     var montana = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Montana"><span class="text-country">${brand}</span> Montana</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Montana"><span class="text-country">${brand}</span> Montana</a>
                 </li>`
     var memphis = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Memphis"><span class="text-country">${brand}</span> Memphis</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Memphis"><span class="text-country">${brand}</span> Memphis</a>
                 </li>`
     var japan = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Japan"><span class="text-country">${brand}</span> Japan</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Japan"><span class="text-country">${brand}</span> Japan</a>
                 </li>`
     var korea = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Korea"><span class="text-country">${brand}</span> Korea</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Korea"><span class="text-country">${brand}</span> Korea</a>
                 </li>`
     var indonesia = `<li class="text-capitalize">
-                    <a class="filter" href="${base_url}/browse-brand?brd=${brand}&country=Indonesia"><span class="text-country">${brand}</span> Indonesia</a>
+                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=Indonesia"><span class="text-country">${brand}</span> Indonesia</a>
                 </li>`
     switch(brand) {
         case "Fender":

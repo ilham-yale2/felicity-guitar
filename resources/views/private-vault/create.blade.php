@@ -46,14 +46,19 @@
                             <div class="form-group mb-4">
                                 <label for="category_id">Category</label>
                                 <select name="category_id" id="category_id" class="form-control select2" 
-                                    onchange="getCode()">
+                                    >
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $ctg)
                                         <option value="{{ $ctg->id }}">{{ $ctg->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="hidden" id="code" name="code" class="form-control select2">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group mb-4">
+                                <label for="meta_text">Meta Text</label>
+                                <input type="text" class="form-control" name="meta_text" required id="meta_text">
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
@@ -76,32 +81,30 @@
                                      readonly>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="form-group" style="padding-bottom: 1.5rem !important">
-                                <label for="code">Code</label>
-                                <input type="text" id="fakecode" name="code" class="form-control select2"
-                                    disabled>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
+                        <div class="col-12"></div>
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail Product</label>
+                                <label for="thumbnail">Thumbnail 1</label>
                                 <input type="file" name="thumbnail" class="form-control-file" id="thumbnail" >
                             </div>
                         </div>
-                        <style>
-                            #preview-photo{
-                                /* max-height: 150px; */
-                                width: 100%
-                            }
-                        </style>
-                        <div class="col-md-4 text-center">
-                            <img src="" id="preview-photo" alt="">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="thumbnail">Thumbnail 2</label>
+                                <input type="file" name="thumbnail_2" class="form-control-file" id="thumbnail-2" >
+                            </div>
+                        </div>
+                       
+                        <div class="col-md-6 text-center preview">
+                            <img class="w-100" src="" id="preview-photo" alt="">
+                        </div>
+                        <div class="col-md-6 text-center preview">
+                            <img class="w-100" src="" id="preview-photo2" alt="">
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-4">
                                 <label for="exampleFormControlTextarea1">Text</label>
-                                <textarea class="form-control summernote" rows="3" name="text"
+                                <textarea class="form-control summernote-color" rows="3" name="text"
                                  id="text"></textarea>
                             </div>
                         </div>
@@ -121,14 +124,169 @@
                         </div>
                         {{-- PRODUCT SPECIFICATION --}}
                         <h4 class="col-12 mt-5 mb-2 text-center">Specification Product</h4>
-                        <div class="col-12 mt-4"><h5>General</h5></div>
-                        <div class="col-md-4">
-                            <div class="form-group mb-4">
-                                <label for="condition">Condition</label>
-                                <input type="text" name="condition" class="form-control " id="condition" >
+                        <div class="col-12 mt-4 d-flex align-items-end mb-4">
+                            <h5 class="mb-0">General</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="general-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="general-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('general')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="general">
+
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Body</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="body-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="body-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('body')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="body">
+
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Neck</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="neck-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="neck-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('neck')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="neck">
+
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Hardware</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="hardware-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="hardware-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('hardware')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="hardware">
+
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Electronic</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="electronic-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="electronic-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('electronic')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="electronic">
+
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4 d-flex mb-4">
+                            <h5 class="mb-0">Miscellaneous</h5>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-4">
+                                        <label for="title">Title</label>
+                                        <input type="text" class="form-control" id="miscellaneous-title">
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group mb-4">
+                                        <label for="value">Value</label>
+                                        <input type="text" class="form-control " id="miscellaneous-value">
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <button class="btn btn-primary ml-3 py-1 px-2" type="button" onclick="addColumn('miscellaneous')">
+                                        <span class="iconify" data-icon="fluent:add-12-filled"></span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row" id="miscellaneous">
+
+                            </div>
+                        </div>
+                        {{-- <div class="col-md-4">
                             <div class="form-group mb-4">
                                 <label for="number_of_strings">Number Of String</label>
                                 <input type="text" name="number_of_strings" class="form-control  number text-right" id="number_of_strings" >
@@ -177,8 +335,8 @@
                                 </div>
                                 <input class="form-control" type="text" name="limited_series_text" id="" value="" >
                             </div>
-                        </div>
-                        <h5 class="col-md-12 mt-4">Body</h5>
+                        </div> --}}
+                        {{-- <h5 class="col-md-12 mt-4">Body</h5>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
                                 <label for="type">Body type</label>
@@ -644,7 +802,7 @@
                                 <label for="disclosure">Disclosure</label>
                                 <input type="text" name="disclosure" class="form-control mt-input" id="disclosure" >
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-10">
@@ -661,6 +819,18 @@
 @endsection
 
 @section('script')
+    @if (\Session::has('images'))
+    <script>
+        
+        setTimeout(() => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops ...!',
+                text: "{!! \Session::get('images') !!}",
+            })
+        }, 1000);
+    </script>    
+    @endif
     <script src="{{ asset('js/product.js') }}"></script>
     <script type="text/javascript">
         $('.summernote').summernote({

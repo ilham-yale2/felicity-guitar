@@ -48,9 +48,9 @@ class BrandController extends Controller
             $brand->name = $request->brand_name;
             $fileName = 'brand/' . Str::slug($request->name) . time() . '.' . $request->image->extension();
             $image = Image::make($request->image);
-            $image->resize(100, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
+            // $image->resize(100, null, function ($constraint) {
+            //     $constraint->aspectRatio();
+            // });
             Storage::put($fileName, (string) $image->encode());
             $brand->image = $fileName;
             $brand->save();
@@ -108,9 +108,9 @@ class BrandController extends Controller
                 }
                 $fileName = 'brand/' . Str::slug($request->name) . time() . '.' . $request->image->extension();
                 $image = Image::make($request->image);
-                $image->resize(100, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+                // $image->resize(00, null, function ($constraint) {
+                //     $constraint->aspectRatio();
+                // });
                 Storage::put($fileName, (string) $image->encode());
                 $brand->image = $fileName;
             }
