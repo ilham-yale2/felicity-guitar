@@ -25,14 +25,21 @@
                     @csrf
                     <input type="hidden" name="_method" value="PUT">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="name">Product Name</label>
+                                <label for="name">Product Name (Single View)</label>
                                 <input type="text" class="form-control" id="name" value="{{$product->name}}" name="name" placeholder="Nama Produk"
                                     required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4">
+                                <label for="name_2">Product Name (Multi View)</label>
+                                <input type="text" class="form-control" id="name_2" value="{{$product->name_2}}" name="name_2" placeholder="Nama Produk"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
                                 <label for="brand_id">Brand</label>
                                 <select name="brand_id" required id="brand_id" class="form-control select2" required>
@@ -46,7 +53,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
                                 <label for="category_id">Category</label>
                                 <select name="category_id" id="category_id" class="form-control select2" required
@@ -63,7 +70,13 @@
                                 <label for="meta_text">Meta Text</label>
                                 <input type="text" class="form-control" name="meta_text" value="{{$product->meta_text}}" required id="meta_text">
                             </div>
-                        </div>              
+                        </div>  
+                        <div class="col-md-12">
+                            <div class="form-group mb-4">
+                                <label for="alt_text">Alt Text</label>
+                                <input type="text" class="form-control" name="alt_text" value="{{$product->alt_text}}" required id="alt_text">
+                            </div>
+                        </div>            
                         <div class="col-md-4">
                             <div class="form-group mb-4" >
                                 <label for="price">Price (IDR)</label>
@@ -100,22 +113,22 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail 1</label>
-                                <input type="file" name="thumbnail" class="form-control-file" id="thumbnail" >
+                                <label for="thumbnail">Thumbnail (Single View )</label>
+                                <input type="file" name="thumbnail_2" class="form-control-file" id="thumbnail-2" >
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail 2</label>
-                                <input type="file" name="thumbnail_2" class="form-control-file" id="thumbnail-2" >
+                                <label for="thumbnail">Thumbnail (Multi View)</label>
+                                <input type="file" name="thumbnail" class="form-control-file" id="thumbnail" >
                             </div>
                         </div>
                        
                         <div class="col-md-6 text-center preview">
-                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail)}}" id="preview-photo" alt="">
+                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail_2)}}" id="preview-photo2" alt="">
                         </div>
                         <div class="col-md-6 text-center preview">
-                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail_2)}}" id="preview-photo2" alt="">
+                            <img class="w-100" src="{{asset('storage/'.$product->thumbnail)}}" id="preview-photo" alt="">
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-4">

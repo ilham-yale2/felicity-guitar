@@ -27,6 +27,6 @@ class PrivateVault extends Model
 
     public function getAltImageAttribute(){
         $detail = PrivateVaultDetail::where('product_id', $this->id)->where('title', 'year');
-        return $detail->value ?? '' .'-' . str_replace(' ', '-', $this->name );
+        // return $detail->value ?? '' .'-' . str_replace(' ', '-', $this->name );
     }
 }

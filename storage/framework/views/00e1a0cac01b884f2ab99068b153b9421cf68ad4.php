@@ -58,7 +58,13 @@ $format_number = '628' . $format_number[1];
 </head>
 
 <body>
-
+    <?php
+        if(isset($background)){
+            $b = $background;
+        }else{
+            $b = "body-bg-repeat.jpg";
+        }
+    ?>
     <style>
         input,textarea, select{
             color: white!important;
@@ -73,6 +79,9 @@ $format_number = '628' . $format_number[1];
 
         .btn-primary:hover{
             background-color: #cc6600c9
+        }
+        body{
+            background-image: url('<?php echo e(asset("images")); ?>/<?php echo e($b); ?>');
         }
     </style>
 
@@ -134,27 +143,63 @@ $format_number = '628' . $format_number[1];
                 </div>
                 <div class="header_menu">
                     <ul class="menu-wrap">
-                        <li class="has-sub"><a href="#">Browse by Category</a>
+                        <li class="has-sub position-relative"><a href="#">Browse by Category</a>
                             <div class="submenu">
-                                <?php $categories = \App\Category::all();?>
+                                <?php $categories = \App\Category::orderBy('id', 'ASC')->get();?>
                                 <ul>
-                                    <li><a href="<?php echo e(route('browse-category')); ?>">All Guitars</a></li>
-                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <li><a href="<?php echo e(route('browse-category')); ?>?ctg=<?php echo e($c->name); ?>"><?php echo e($c->name); ?></a></li>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <li class="more-guitars d-flex pb-md-3">
+                                        <a href="#"><span class="mr-4">Guitars</span><span class="iconify text-white" data-icon="ant-design:caret-right-filled"></span>
+                                        </a>
+                                        <div class="multi-sub position-absolute" >
+                                            <div class="sub-multi">
+                                                <ul>
+                                                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $c): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <li><a href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($c->name); ?>"><?php echo e($c->name); ?></a></li>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Guitar">All Guitars</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Amplifiers">Amplifiers</a></li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Effect Pedals">Effect Pedals</a></li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Parts-Accessories">Parts / Accessories</a></li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Vintage Stuff">Vintage Stuff</a></li>
+                                    <li><a href="<?php echo e(route('about-us')); ?>#service">Luthier Services</a></li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Merch-Apparel">Merch / Apparel</a></li>
+                                    <li><a href="<?php echo e(route('browse-category')); ?>?subject=Exotic-Instruments">Exotic Instruments</a></li>
                                     
                                 </ul>
                             </div>
                         </li>
-                        <li class="has-sub"><a href="#">Browse by Brand</a>
+                        <li class="has-sub position-relative"><a href="#">Browse by Brand</a>
                             <div class="submenu">
-                                <?php $brands = \App\Brand::all();?>
+                                <?php $brands = \App\Brand::orderBy('id', 'ASC')->get();?>
                                 <ul>
-                                    <li><a href="<?php echo e(route('browse-brand')); ?>">All Guitars</a></li>
                                     <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <li><a href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($b->name); ?>"><?php echo e($b->name); ?></a></li>
+                                        <?php if($loop->iteration <= 12): ?>
+                                            <li><a href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($b->name); ?>"><?php echo e($b->name); ?></a></li>
+                                        <?php endif; ?>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    
+                                    <li class="more-brand d-flex pt-md-3">
+                                        <a href="#">
+                                            <span>More Brands</span><span class="iconify text-white" data-icon="ant-design:caret-right-filled"></span>
+                                        </a>
+                                        <div class="multi-sub-2 position-absolute" >
+                                            <div class="sub-multi">
+                                                <ul>
+                                                    <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $b): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php if($loop->iteration > 12): ?>
+                                                            <li class="<?php echo e(($loop->iteration > 17) ?? 'mt-3'); ?>"><a href="<?php echo e(route('browse-brand')); ?>?brd=<?php echo e($b->name); ?>"><?php echo e($b->name); ?></a></li>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                    <li>
+                                                        
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </li>
@@ -211,7 +256,7 @@ $format_number = '628' . $format_number[1];
             </div>
             <div class="footer_bottom">
                 <div class="container">
-                    <p>Serving Guitra Enthusiasts and Musicians Worldwide | © 2022. felicitys-guitars.com - All Rights
+                    <p>Serving Guitra Enthusiasts and Musicians Worldwide | © 2021. Felicitys-Guitars.com - All Rights
                         Reserved
                     </p>
                 </div>
@@ -263,6 +308,19 @@ $format_number = '628' . $format_number[1];
         $('.mobile-menu').click(function(){
             $('body').toggleClass('menu-open')
         })
+
+        // $('.more-brand').click(function(){
+        //     $('.multi-sub').toggleClass('open')
+        // })
+        // $('.more-guitars').click(function(){
+        //     $('.multi-sub-2').toggleClass('open')
+        // })
+
+        // // $('#wrap').mouseenter(function(){
+        // //     $('.multi-sub').removeClass('open')
+        // //     console.log($('.multi-sub'));
+        // // })
+        
     </script>
 </body>
 

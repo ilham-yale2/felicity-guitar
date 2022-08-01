@@ -63,13 +63,15 @@ class PrivateVaultController extends Controller
              // $product->type_id = $request->type_id;
              // $product->subcategory_id = $request->sub_id;
              $product = new PrivateVault();
-             $product->code = $request->code;
+             $product->code = $this->makeCode('PRV', 10);
              $product->brand_id = $request->brand_id;
              $product->category_id = $request->category_id;
              $product->meta_text = $request->meta_text;
              $product->name = $request->name;
+             $product->name_2 = $request->name_2;
              $product->slug = Str::slug($request->name);
              $product->text = $request->text;
+             $product->alt_text = $request->alt_text;
              $product->description = $request->description;
              $price = $this->replaceDot($request->price);
              $product->price = $price;
@@ -77,17 +79,17 @@ class PrivateVaultController extends Controller
              $product->sell_price = $price - ($price * $request->discount / 100);
              $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
              $image = Image::make($request->thumbnail);
-             $image->resize(500, null, function ($constraint) {
-                 $constraint->aspectRatio();
-             });
+            //  $image->resize(500, null, function ($constraint) {
+            //      $constraint->aspectRatio();
+            //  });
              Storage::put($fileName, (string) $image->encode());
              $product->thumbnail = $fileName;
 
              $fileThumbnail = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) .'.'. $request->thumbnail_2->extension();
              $thumbnail = Image::make($request->thumbnail_2);
-             $thumbnail->resize(500, null, function($constraint){
-                $constraint->aspectRatio();
-             });
+            //  $thumbnail->resize(500, null, function($constraint){
+            //     $constraint->aspectRatio();
+            //  });
 
              Storage::put($fileThumbnail, (string) $thumbnail->encode());
              $product->thumbnail_2 = $fileThumbnail;
@@ -113,15 +115,18 @@ class PrivateVaultController extends Controller
                  }
              }
  
-             // detail
-             foreach($request->type as $key => $item){
-                $detail = new PrivateVaultDetail();
-                $detail->product_id = $product->id;
-                $detail->type = $request->type[$key];
-                $detail->title = $request->title[$key];
-                $detail->value = $request->value[$key];
-                $detail->save();
-            }
+
+             if($request->type){
+
+                 foreach($request->type as $key => $item){
+                    $detail = new PrivateVaultDetail();
+                    $detail->product_id = $product->id;
+                    $detail->type = $request->type[$key];
+                    $detail->title = $request->title[$key];
+                    $detail->value = $request->value[$key];
+                    $detail->save();
+                }
+             }
              DB::commit();
  
              $status = [
@@ -209,9 +214,11 @@ class PrivateVaultController extends Controller
                 $product->status = 'sold';
             }
             $product->name = $request->name;
+            $product->name_2 = $request->name_2;
             $product->meta_text = $request->meta_text;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
+            $product->alt_text = $request->alt_text;
             $product->price = $request->price;
             $product->discount = $request->discount;
             $product->sell_price = $request->price - ($request->price * $request->disc / 100);
@@ -221,9 +228,9 @@ class PrivateVaultController extends Controller
                 }
                 $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
                 $image = Image::make($request->thumbnail);
-                $image->resize(500, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+                // $image->resize(500, null, function ($constraint) {
+                //     $constraint->aspectRatio();
+                // });
                 Storage::put($fileName, (string) $image->encode());
                 $product->thumbnail = $fileName;
             }
@@ -233,9 +240,9 @@ class PrivateVaultController extends Controller
                 }
                 $file = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
                 $img = Image::make($request->thumbnail_2);
-                $img->resize(500, null, function($constraint){
-                    $constraint->aspectRatio();
-                });
+                // $img->resize(500, null, function($constraint){
+                //     $constraint->aspectRatio();
+                // });
                 Storage::put($file, (string) $img->encode());
                 $product->thumbnail_2 = $file;
 

@@ -23,17 +23,22 @@
                 <form action="{{ route('vault.store') }}" method="POST" enctype="multipart/form-data" id="myForm">
                     @csrf
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="name">Product Name</label>
-                                <input type="text" class="form-control " id="name" name="name" placeholder=""
-                                    >
+                                <label for="name">Product Name (Single View)</label>
+                                <input type="text" class="form-control " id="name" name="name" placeholder=""required>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
+                                <label for="name_2">Product Name (Multi View)</label>
+                                <input type="text" class="form-control " id="name_2" name="name_2" placeholder="" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-6">
                                 <label for="brand_id">Brand</label>
-                                <select name="brand_id" id="brand_id" class="form-control  select2" >
+                                <select name="brand_id" id="brand_id" class="form-control  select2" required>
                                     <option value="">Select Brand</option>
                                     @foreach ($brands as $b)
                                         <option value="{{ $b->id }}">{{ $b->name }}</option>
@@ -42,11 +47,10 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <div class="form-group mb-4">
                                 <label for="category_id">Category</label>
-                                <select name="category_id" id="category_id" class="form-control select2" 
-                                    >
+                                <select name="category_id" id="category_id" class="form-control select2"required >
                                     <option value="">Select Category</option>
                                     @foreach ($categories as $ctg)
                                         <option value="{{ $ctg->id }}">{{ $ctg->name }}</option>
@@ -60,11 +64,17 @@
                                 <input type="text" class="form-control" name="meta_text" required id="meta_text">
                             </div>
                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group mb-4">
+                                <label for="alt_text">Alt Text</label>
+                                <input type="text" class="form-control" name="alt_text" required id="alt_text">
+                            </div>
+                        </div>
                         <div class="col-md-4">
                             <div class="form-group mb-4">
                                 <label for="price">Price (IDR)</label>
                                 <input type="tel" class="form-control money text-right" id="price" name="price"
-                                    placeholder=""  onkeyup="getSellPrice()">
+                                    placeholder=""  onkeyup="getSellPrice()" required>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -84,22 +94,22 @@
                         <div class="col-12"></div>
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail 1</label>
-                                <input type="file" name="thumbnail" class="form-control-file" id="thumbnail" >
+                                <label for="thumbnail">Thumbnail (Single View)</label>
+                                <input type="file" name="thumbnail_2" class="form-control-file" required id="thumbnail-2" >
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group mb-4">
-                                <label for="thumbnail">Thumbnail 2</label>
-                                <input type="file" name="thumbnail_2" class="form-control-file" id="thumbnail-2" >
+                                <label for="thumbnail">Thumbnail (Multi View)</label>
+                                <input type="file" name="thumbnail" class="form-control-file" required id="thumbnail" >
                             </div>
                         </div>
                        
                         <div class="col-md-6 text-center preview">
-                            <img class="w-100" src="" id="preview-photo" alt="">
+                            <img class="w-100" src="" id="preview-photo2" alt="">
                         </div>
                         <div class="col-md-6 text-center preview">
-                            <img class="w-100" src="" id="preview-photo2" alt="">
+                            <img class="w-100" src="" id="preview-photo" alt="">
                         </div>
                         <div class="col-md-12">
                             <div class="form-group mb-4">

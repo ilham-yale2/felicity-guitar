@@ -7,9 +7,9 @@
     <div class="privatevault">
         <section class="privatevault_description animate animate--up">
             <div class="container">
+                @if (count($products)>0)
                 <div id="carouselExampleSlidesOnly" class="carousel slide privatevault_description-wrap" data-ride="carousel" data-interval="4000">
                     <div class="carousel-inner">
-                        @if (count($products)>0)
                             @foreach ($products as $item)
                                 @if ($loop->iteration < 4)
                                     <div class="carousel-item {{$loop->iteration == 1 ? 'active' : ''}}">
@@ -23,18 +23,19 @@
                                             </div>
                                             <div class="col-md-5 ml-auto">
                                                 <div class="privatevault_img">
-                                                    <img src="{{asset('storage/'.$item->thumbnail_2)}}" alt="img" />
+                                                    <img src="{{asset('storage/'.$item->thumbnail_2)}}" alt="{{$item->alt_text}}" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 @endif
                             @endforeach
-                        @else
-                            <div class="w-100 text-center"><h1>No Product</h1></div>
-                        @endif
                     </div>
                 </div>
+                @else
+                <h1 class="text-center text-orange copperplate mb-0 mt-5 pt-5">Coming soon!</h1>
+                <h3 class="text-center text-gold copperplate " style="font-size: 28px">~  Stay Tuned ~ </h3>
+                @endif
             </div>
         </section>
         <section class="privatevault_guitar animate animate--up">
@@ -46,7 +47,7 @@
                             <div class="privatevault_guitar-card">
                                 <div class="imgbox">
                                     <a href="{{route('detail-vault', ['name' => $item->slug] )}}"> 
-                                        <img src="{{asset('storage/'.$item->thumbnail)}}" alt="img-guitar" />
+                                        <img src="{{asset('storage/'.$item->thumbnail)}}" alt=" {{$item->alt_text}}"/>
                                     </a>
                                 </div>
                                 <div class="textbox">

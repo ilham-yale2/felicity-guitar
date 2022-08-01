@@ -17,9 +17,13 @@ class CreateProductDetailsTable extends Migration
         Schema::create('product_details', function (Blueprint $table) {
             $table->id();
             $table->BigInteger('product_id');
-            $table->string('title')->nullable();
-            $table->string('value')->nullable();
-            $table->string('type');
+            $table->longText('general')->nullable();
+            $table->longText('body')->nullable();
+            $table->longText('neck')->nullable();
+            $table->longText('hardware')->nullable();
+            $table->longText('electronic')->nullable();
+            $table->longText('miscellaneous')->nullable();
+            // $table->string('title')->nullable();
             // // general 
             // $table->string('condition')->nullable()->default('-');
             // $table->double('number_of_strings')->nullable()->default('0');

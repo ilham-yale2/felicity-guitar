@@ -1,10 +1,10 @@
 @php
     $tags['title'] = $product->name;
-    $tags['description'] =  $product->meta_text;
+    $tags['description'] = $product->meta_text ;
     $tags['image'] = $product->thumbnail;
 @endphp
 
-@extends('layout.app', ['tags' => $tags])
+@extends('layout.app' , ['tags' => $tags ])
 @section('title', 'Detail Product')
 @section('css')
     <link rel="stylesheet" href="{{asset('css/blueimp-gallery.min.css')}}">
@@ -14,6 +14,7 @@
         }
         body {
             background: url("{{asset('images/background-single-item.jpg')}}");
+            background-size: contain;
         }
 
         body:before {
@@ -35,7 +36,7 @@
 <a href="#wrap" class="btn-top">
     <span class="iconify" data-icon="akar-icons:arrow-up"></span>
 </a>
- <section id="section-detail" class="mb-5">
+ <section id="section-detail" class="mb-5" >
     <div class="container">
         <div class="row">
             <div class="col-12">
@@ -53,7 +54,7 @@
             </div>
             <div class="col-md-6 mb-5 mb-md-0">
                 <div class="details ">
-                    <h1 class="title text-white copperplate">
+                    <h1 class="title  text-white copperplate">
                         {{$product->name}}
                     </h1>
                     <div class="short-desc">  
@@ -66,15 +67,25 @@
             <div class="col-md-5 offset-md-1">
                 <div class="hover-me position-relative custom-cursor">
                     {{-- <h4 class="rounded py-1 px-4 bg-white position-absolute text-dark box-hover mb-0">Click to view Large Image</h4> --}}
-                    <img src="{{asset('storage').'/'.$product->thumbnail_2}}" class="w-100 img-details custom-cursor" alt="{{$product->alt_image}}">
+                    <img src="{{asset('storage').'/'.$product->thumbnail_2}}" class="w-100 img-details custom-cursor" alt="{{$product->alt_text}}">
                 </div>
                 <p class="price mt-3 pb-3">IDR {{number_format($product->price)}}</p>
                 <span>Price inclusive of VAT ● Shipping costs will be calculated at check out</span>
                 @if ($product->status != 'sold')
                 <div class="row mt-3">
                 <div class="col-md-6">
+                    <form action="{{route('buynow')}}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product[]" value="{{ \Crypt::encryptString($product->id) }}">
+                    </form>
                     <a href="{{$product->wa_link}}"  class="btn cta-product w-100">Buy Now</a>
                 </div>
+                @if (Auth::guard('user')->user())
+                        
+                    <div class="col-md-6">
+                        <button type="button" class="btn cta-product w-100" onclick="addToCart(`{{ \Crypt::encryptString($product->code) }}`)">Add to Cart </button>
+                    </div>
+                @endif
             </div>
                 @endif
             </div>
@@ -187,11 +198,15 @@
                             @foreach ($miscellaneous as $item)
                                 <tr>
                                     <td>{{$item->title}}</td>
-                                    <td>{{$item->value}}</td>
+                                    <td class="{{(strtolower($item->title ) == 'disclosure') ? 'font-italic' : ''}}">{{$item->value}}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class="col-12 mt-3">
+                    <p class="text-white">Thanks for looking !</p>
+                    <img src="{{asset('images/felicity-signature.png')}}" width="150" alt="felicity-signature">
                 </div>
             </div>
         </div>
@@ -199,22 +214,16 @@
 </div>
 <div class="container" id="gallery">
     <h2>Gallery</h2>
-    {{-- <div class="row" id="gallery">
-        @foreach ($images as $item)    
-            <div class="col-md-2">
-                <a href="{{asset('storage/' . $item->image )}}" target="_blank" data-group="1" class="image-link test">
-                    <img src="{{asset('storage/' . $item->image )}}" alt="">
-                </a>            
-            </div>
-        @endforeach
-    </div> --}}
 </div>
 <div class="container my-5">
     <div id="links" class="d-flex flex-wrap">
+        <a class="img-gallery" id="img-1" target="_blank" href="{{asset('storage/'.$product->thumbnail_2)}}" title="{{$product->name}}">
+            <img src="{{asset('storage/'.$product->thumbnail_2)}}" alt="{{$product->alt_text}}" />
+        </a>
         @foreach ($images as $item)
             
         <a class="img-gallery"  target="_blank" href="{{asset('storage/'.$item->image)}}" title="{{$product->name}}">
-            <img src="{{asset('storage/'.$item->image)}}" alt="Banana" />
+            <img src="{{asset('storage/'.$item->image)}}" alt="{{$product->alt_text}}" />
         </a>
         @endforeach
     
@@ -321,6 +330,19 @@
                 }
         );
     };
+    // $('.hover-me').on('mousemove', function(e){
+    //     if(e.offsetX > 20 && e.offsetY > 20){
+    //         $('.box-hover').css({
+    //             left:  e.offsetX + 'px',
+    //             top:   e.offsetY + 'px',
+    //         });
+
+    //         console.log(e.offsetX);
+    //     }
+    //     setTimeout(() => {
+    //     },);
+
+    // });
     $('.hover-me').on('click', function(){
         $('#img-1').click()
         galleryImg.play()

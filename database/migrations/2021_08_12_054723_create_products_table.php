@@ -27,6 +27,11 @@ class CreateProductsTable extends Migration
             $table->string('thumbnail')->nullable();
             $table->string('thumbnail_2')->nullable();
             $table->string('meta_text')->nullable();
+            $table->string('alt_text')->nullable();
+            $table->string('condition')->nullable();
+            $table->string('country')->nullable();
+            $table->string('type')->nullable();
+            $table->string('year')->nullable();
             $table->double('price');
             $table->double('discount');
             $table->double('sell_price');

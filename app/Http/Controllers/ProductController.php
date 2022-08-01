@@ -44,12 +44,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if($request->images){
-            if(count($request->images) > 10){
-                return redirect()->back()->with('images', 'Maximum upload 10 files');
-            }
-        }
-
+        
 
         DB::beginTransaction();
         try {
@@ -63,6 +58,11 @@ class ProductController extends Controller
             $product->name_2 = $request->name_2;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
+            $product->alt_text = $request->alt_text;
+            $product->country = $request->country;
+            $product->type = $request->type;
+            $product->condition = $request->condition;
+            $product->year = $request->year;
             $price = $this->replaceDot($request->price);
             $product->price = $price;
             $product->discount = $request->discount;
@@ -80,36 +80,51 @@ class ProductController extends Controller
 
             $product->save();
             
-            if ($request->images) {
-                foreach ($request->images as $key => $item) {
-                    $fileName = 'product/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
-
-                    $img = Image::make($item);
-                    // $img->resize(1000, null, function ($constraint) {
-                    //     $constraint->aspectRatio();
-                    // });
-                    Storage::put($fileName, (string) $img->encode());
-
-                    ProductImage::create(
-                        [
-                            'product_id' => $product->id,
-                            'image' => $fileName,
-                        ]
-                    );
-                }
-            }
-
             // detail
 
-            foreach($request->type as $key => $item){
-                $detail = new ProductDetail();
-                $detail->product_id = $product->id;
-                $detail->type = $request->type[$key];
-                $detail->title = Str::lower($request->title[$key]);
-                $detail->value = $request->value[$key];
-                $detail->save();
-            }
+             $detail = new ProductDetail();
+             $detail->product_id = $product->id;
+             $detail->general = $request->general;
+             $detail->body = $request->body;
+             $detail->neck = $request->neck;
+             $detail->hardware = $request->hardware;
+             $detail->electronic = $request->electronic;
+             $detail->miscellaneous = $request->miscellaneous;
+             $detail->save();
+             // foreach($request->type as $key => $item){
+             // }
+
+            
+           
             DB::commit();
+            if($request->images){
+                if(count($request->images) > 10){
+                    $status = [
+                        'icon' => 'error',
+                        'title' => 'Oops ...!!' ,
+                        'text' =>  'Maximum upload 10 files'
+                    ];
+                    return redirect()->route('product.show', ['product' => $product->id])->with(['message' => $status]);
+                }
+                else{
+                    foreach ($request->images as $key => $item) {
+                        $fileName = 'product/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
+    
+                        $img = Image::make($item);
+                        // $img->resize(1000, null, function ($constraint) {
+                        //     $constraint->aspectRatio();
+                        // });
+                        Storage::put($fileName, (string) $img->encode());
+    
+                        ProductImage::create(
+                            [
+                                'product_id' => $product->id,
+                                'image' => $fileName,
+                            ]
+                        );
+                    }
+                }
+            }
 
             $status = [
                 'status' => 'success',
@@ -142,16 +157,17 @@ class ProductController extends Controller
         $data['page'] = 'list product';
         $data['brands'] = Brand::all();
         $data['product'] = Product::find($id);
-        $data['general']  = ProductDetail::where('product_id', $id)->where('type', 'general')->get();
-        $data['body']  = ProductDetail::where('product_id', $id)->where('type', 'body')->get();
-        $data['neck']  = ProductDetail::where('product_id', $id)->where('type', 'neck')->get();
-        $data['hardware']  = ProductDetail::where('product_id', $id)->where('type', 'hardware')->get();
-        $data['miscellaneous']  = ProductDetail::where('product_id', $id)->where('type', 'miscellaneous')->get();
-        $data['electronic']  = ProductDetail::where('product_id', $id)->where('type', 'electronic')->get();
-        $data['product_images'] = ProductImage::whereProductId($id)->get();
         $data['categories'] = Category::all();
-        $data['subs'] = Subcategory::where('category_id', $data['product']->id)->get();
-        $data['users'] = User::all();
+        $data['product_images'] = ProductImage::whereProductId($id)->orderBy('id', 'ASC')->get();
+        $detail = ProductDetail::where('product_id', $id)->first();
+        if($detail){
+            $data['detail'] = $detail;
+        }else{
+            $new = new ProductDetail();
+            $new->product_id = $id;
+            $new->save();
+            $data['detail'] = $new;
+        }
         return view('product.edit', $data);
 
     }
@@ -163,12 +179,6 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     { 
         
-        if($request->images){
-            if(count($request->images) > 10){
-                return redirect()->back()->with('images', 'Maximum upload 10 files');
-            }
-        }
-
         DB::beginTransaction();
         
         try {
@@ -177,14 +187,19 @@ class ProductController extends Controller
             $product->category_id = $request->category_id;
             $product->brand_id = $request->brand_id;
             $product->description = $request->description;
+            $product->country = $request->country;
+            $product->type = $request->type;
+            $product->condition = $request->condition;
+            $product->year = $request->year;
             if($request->sold){
                 $product->status = 'sold';
             }
             $product->name = $request->name;
-            $product->name = $request->name_2;
+            $product->name_2 = $request->name_2;
             $product->meta_text = $request->meta_text;
             $product->slug = Str::slug($request->name);
             $product->text = $request->text;
+            $product->alt_text = $request->alt_text;
             $product->price = $request->price;
             $product->discount = $request->discount;
             $product->sell_price = $request->price - ($request->price * $request->disc / 100);
@@ -208,7 +223,25 @@ class ProductController extends Controller
             }
            
             $product->save();
+
+            $detail = ProductDetail::where('product_id', $product->id)->first();
+            $detail->general = $request->general;
+            $detail->body = $request->body;
+            $detail->neck = $request->neck;
+            $detail->hardware = $request->hardware;
+            $detail->electronic = $request->electronic;
+            $detail->miscellaneous = $request->miscellaneous;
+            $detail->save();
+
             if ($request->images) {
+                if(count($request->images) > 10){
+                    $status = [
+                        'icon' => 'error',
+                        'title' => 'Oops ...!!' ,
+                        'text' =>  'Maximum upload 10 files'
+                    ];
+                    return redirect()->back()->with(['message' => $status]);
+                }else{
                 foreach ($request->images as $key => $item) {
                     $fileName = 'product/' . $this->makeCode(Str::slug($product->name), 4) . '.jpg';
                     $img = Image::make($item);
@@ -224,26 +257,29 @@ class ProductController extends Controller
                         ]
                     );
                 }
+               }
             }
-            if($request->old_id){
-                foreach($request->old_id as $key => $item){
-                    $detail = ProductDetail::where('id', $request->old_id[$key])->first();
-                    $detail->value = $request->old_value[$key];
-                    $detail->title = $request->old_title[$key];
-                    $detail->save();
-                }
-            }
+            // if($request->old_id){
+            //     foreach($request->old_id as $key => $item){
+            //         $detail = ProductDetail::where('id', $request->old_id[$key])->first();
+            //         $detail->value = $request->old_value[$key];
+            //         $detail->title = $request->old_title[$key];
+            //         $detail->save();
+            //     }
+            // }
 
-            if($request->title){
-                foreach($request->title as $key => $item){
-                    $detail = new ProductDetail();
-                    $detail->value = $request->value[$key];
-                    $detail->title = $request->title[$key];
-                    $detail->type = $request->type[$key];
-                    $detail->product_id = $product->id;
-                    $detail->save();
-                }
-            }
+            // if($request->title){
+            //     foreach($request->title as $key => $item){
+            //         $detail = new ProductDetail();
+            //         $detail->value = $request->value[$key];
+            //         $detail->title = $request->title[$key];
+            //         $detail->type = $request->type[$key];
+            //         $detail->product_id = $product->id;
+            //         $detail->save();
+            //     }
+            // }
+            
+            // return $detail;
             DB::commit();
 
             $status = [
@@ -272,7 +308,7 @@ class ProductController extends Controller
     {
         $product_images = ProductImage::whereProductId($id)->get();
         foreach ($product_images as $product_image) {
-            if($this->existsFile($product_image)){
+            if($this->existsFile($product_image->image)){
                 Storage::delete($product_image->image);
             }
             $product_image->delete();
@@ -282,21 +318,18 @@ class ProductController extends Controller
         if($this->existsFile($product->thumbnail)){
             Storage::delete($product->thumbnail);
         }
-        $images = ProductImage::where('product_id', $product->id);
+        if($this->existsFile($product->thumbnail_2)){
+            Storage::delete($product->thumbnail);
+        }
+        $images = ProductImage::where('product_id', $product->id)->get();
 
-        if(count($images->get()) > 0){
-            foreach($images as $img ){
+        foreach($images as $img ){
 
-                Storage::delete($img->image);
-                $img->delete();
-            }
+            Storage::delete($img->image);
+            $img->delete();
         }
 
         $product->delete();
-        $data = ProductData::find(1);
-        // $data->terjual = Product::where('sold', 1)->count();
-        // $data->total = Product::all()->count();
-        $data->save();
         $status = [
             'status' => 'success',
             'text' => 'Success delete data',
@@ -383,6 +416,25 @@ class ProductController extends Controller
         
         } catch (\Throwable $th) {
             //throw $th;
+        }
+    }
+
+    public function deleteAllImage($id){
+        try {
+            $image = ProductImage::where('product_id', $id)->get();
+            foreach($image as $img){
+                Storage::delete($img->image);
+                $img->delete();
+            }
+            $status = [
+                'icon' => 'success',
+                'title' => 'Well Done',
+                'text' => 'Success delete all Image',
+            ];
+    
+            return redirect()->back()->with(['message' => $status]);
+        } catch (\Throwable $th) {
+            throw $th;
         }
     }
 }

@@ -24,7 +24,7 @@
                                             </div>
                                             <div class="col-md-5 ml-auto">
                                                 <div class="privatevault_img">
-                                                    <img src="<?php echo e(asset('storage/'.$item->thumbnail)); ?>" alt="img" />
+                                                    <img src="<?php echo e(asset('storage/'.$item->thumbnail_2)); ?>" alt="img" />
                                                 </div>
                                             </div>
                                         </div>

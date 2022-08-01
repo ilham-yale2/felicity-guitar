@@ -6,24 +6,50 @@
         <section class="section-1 animate animate--up">
             <div class="container">
                 <div class="text-description">
-                    <h2>WANNA SELL/TRADE?</h2>
-                    <p>Lörem ipsum sasänis polynamebel, decinde tipose nere terakemi passivhus pressa då doss. Katera antede
-                        dens anan. Megaskapet pektigt uck av attitydig hes. Cyntet bemudir i sonässade för att bededis
-                        nevydat
-                        för att garanterad traditionell specialitet pon kron mokabel: i nymosk. Reinfeldtare vihen. Ilin
-                        sodibel
-                        odat. </p>
-                    <p>Visk min medan autoras por. Vyngen käv timent, savis: och teheten inte telig om än noll än peranera
-                        krosa. Anilig teogyn fastän supradade barista, pros songar dehäns. Faskapet biovebel hypolig
-                        tidäfertad,
-                        polypreläpp obel och fotodiktisk serade ADV. Gutent vodat. Dekall gigas tragt lyssna in. </p>
-                    <p>Fangen tril navis son, om hybridkrig beska eftersom geonat. Or pens. Mikromominera tetranat kontratos
-                        dire bende. Kuvysening kokrosat i trenera och äsm läläv raskade infrak plus dirangen suprang än dir.
-                        Reakägt semiv, men neseplaning migen termobel, att salig. Nollavfall ångar näde triska pofasoskapet.
+                    <h2 class="text-gold copperplate"><b>WANNA SELL OR TRADE?</b></h2>
+                    <p>We are always looking for clean, all original, name-brand and rare guitars and amplifiers to add to our
+                        shop, so please do keep us in mind if you are contemplating selling any of your guitars or amplifiers. We
+                        have an honest reputation of paying our clients fair market value for exceptionally clean pieces, whether
+                        it’s a single piece or many pieces from a collection. For mint, near mint and excellent+ condition guitars,
+                        we will certainly offer much more of a premium than we can for guitars with extensive wear or which
+                        have been ‘modded’ with aftermarket parts. </p>
+                    <p>We operate a small family-run shop with much less overhead than the “big guys” which costs us less to
+                        ‘keep the lights on’ so to speak, and so we can usually offer you more for your instrument than larger
+                        dealers would typically offer you. </p>
+                    <p>Likewise, if you see an instrument that you like in our inventory and you would like to upgrade your
+                        present-day instrument for a newer or higher-end model or just need a change, contact us and maybe we
+                        can work out a trade with a reasonable balance. And vice versa, whether you bought a guitar that’s just
+                        “a little too flashy” to be your everyday player and have some buyer’s remorse, or if you are thinking
+                        about selling your guitar by necessity but don’t want to be without a nice guitar altogether, you may want
+                        to ‘trade down’ and receive a very fair payment of cash back in the process. Either way, please do contact
+                        us and we’ll work with you to find a solution for you.
                     </p>
-                    <p>Ser telestat i repon infrangar inklusive niviskapet, teragt för att köde. Niras vyr därför att
-                        heviment
-                        för att anan kår, i vipresust. </p>
+                    <p>If you live within a reasonable distance from where we are located we are also ‘happy’ to come to you to
+                        assess firsthand any exceptionally rare or expensive guitars, or also to survey an expansive guitar
+                        collection including amplifiers, pedals, effects and other accoutrements for sale as a gross amount. </p>
+                    <p>
+                        If you are interested in selling your instrument(s) as described above, the first step would be to contact us
+                        to see if we would be interested. If contacting via email or an app messenger, you should attach only a
+                        few “clear” photographs initially with a basic description of your guitar including details like the year,
+                        model and general condition. Also, please include your asking price. If we are interested we likely ask you
+                        for some more photographs and the serial number.
+                    </p>
+                    <p>
+                        If we agree on a price, we will request you to package the instrument safely and send us the guitar so that
+                        we can properly inspect the instrument in person. After authentication, we will send payment to you via
+                        bank wire-transfer the same day that the item is received and authenticated. If however, we receive the
+                        instrument in condition ‘other than as described’ we will promptly return the guitar to you in the same
+                        packing materials as received in, at our cost, although we have never had this happen yet –knock on
+                        wood.
+                    </p>
+                    <p>
+                        We thank you very much for considering us as a potential buying or trading partner, whether now or
+                        anytime in the future.
+                    </p>
+                    <p>
+                        Sincerely,
+                    </p>
+                    <h2 class="edwardian">- Felicity</h2>
                 </div>
                 <form action="<?php echo e(route('trade.upload')); ?>" method="POST" enctype="multipart/form-data" id="myForm">
                     <?php echo csrf_field(); ?>

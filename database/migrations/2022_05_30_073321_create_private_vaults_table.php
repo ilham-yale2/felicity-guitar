@@ -19,6 +19,7 @@ class CreatePrivateVaultsTable extends Migration
             $table->bigInteger('brand_id');
             $table->string('code');
             $table->string('name')->nullable();
+            $table->string('name_2')->nullable();
             $table->string('slug')->nullable();
             $table->longText('text');
             $table->longText('description')->default('-')->nullable();

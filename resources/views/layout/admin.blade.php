@@ -189,7 +189,7 @@ $setting = App\Setting::first();
     <script src="{{ asset('admin/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('admin/plugins/summernote/summernote-lite.min.js') }}"></script>
+    <script src="{{ asset('admin/plugins/summernote/summernote.min.js') }}"></script>
     <script src="{{ asset('admin/plugins/select2/select2.min.js') }}"></script>
     <script src="{{ asset('admin/assets/js/custom.js') }}"></script>
     <script type="text/javascript" src="{{ asset('admin/plugins/image-uploader/image-uploader.min.js') }}"></script>
@@ -283,10 +283,7 @@ $setting = App\Setting::first();
         });
         
 
-        var summernote = {
-           
-        }
-
+       
         $('.summernote-color').summernote({
             height: 300,
             tabDisable: true,
@@ -314,6 +311,21 @@ $setting = App\Setting::first();
             fontSizes: ['8', '9', '10', '11', '12', '14', '15','16','17', '18', '24', '36', '48' , '64', '82', '150'],
             disableDragAndDrop: true
         });
+
+        $('.specification').summernote({
+            height: 300,
+
+            tabDisable: true,
+            toolbar: [
+                ['table',['table']],
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+            ],
+            insert: ['link'],
+            fontSizes: ['8', '9', '10', '11', '12', '14', '15','16','17', '18', '24', '36', '48' , '64', '82', '150'],
+            disableDragAndDrop: true
+        })
 
     </script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->

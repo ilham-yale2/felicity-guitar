@@ -33,7 +33,7 @@
                                 <input class="form-check-input" type="checkbox" value="" id="notif" name="notif"
                                     autocomplete="off">
                                 <label class="form-check-label ml-3" for="notif">
-                                    I am willing to receive email notification
+                                    I would like to receive important notifications
                                 </label>
                             </div>
                             <div class="form-check mt-3">
@@ -45,7 +45,7 @@
                         </div>
                         
                         <button class="btn bg-orange text-white rounded w-100 mt-3" type="submit">Login</button>
-                        <p class="mt-3 text-center">Not have a account ? <a href="{{route('registration')}}">register now.</a></p>
+                        <p class="mt-3 text-center">Don’t have an account yet? Register <a href="{{route('registration')}}" style="text-decoration: underline"> here.</a></p>
                     </form>
                 </div>
             </section>

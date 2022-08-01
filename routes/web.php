@@ -85,6 +85,7 @@ Route::group(['middleware' => 'admin'], function () {
 	
 	Route::get('product/code', 'ProductController@getCode');
 	Route::resource('product', 'ProductController');
+	Route::post('product/deletea-all-image/{id}', 'ProductController@deleteAllImage')->name('delete-all-product-image');
 	Route::resource('home-product', 'HomeProductController');
 
 	Route::get('product/category/{id}', 'ProductController@category');

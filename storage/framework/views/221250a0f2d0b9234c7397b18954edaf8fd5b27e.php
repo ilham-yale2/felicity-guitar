@@ -14,10 +14,15 @@
         }
         body {
             background: url("<?php echo e(asset('images/background-single-item.jpg')); ?>");
+            background-size: contain; 
         }
 
         body:before {
             background: unset;
+        }
+
+        .text-detail p{
+            color: white !important;
         }
     </style>
 <?php $__env->stopSection(); ?>
@@ -68,7 +73,7 @@
             <div class="col-md-5 offset-md-1">
                 <div class="hover-me position-relative custom-cursor">
                     
-                    <img src="<?php echo e(asset('storage').'/'.$product->thumbnail_2); ?>" class="w-100 img-details custom-cursor" alt="<?php echo e($product->alt_image); ?>">
+                    <img src="<?php echo e(asset('storage').'/'.$product->thumbnail_2); ?>" class="w-100 img-details custom-cursor" alt="<?php echo e($product->alt_text); ?>">
                 </div>
                 <p class="price mt-3 pb-3">IDR <?php echo e(number_format($product->price)); ?></p>
                 <span>Price inclusive of VAT ● Shipping costs will be calculated at check out</span>
@@ -99,7 +104,7 @@
             <div class="row">
                 <div class="col-md-12" id="description">
                     <p class="detail-more-title">description</p>
-                    <div class="desc-more text-white  text-detail ">
+                    <div class="desc-more   text-detail ">
                         <?php echo $product->description ?? '-'; ?>
 
 
@@ -208,7 +213,8 @@
                     </table>
                 </div>
                 <div class="col-12 mt-3">
-                    <h1 class="edwardian">Felicity</h1>
+                    <p class="text-white">Thanks for looking !</p>
+                    <img src="<?php echo e(asset('images/felicity-signature.png')); ?>" width="200" alt="felicity-signature">
                 </div>
             </div>
         </div>
@@ -220,12 +226,12 @@
 <div class="container my-5">
     <div id="links" class="d-flex flex-wrap">
         <a class="img-gallery d-none" id="img-1" target="_blank" href="<?php echo e(asset('storage/'.$product->thumbnail_2)); ?>" title="<?php echo e($product->name); ?>">
-            <img src="<?php echo e(asset('storage/'.$product->thumbnail_2)); ?>" alt="" />
+            <img src="<?php echo e(asset('storage/'.$product->thumbnail_2)); ?>" alt="<?php echo e($product->alt_text); ?>" />
         </a>
         <?php $__currentLoopData = $images; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             
         <a class="img-gallery"  target="_blank" href="<?php echo e(asset('storage/'.$item->image)); ?>" title="<?php echo e($product->name); ?>">
-            <img src="<?php echo e(asset('storage/'.$item->image)); ?>" alt="" />
+            <img src="<?php echo e(asset('storage/'.$item->image)); ?>" alt="<?php echo e($product->alt_text); ?>" />
         </a>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     
