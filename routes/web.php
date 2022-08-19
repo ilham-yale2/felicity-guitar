@@ -125,6 +125,7 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::post('private-vault/delete-image', 'PrivateVaultController@deleteImage');
 
 
+
 	Route::resource('user-contact', 'UserContactController');
 
 	Route::get('faq', 'FaqControllerbru@index')->name('faq.index');

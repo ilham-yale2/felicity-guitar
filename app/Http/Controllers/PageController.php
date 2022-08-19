@@ -58,20 +58,21 @@ class PageController extends Controller
 	}
 	public function browseBrand(Request $request)
 	{
+		$products = Product::whereHas('brand', function ($p) use ($request){
+			$p->where('name', $request->brd);
+		})->whereNull('status');
 		if($request->brd){
-			$products = Product::whereHas('brand', function ($p) use ($request){
-				$p->where('name', $request->brd);
-			})->whereNull('status');
 			if($request->country){
-				$products->whereHas('details', function ($c) use ($request){
-					$c->where('title', 'LIKE' ,"%Country of Origin%")->where('value', $request->country);
-				});
+
+				if($request->country == 13){
+					$products->whereIn('country', [7,8,9,10]);
+				}else{
+					$products->where('country', $request->country);
+				}
 			}
 
 			if($request->condition){
-				$products->whereHas('details', function ($c) use ($request){
-					$c->where('title','condition')->where('value', 'LIKE' ,"%{$request->condition}%");
-				});
+				$products->where('condition', $request->condition);
 			}
 
 			if($request->type){
@@ -101,14 +102,27 @@ class PageController extends Controller
 				});
 			}
 
-			$data['products'] = $products->paginate(14);
-
-			$data['brand'] = Brand::where('name' , $request->brd)->first();	
+			$data['products'] = $products->paginate(15);
+			if($request->brd == 'Martin' || $request->brd == 'Guild' || $request->brd == 'Taylor'){
+				$data['sub_cat'] = false;
+			}else{
+				$data['sub_cat'] = true;
+			}
+			$brand = Brand::where('name' , $request->brd)->first() ;
+			if($brand) {
+				$data['brand'] = $brand;	
+			}else{
+				$data['brand'] =  [ 'name' => 'Brand', 'image' => null];
+			}
+		}elseif(!$request->brd){
+			$data['products'] = Product::whereNull('status')->paginate(15);
+			$data['brand'] = [ 'name' => 'Brand', 'image' => null];
 		}else{
-			$data['products'] = Product::whereNull('status')->paginate(14);
+			$data['products'] = [];
 			$data['brand'] = [ 'name' => 'Brand', 'image' => null];
 		}
 		$data['brands'] = Brand::all();
+		$data['subject'] = $request->subject ?? '';
 		return view('browse-brand', $data);
 	}
 
@@ -136,8 +150,10 @@ class PageController extends Controller
 		$data['types'] = null;
 		$data['bold'] = false;
 		$data['condition'] = true;
+
 		switch ($request->subject) {
 			case 'Guitar':
+				$data['title'] = $request->ctg;
 				if($request->ctg){
 					$products = Product::whereHas('category', function ($p) use ($request){
 						$p->where('name', $request->ctg);
@@ -171,14 +187,13 @@ class PageController extends Controller
 						});
 					}
 		
-					
-					// return $products->get();
-					$data['products'] = $products->orderBy('name')->paginate(14);
+					$data['products'] = $products->orderBy('name')->paginate(15);
 				}
 				
 				
 				else{
-					$data['products'] = Product::whereNull('status')->paginate(14);
+					$data['products'] = Product::whereNull('status')->paginate(15);
+					$data['title'] = 'All Our Guitars';
 				}
 
 				if($request->ctg == 'Electric Guitars'){
@@ -193,47 +208,52 @@ class PageController extends Controller
 				$data['empty_text'] = null;
 				break;
 			case 'Amplifiers':
-				$data['brands'] = ['Marshall', 'Orange', 'Fender', 'Peavey', 'Positive Grid', 'VOX'];
-				$data ['types'] = ['Tube-Valve', 'Solid-State'];
+				$data['brands'] = ['Marshall', 'Orange', 'Fender', 'Peavey', 'Positive Grid', 'Vox'];
+				$data ['types'] = ['Tube-Valve', 'Solid_State'];
 				$data['addition'] = ['Heads', 'Cabinets', 'Combos'];
 				$data['year'] = true;
 				$data['price']= true;
 				$data['col'] = 'col-md-3';
 				$data['image'] = 'img-pedals';
+				$data['title'] = 'Amplification';
 				break;
-			case 'Effect Pedals':
-				$data['brands'] = [ 'Big Muff','Boss','Earthquaker Devices','Ibanez','Jim Dunlop','Marshall','MXR','Polytune','Strymon','TC Electronics' ,'VOX' ,'Wampler' ,'Waza Craft'];
+			case 'Effects Pedals':
+				$data['brands'] = [ 'Big Muff','Boss','EarthQuaker Devices','Electro_Harmonix','Ibanez','Jim Dunlop','Marshall','MXR','Polytune','Strymon','TC Electronic' ,'Vox' ,'Wampler' ,'Waza Craft'];
 				$data['types']= ['Chorus','Delay', 'Distortion', 'Flanger', 'Fuzz', 'Noise Gate', 'Octave', 'Overdrive', 'Phaser', 'Reverb', 'Tremolo', 'Tuner', 'Volume', 'Wah', 'Combo'];
 				$data['col'] = 'col-md-3';
 				$data['image'] = 'img-pedals';
 				$data['price_list'] = true;
+				$data['title'] = 'Pedals & Effects';
 				break;
 			case 'Vintage Stuff':
-				$data['brands'] = ['Gibson', 'Fender', 'Rickenbacker', 'Gretsch', 'Danelectro', 'Epiphone', 'Supro', 'VOX', 'Marshall', 'Other'];
-				$data['addition'] = ['Hang Tags', 'Brochures', 'Pamphlets', "Owner's Manuals", 'Warranty Cards', 'Distributor Fliers', 'Banners', 'Concert Tickets', 'Polishes-Cloths', 'Case Candies', 'Vintage Parts'];
+				$data['brands'] = ['Gibson', 'Fender', 'Rickenbacker', 'Gretsch', 'Danelectro', 'Epiphone', 'Supro', 'Vox', 'Marshall', 'Other'];
+				$data['addition'] = ['Hang Tags', 'Brochures', 'Pamphlets', "Owner's Manuals", 'Warranty Cards', 'Distributor Fliers', 'Banners', 'Concert Promos', 'Polishes-Cloths', 'Case Candies', 'Vintage Parts'];
 				$data['col'] = 'col-md-3';
 				$data['price_list'] = true;
 				$data['image'] = 'img-pedals';
 				$data['condition'] = false;
+				$data['title'] = 'Vintage Stuff';
 				break;
 			case 'Merch-Apparel':
 				$data['types'] = ['Hats', 'Bandanas', 'Batik Stuff', 'Key Chains', 'Phone Covers', 'Pick Cases', 'Pick Trays', 'Stickers', 'Gift Certificate', 'Other'];
 				$data['type'] = 'none';
 				$data['bold'] = true;
 				$data['condition'] = false;
+				$data['title'] = 'Merch & Apparel';
 				break;
 			case 'Parts-Accessories':
-				$data['types'] = ['Axe Stands', 'Amp Stands', 'Handmade Straps', 'Straplocks', 'Plectrums', 'Cables-Connectors', 'Cleaning-Polishing', 'Pickguards', 'Replacements Parts', 'Pontiometers', 'Capacitors', 'Strings', 'Gift Certificates', 'Other'];
+				$data['types'] = ['Axe Stands', 'Amp Stands', 'Handmade Straps', 'Straplocks', 'Plectrums', 'Cables-Connectors', 'Cleaning-Polishing', 'Pickguards', 'Replacement Parts', 'Potentiometers', 'Capacitors', 'Strings', 'Gift Certificates', 'Other'];
 				$data['type'] = 'none';
 				$data['bold'] = false;
-				$data['title'] = 'Parts/Accessories';
+				$data['title'] = 'Parts & Accessories';
 				$data['condition'] = false;
 				break;
 			case 'Exotic-Instruments':
-				$data['types'] = ['Angklung', 'Calung', 'Gambus', 'Gamelan' , 'Gamelan Melayu', 'Gamelan Jaipong', 'Gong', 'Kecapi', 'Kolintang', 'Saluang-Suling', 'Sasando', 'Teyhan-Rebab'];
+				$data['types'] = ['Angklung', 'Calung', 'Gambus', 'Gamelan' , 'Gendang Melayu', 'Gendang Jaipong', 'Gong', 'Kecapi', 'Kolintang', 'Saluang-Suling', 'Sasando', 'Teyhan-Rebab'];
 				$data['bold'] = true;
 				$data['price'] = true;
 				$data['condition'] = false;
+				$data['title'] = 'Exotic Instrument';
 				break;
 			default:
 				if($request->ctg){
@@ -262,12 +282,9 @@ class PageController extends Controller
 					if($request->up_year){
 						$products->where('year', $request->up_year);
 					}
-					// $data['products'] = $products->orderBy('name')->paginate(14);
 				}
-				
-				
 				else{
-					$data['products'] = Product::whereNull('status')->paginate(14);
+					$data['products'] = Product::whereNull('status')->paginate(15);
 				}
 
 				if($request->ctg == 'Electric Guitars'){
@@ -283,10 +300,15 @@ class PageController extends Controller
 				break;
 		}
  
+		if($request->ctg){
+
+			$data['ctg'] = '&ctg='.$request->ctg;
+		}
+		else{
+			$data['ctg'] = '';
+		}
 		$data['categories'] = Category::all();
-		$data['ctg'] = $request->ctg;
 		$data['subject']= $request->subject ?? 'Guitar';
-		// return $data;
 		return view('browse-category',$data);	
 	}
 
@@ -318,13 +340,7 @@ class PageController extends Controller
 		$product = PrivateVault::where('slug', $slug)->first();
 		if($product){
 			$data['product']= $product;
-			$data['general'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'general')->get();
-			$data['electronic'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'electronic')->get();
-			$data['neck'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'neck')->get();
-			$data['body'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'body')->get();
-			$data['hardware'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'hardware')->get();
-			$data['miscellaneous'] = PrivateVaultDetail::where('product_id', $product->id)->where('type', 'miscellaneous')->get();
-			$data['images'] = PrivateVaultImage::where('product_id', $product->id)->get();
+			$data['details'] = PrivateVaultDetail::where('product_id', $product->id)->first();
 		}else{
 			abort(404);
 		}

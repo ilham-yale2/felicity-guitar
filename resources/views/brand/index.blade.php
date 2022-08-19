@@ -28,7 +28,8 @@
                     <table id="zero-config" class="table style-3 table-hover">
                         <thead>
                             <tr>
-                                <th>Category Name</th>
+                                <th>Brand Logo</th>
+                                <th>Brand Name</th>
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
@@ -36,6 +37,9 @@
                             @forelse($brands as $b)
                             {{-- @dd($b->productImages->isEmpty()) --}}
                                 <tr>
+                                    <td class="text-center bg-dark">
+                                        <img class="img-product" src="{{asset('storage/' . $b->image)}}" width="70" alt="">
+                                    </td>
                                     <td class="">
                                         {{$b->name}}
                                     </td>

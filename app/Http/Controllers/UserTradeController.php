@@ -84,7 +84,7 @@ class UserTradeController extends Controller
                 'text' => 'Success to submit ',
             ];
             DB::commit();
-            return redirect()->route('private-vaulte')->with('message', $message);
+            return redirect()->route('index')->with('message', $message);
         } catch (\Throwable $th) {
             throw $th;
         }

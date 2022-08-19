@@ -53,105 +53,104 @@ class PrivateVaultController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->images){
-            if(count($request->images) > 10){
-                return redirect()->back()->with('images', 'Maximum upload 10 files');
-            }
-        }
-         DB::beginTransaction();
-         try {
-             // $product->type_id = $request->type_id;
-             // $product->subcategory_id = $request->sub_id;
-             $product = new PrivateVault();
-             $product->code = $this->makeCode('PRV', 10);
-             $product->brand_id = $request->brand_id;
-             $product->category_id = $request->category_id;
-             $product->meta_text = $request->meta_text;
-             $product->name = $request->name;
-             $product->name_2 = $request->name_2;
-             $product->slug = Str::slug($request->name);
-             $product->text = $request->text;
-             $product->alt_text = $request->alt_text;
-             $product->description = $request->description;
-             $price = $this->replaceDot($request->price);
-             $product->price = $price;
-             $product->discount = $request->discount;
-             $product->sell_price = $price - ($price * $request->discount / 100);
-             $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
-             $image = Image::make($request->thumbnail);
-            //  $image->resize(500, null, function ($constraint) {
-            //      $constraint->aspectRatio();
-            //  });
-             Storage::put($fileName, (string) $image->encode());
-             $product->thumbnail = $fileName;
+        
 
-             $fileThumbnail = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) .'.'. $request->thumbnail_2->extension();
-             $thumbnail = Image::make($request->thumbnail_2);
-            //  $thumbnail->resize(500, null, function($constraint){
-            //     $constraint->aspectRatio();
-            //  });
+        DB::beginTransaction();
+        try {
+            $product = new PrivateVault();
+            $product->code = $this->makeCode('PRV', 10);
+            $product->meta_text = $request->meta_text;
+            $product->brand_id = $request->brand_id;
+            $product->category_id = $request->category_id;
+            $product->description = $request->description;
+            $product->name = $request->name;
+            $product->name_2 = $request->name_2;
+            $product->slug = Str::slug($request->name);
+            $product->text = $request->text;
+            $product->alt_text = $request->alt_text;
+            $product->country = $request->country;
+            $product->type = $request->type;
+            $product->condition = $request->condition;
+            $product->year = $request->year;
+            $price = $this->replaceDot($request->price);
+            $product->price = $price;
+            $product->discount = $request->discount;
+            $product->sell_price = $price - ($price * $request->discount / 100);
+            $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
+            $image = Image::make($request->thumbnail);
+            Storage::put($fileName, (string) $image->encode());
+            $product->thumbnail = $fileName;
 
-             Storage::put($fileThumbnail, (string) $thumbnail->encode());
-             $product->thumbnail_2 = $fileThumbnail;
+            $thumbnail_2 = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
+            $image = Image::make($request->thumbnail_2);
+            Storage::put($thumbnail_2, (string) $image->encode());
+            $product->thumbnail_2 = $thumbnail_2;
 
-             $product->save();
-             
-             if ($request->images) {
-                 foreach ($request->images as $key => $item) {
-                     $fileName = 'private-vault/product/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
- 
-                     $img = Image::make($item);
-                    //  $img->resize(500, null, function ($constraint) {
-                    //      $constraint->aspectRatio();
-                    //  });
-                     Storage::put($fileName, (string) $img->encode());
- 
-                     PrivateVaultImage::create(
-                         [
-                             'product_id' => $product->id,
-                             'image' => $fileName,
-                         ]
-                     );
-                 }
-             }
- 
 
-             if($request->type){
+            $product->save();
+            
+            // detail
 
-                 foreach($request->type as $key => $item){
-                    $detail = new PrivateVaultDetail();
-                    $detail->product_id = $product->id;
-                    $detail->type = $request->type[$key];
-                    $detail->title = $request->title[$key];
-                    $detail->value = $request->value[$key];
-                    $detail->save();
+             $detail = new PrivateVaultDetail();
+             $detail->product_id = $product->id;
+             $detail->general = $request->general;
+             $detail->body = $request->body;
+             $detail->neck = $request->neck;
+             $detail->hardware = $request->hardware;
+             $detail->electronic = $request->electronic;
+             $detail->miscellaneous = $request->miscellaneous;
+             $detail->save();
+
+            DB::commit();
+            if($request->images){
+                if(count($request->images) > 10){
+                    $status = [
+                        'icon' => 'error',
+                        'title' => 'Oops ...!!' ,
+                        'text' =>  'Maximum upload 10 files'
+                    ];
+                    return redirect()->route('vault.show', ['admin_private_vault' => $product->id])->with(['message' => $status]);
                 }
-             }
-             DB::commit();
- 
-             $status = [
-                 'status' => 'success',
-                 'text' => 'Success to add product',
-                 'data' => [
-                     'product' => $product,
-                 ]
-             ];
- 
-             return redirect()->route('vault.index')->with(['message' => $status]);
-         } catch (\Throwable$th) {
-             DB::rollback();
-             throw $th;
- 
-             $status = [
-                 'status' => 'success',
-                 'text' => 'Failed to add product',
-                 'data' => [
-                     'product' => $product,
-                 ]
-             ];
- 
-             return redirect()->route('vault.index')->with(['message' => $status]);
-         }
+                else{
+                    foreach ($request->images as $key => $item) {
+                        $fileName = 'private-vault/gallery/' . $this->makeCode(Str::slug($request->name), 4) . '.jpg';
+    
+                        $img = Image::make($item);
+                        Storage::put($fileName, (string) $img->encode());
+    
+                        PrivateVaultImage::create(
+                            [
+                                'product_id' => $product->id,
+                                'image' => $fileName,
+                            ]
+                        );
+                    }
+                }
+            }
+
+            $status = [
+                'status' => 'success',
+                'text' => 'Success to add product',
+                'data' => [
+                    'product' => $product,
+                ]
+            ];
+
+            return redirect()->route('vault.index')->with(['message' => $status]);
+        } catch (\Throwable$th) {
+            DB::rollback();
+            throw $th;
+
+            $status = [
+                'status' => 'success',
+                'text' => 'Failed to add product',
+                'data' => [
+                    'product' => $product,
+                ]
+            ];
+
+            return redirect()->route('vault.index')->with(['message' => $status]);
+        }
     }
 
     /**
@@ -162,18 +161,21 @@ class PrivateVaultController extends Controller
      */
     public function show($id)
     {
-        $data['menu'] = 'vault';
+        $data['menu'] = 'product';
         $data['page'] = 'list product';
         $data['brands'] = Brand::all();
         $data['product'] = PrivateVault::find($id);
-        $data['general']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'general')->get();
-        $data['body']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'body')->get();
-        $data['neck']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'neck')->get();
-        $data['hardware']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'hardware')->get();
-        $data['miscellaneous']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'miscellaneous')->get();
-        $data['electronic']  = PrivateVaultDetail::where('product_id', $id)->where('type', 'electronic')->get();
-        $data['product_images'] = PrivateVaultImage::whereProductId($id)->get();
         $data['categories'] = Category::all();
+        $data['product_images'] = PrivateVaultImage::whereProductId($id)->orderBy('id', 'ASC')->get();
+        $detail = PrivateVaultDetail::where('product_id', $id)->first();
+        if($detail){
+            $data['detail'] = $detail;
+        }else{
+            $new = new PrivateVaultDetail();
+            $new->product_id = $id;
+            $new->save();
+            $data['detail'] = $new;
+        }
         return view('private-vault.edit', $data);
     }
 
@@ -195,21 +197,21 @@ class PrivateVaultController extends Controller
      * @param  \App\PrivateVault  $privateVault
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
-    {
-        if($request->images){
-            if(count($request->images) > 10){
-                return redirect()->back()->with('images', 'Maximum upload 10 files');
-            }
-        }
+    public function update(Request $request, $id)
+    { 
+        
         DB::beginTransaction();
-
+        
         try {
+            
             $product = PrivateVault::find($id);
             $product->category_id = $request->category_id;
             $product->brand_id = $request->brand_id;
-            // $product->category = $request->category;
             $product->description = $request->description;
+            $product->country = $request->country;
+            $product->type = $request->type;
+            $product->condition = $request->condition;
+            $product->year = $request->year;
             if($request->sold){
                 $product->status = 'sold';
             }
@@ -226,11 +228,8 @@ class PrivateVaultController extends Controller
                 if($this->existsFile($product->thumbnail)){
                     Storage::delete($product->thumbnail);
                 }
-                $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . time() . '.' . $request->thumbnail->extension();
+                $fileName = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail->extension();
                 $image = Image::make($request->thumbnail);
-                // $image->resize(500, null, function ($constraint) {
-                //     $constraint->aspectRatio();
-                // });
                 Storage::put($fileName, (string) $image->encode());
                 $product->thumbnail = $fileName;
             }
@@ -238,21 +237,36 @@ class PrivateVaultController extends Controller
                 if($this->existsFile($product->thumbnail_2)){
                     Storage::delete($product->thumbnail_2);
                 }
-                $file = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
-                $img = Image::make($request->thumbnail_2);
-                // $img->resize(500, null, function($constraint){
-                //     $constraint->aspectRatio();
-                // });
-                Storage::put($file, (string) $img->encode());
-                $product->thumbnail_2 = $file;
-
+                $thumbnail_2 = 'private-vault/thumbnail/' . Str::slug($request->name) . $this->makeCode(5) . '.' . $request->thumbnail_2->extension();
+                $image = Image::make($request->thumbnail_2);
+                Storage::put($thumbnail_2, (string) $image->encode());
+                $product->thumbnail_2 = $thumbnail_2;
             }
+           
             $product->save();
+
+            $detail = PrivateVaultDetail::where('product_id', $product->id)->first();
+            $detail->general = $request->general;
+            $detail->body = $request->body;
+            $detail->neck = $request->neck;
+            $detail->hardware = $request->hardware;
+            $detail->electronic = $request->electronic;
+            $detail->miscellaneous = $request->miscellaneous;
+            $detail->save();
+
             if ($request->images) {
+                if(count($request->images) > 10){
+                    $status = [
+                        'icon' => 'error',
+                        'title' => 'Oops ...!!' ,
+                        'text' =>  'Maximum upload 10 files'
+                    ];
+                    return redirect()->back()->with(['message' => $status]);
+                }else{
                 foreach ($request->images as $key => $item) {
-                    $fileName = 'private-vault/product/' . $this->makeCode(Str::slug($product->name), 4) . '.jpg';
+                    $fileName = 'private-vault/gallery/' . $this->makeCode(Str::slug($product->name), 4) . '.jpg';
                     $img = Image::make($item);
-                    // $img->resize(500, null, function ($constraint) {
+                    // $img->resize(1000, null, function ($constraint) {
                     //     $constraint->aspectRatio();
                     // });
                     Storage::put($fileName, (string) $img->encode());
@@ -264,29 +278,8 @@ class PrivateVaultController extends Controller
                         ]
                     );
                 }
+               }
             }
-
-            if ($request->old_id) {
-                foreach($request->old_id as $key => $item){
-                    $detail = PrivateVaultDetail::where('id', $request->old_id[$key])->first();
-                    $detail->value = $request->old_value[$key];
-                    $detail->title = $request->old_title[$key];
-                    $detail->save();
-                }
-            }
-
-            if($request->title){
-                foreach($request->title as $key => $item){
-                    $detail = new PrivateVaultDetail();
-                    $detail->value = $request->value[$key];
-                    $detail->title = $request->title[$key];
-                    $detail->type = $request->type[$key];
-                    $detail->product_id = $product->id;
-                    $detail->save();
-                }
-            }
-            // $detail = PrivateVaultDetail::where('product_id', $id);
-            // $detail->update($request->except(['_method', '_token','thumbnail_2','code', 'name', 'category_id', 'brand_id', 'price', 'sell_price','discount','text', 'zero-config_length', 'thumbnail', 'images', 'sold']));
             DB::commit();
 
             $status = [
@@ -303,11 +296,11 @@ class PrivateVaultController extends Controller
             throw $th;
 
             $status = [
-                'status' => 'success',
-                'msg' => 'Data berhasil di simpan',
+                'status' => 'error',
+                'msg' => 'Failed to update product',
             ];
 
-            return redirect()->route('vault.index')->with($status);
+            return redirect()->route('product.index')->with($status);
         }
     }
 

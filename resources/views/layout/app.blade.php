@@ -64,6 +64,12 @@ $format_number = '628' . $format_number[1];
         }else{
             $b = "body-bg-repeat.jpg";
         }
+
+        if (isset($subject)) {
+            $s = $subject;
+        }else{
+            $s = 'Guitar';
+        }
     @endphp
     <style>
         input,textarea, select{
@@ -162,10 +168,10 @@ $format_number = '628' . $format_number[1];
                                         </div>
                                     </li>
                                     <li><a href="{{route('browse-category')}}?subject=Amplifiers">Amplifiers</a></li>
-                                    <li><a href="{{route('browse-category')}}?subject=Effect Pedals">Effect Pedals</a></li>
+                                    <li><a href="{{route('browse-category')}}?subject=Effects Pedals">Effects Pedals</a></li>
                                     <li><a href="{{route('browse-category')}}?subject=Parts-Accessories">Parts / Accessories</a></li>
                                     <li><a href="{{route('browse-category')}}?subject=Vintage Stuff">Vintage Stuff</a></li>
-                                    <li><a href="{{route('about-us')}}#service">Luthier Services</a></li>
+                                    {{-- <li><a href="{{route('about-us')}}#service">Luthier Services</a></li> --}}
                                     <li><a href="{{route('browse-category')}}?subject=Merch-Apparel">Merch / Apparel</a></li>
                                     <li><a href="{{route('browse-category')}}?subject=Exotic-Instruments">Exotic Instruments</a></li>
                                     
@@ -178,12 +184,12 @@ $format_number = '628' . $format_number[1];
                                 <ul>
                                     @foreach ($brands as $b)
                                         @if ($loop->iteration <= 12)
-                                            <li><a href="{{route('browse-brand')}}?brd={{$b->name}}">{{$b->name}}</a></li>
+                                            <li><a href="{{route('browse-brand')}}?subject={{$s}}&brd={{$b->name}}">{{$b->name}}</a></li>
                                         @endif
                                     @endforeach
                                     <li class="more-brand d-flex pt-md-3">
                                         <a href="#">
-                                            <span>More Brands</span><span class="iconify text-white" data-icon="ant-design:caret-right-filled"></span>
+                                            <span>More Brands</span><span class="iconify text-white ml-4" data-icon="ant-design:caret-right-filled"></span>
                                         </a>
                                         <div class="multi-sub-2 position-absolute" >
                                             <div class="sub-multi">
@@ -233,7 +239,7 @@ $format_number = '628' . $format_number[1];
                                 </div>
                                 <div class="footer_contact">
                                     <h4>Contact</h4>
-                                    <address>Addres: Lörem ipsum fagen oktigt. Mynar kemkastrering. Salönade pånade,
+                                    <address>Address: Lörem ipsum fagen oktigt. Mynar kemkastrering. Salönade pånade,
                                         till fösona för att
                                         po</address>
                                     <div class="email"><span>Email <a
@@ -247,16 +253,16 @@ $format_number = '628' . $format_number[1];
                                         <input class="form-control" type="text" placeholder="enter your email" />
                                     </div>
                                 </div>
-                                <div class="footer_logo"><a href="/"><img
-                                            src="{{asset('images/logo-footer-felicity.png')}}" alt="logo-footer" /></a></div>
+                                <div class="footer_logo">
+                                    <img src="{{asset('images/logo-footer-felicity.png')}}" alt="logo-footer" /></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="footer_bottom">
+            <div class="footer_bottom bg-transparent">
                 <div class="container">
-                    <p>Serving Guitra Enthusiasts and Musicians Worldwide | © 2021. Felicitys-Guitars.com - All Rights
+                    <p>Serving Guitar Aficionados and Musicians Worldwide | © 2021. Felicitys-Guitars.com - All Rights
                         Reserved
                     </p>
                 </div>

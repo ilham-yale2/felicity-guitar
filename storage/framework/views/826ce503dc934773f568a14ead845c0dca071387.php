@@ -97,13 +97,19 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Gear Type: *</label>
+                                        <label>Gear Type *</label>
                                         <select class="select" title="Choose Gear Type" name="gear_type" required>
-                                            <option value="1">Type 1</option>
-                                            <option value="2">Type 2</option>
-                                            <option value="3">Type 3</option>
-                                            <option value="4">Type 4</option>
-                                            <option value="5">Type 5</option>
+                                            <option value="Electric Guitar">Electric Guitar</option>
+                                            <option value="Acoustic Guitar">Acoustic Guitar</option>
+                                            <option value="Classical Guitar ">Classical Guitar </option>
+                                            <option value="Bass Guitar">Bass Guitar</option>
+                                            <option value="Resonator Guitar">Resonator Guitar</option>
+                                            <option value="Lap Steel Guitar">Lap Steel Guitar</option>
+                                            <option value="Amplifier">Amplifier</option>
+                                            <option value="Effects Pedal">Effects Pedal</option>
+                                            <option value="Keyboard">Keyboard</option>
+                                            <option value="Percussion">Percussion</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -125,10 +131,13 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Condition </label>
+                                        <label>Condition * </label>
                                         <select class="select" title="Choose Condition" name="condition" required>
-                                            <option value="1">Condition 1</option>
-                                            <option value="2">Condition 2</option>
+                                            <option value="Brand New (unplayed)">Brand New (unplayed)</option>
+                                            <option value="Used, Mint Condition">Used, Mint Condition</option>
+                                            <option value="Used, Excellent Condition">Used, Excellent Condition</option>
+                                            <option value="Used, Good Condition">Used, Good Condition</option>
+                                            <option value="Used, Fair Condition">Used, Fair Condition</option>
                                         </select>
                                     </div>
                                 </div>
@@ -140,7 +149,7 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Case Include: *</label>
+                                        <label>Case Included *</label>
                                         <select class="select" title="Choose Included" name="case_include">
                                             <option value="Included 1">Included 1</option>
                                             <option value="Included 2">Included 2</option>

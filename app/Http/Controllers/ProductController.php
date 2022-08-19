@@ -33,9 +33,6 @@ class ProductController extends Controller
     {
         $data['menu'] = 'product';
         $data['page'] = 'list product';
-        // $data['types'] = Type::all();
-        // $data['users'] = User::all();
-        // $data['users'] = User::all();
         $data['categories'] = Category::all();
         $data['brands'] = Brand::all();
 

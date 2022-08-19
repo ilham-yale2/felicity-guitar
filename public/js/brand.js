@@ -18,6 +18,19 @@ function redirect(url){
     window.location.href=url
 }
 
+function country(value,name){
+    var html = 
+    `
+    <li class="text-capitalize">
+        <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=${value}"><span class="text-country">${brand}</span> ${name}</a>
+    </li>
+
+    `
+    return html
+
+}
+
+
 function changeBrand(id,name, img){
     $('#brandImg').attr('src', `${base_url}/storage/${img}`)
 
@@ -35,39 +48,22 @@ function changeBrand(id,name, img){
 
 function setCountry(brand){
     var html;
-    var usa = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=4"><span class="text-country">${brand}</span> U.S.A</a>
-                </li>`
-    var mexico = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=5"><span class="text-country">${brand}</span> Mexico</a>
-                </li>`
-    var china = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=6"><span class="text-country">${brand}</span> China</a>
-                </li>`
-    var custom = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=1"><span class="text-country">${brand}</span> Custom</a>
-                </li>`
-    var historic = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=7"><span class="text-country">${brand}</span> Custom Historic</a>
-                </li>`
-    var montana = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=3"><span class="text-country">${brand}</span> Montana</a>
-                </li>`
-    var memphis = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=2"><span class="text-country">${brand}</span> Memphis</a>
-                </li>`
-    var japan = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=8"><span class="text-country">${brand}</span> Japan</a>
-                </li>`
-    var korea = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=9"><span class="text-country">${brand}</span> Korea</a>
-                </li>`
-    var indonesia = `<li class="text-capitalize">
-                    <a class="filter text-gold" href="${base_url}/browse-brand?brd=${brand}&country=10"><span class="text-country">${brand}</span> Indonesia</a>
-                </li>`
+    var custom = country(1,'Custom')
+    var memphis = country(2, 'Memphis')
+    var montana = country(3, 'Montana')
+    var usa = country(4, 'U.S.A')
+    var mexico = country(5, 'Mexico')
+    var china = country(6,'China')
+    var historic = country(7, 'Custom Historic')
+    var japan = country(8, 'Japan')
+    var korea = country(9, 'Korea')
+    var indonesia = country(10, 'Indonesia')
+    var asia = country(11, 'Asia')
+    var uk = country(12, 'U.K.')
+    var denmark = country(13, 'Denmark')
     switch(brand) {
         case "Fender":
-            html = usa + mexico + china
+            html = usa + mexico +  custom + country(8, 'Japan/Asia') + country('1', 'CS')
             break;
         case "Rickenbacker":
             html = usa
@@ -79,16 +75,64 @@ function setCountry(brand){
             html = japan
             break;
         case "Gretsch":
-            html = japan + korea + indonesia
+            html = usa + asia
             break;
         case "Kitharra":
             html = indonesia
             break;
         case "ESP":
-            html = usa + japan
+            html = usa + asia
             break;
         case "Epiphone":
-            html = indonesia
+            html = usa + asia
+            break;
+        case "PRS":
+            html = usa + asia
+            break;
+        case 'Positive Grid':
+            html = usa
+            break;
+        case "Vox" :
+            html = uk
+            break;
+        case "Peavy" :
+            html = usa
+            break;
+        case "Orange": 
+            html = uk
+            break;
+        case "Marshall":
+            html = uk
+            break;
+        case "Big Muff":
+            html = usa
+            break;
+        case "BOSS":
+            html = japan
+            break;
+        case "EarthQuaker Devices":
+            html = usa
+            break;
+        case "Electro-Harmonix":
+            html = usa
+            break;
+        case "Jim Dunlop":
+            html = usa
+            break;
+        case "MXR":
+            html = usa
+            break;
+        case "Stymon":
+            html = usa
+            break;
+        case "TC Electronic":
+            html = denmark
+            break;
+        case "Wampler":
+            html = usa
+            break;
+        case "Waza Craft":
+            html = usa
             break;
         default:
     }

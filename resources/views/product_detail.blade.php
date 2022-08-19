@@ -44,7 +44,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="d-flex mb-3">
+                <div class="d-flex mb-3 justify-content-center w-100">
                     <a href="#description" class="btn-navigate bg-orange px-3 py-1">
                         Description
                     </a>
@@ -70,8 +70,9 @@
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="hover-me position-relative custom-cursor">
-                    {{-- <h4 class="rounded py-1 px-4 bg-white position-absolute text-dark box-hover mb-0">Click to view Large Image</h4> --}}
-                    <img src="{{asset('storage').'/'.$product->thumbnail_2}}" class="w-100 img-details custom-cursor" alt="{{$product->alt_text}}">
+                    <a class="show-thumbnail" href="{{asset('storage').'/'.$product->thumbnail_2}}" target="_blank">
+                        <img src="{{asset('storage').'/'.$product->thumbnail_2}}" class="w-100 img-details custom-cursor" alt="{{$product->alt_text}}">
+                    </a>
                 </div>
                 <p class="price mt-3 pb-3">IDR {{number_format($product->price)}}</p>
                 <span>Price inclusive of VAT ● Shipping costs will be calculated at check out</span>
@@ -83,6 +84,9 @@
                         <input type="hidden" name="product[]" value="{{ \Crypt::encryptString($product->id) }}">
                     </form>
                     <a href="{{$product->wa_link}}"  class="btn cta-product w-100">Buy Now</a>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn cta-product w-100 disabled" onclick="loginMessage()" >Add to Cart </button>
                 </div>
                 @if (Auth::guard('user')->user())
                         
@@ -96,7 +100,7 @@
         </div>
     </div>
 </section>
-<div id="wrap-detail" class="pt-5">
+<div id="wrap-detail">
     <section id="section-detail-more">
         <div class="container">
             <div class="row">
@@ -113,12 +117,6 @@
     <section id="section-spec" class="pt-5 mb-5">
         <div class="container">
             <div class="row">
-                <style>
-                    #specifications table {
-                        width: 100%!important;
-                        margin-bottom: 40px
-                    }
-                </style>
                 <div class="col-md-12" id="specifications">
                     <p class="detail-more-title">Specifications</p>
                     <div>
@@ -129,7 +127,7 @@
                             {!!$detail->general!!}
                         </div>
                     </div>
-                    <div class="pt-5">
+                    <div class="">
                         <h4 class="text-uppercase text-gold" >
                             body
                         </h4>
@@ -137,7 +135,7 @@
                             {!!$detail->body!!}    
                         </div>
                     </div>
-                    <div class="pt-5">
+                    <div class="">
                         <h4 class="text-uppercase text-gold" >
                             neck
                         </h4>
@@ -145,7 +143,7 @@
                             {!!$detail->neck!!}
                         </div>
                     </div>
-                    <div class="pt-5">
+                    <div class="">
                         <h4 class="text-uppercase text-gold" >
                             hardware
                         </h4>
@@ -153,7 +151,7 @@
                             {!!$detail->hardware!!}
                         </div>
                     </div>
-                    <div class="pt-5">
+                    <div class="">
                         <h4 class="text-uppercase text-gold" >
                             electronic
                         </h4>
@@ -161,7 +159,7 @@
                             {!!$detail->electronic!!}
                         </div>
                     </div>
-                    <div class="pt-5">
+                    <div class="">
                         <h4 class="text-uppercase text-gold" >
                             miscellaneous
                         </h4>
@@ -174,6 +172,8 @@
                     <p class="text-white">Thanks for looking !</p>
                     <img src="{{asset('images/felicity-signature.png')}}" width="150" alt="felicity-signature">
                 </div>
+                <img src="{{asset('images/rose_and_guitar_pick.png')}}" class="col-md-7 col-11 mx-auto"alt="">
+                
             </div>
         </div>
     </section>
@@ -183,12 +183,12 @@
 </div>
 <div class="container my-5">
     <div id="links" class="d-flex flex-wrap">
-        <a class="img-gallery d-none" id="img-1" target="_blank" href="{{asset('storage/'.$product->thumbnail_2)}}" title="{{$product->name}}">
+        <a class="img-gallery d-none" id="img-1" target="_blank" href="{{asset('storage/'.$product->thumbnail_2)}}">
             <img src="{{asset('storage/'.$product->thumbnail_2)}}" alt="{{$product->alt_text}}" />
         </a>
         @foreach ($images as $item)
             
-        <a class="img-gallery"  target="_blank" href="{{asset('storage/'.$item->image)}}" title="{{$product->name}}">
+        <a class="img-gallery"  target="_blank" href="{{asset('storage/'.$item->image)}}">
             <img src="{{asset('storage/'.$item->image)}}" alt="{{$product->alt_text}}" />
         </a>
         @endforeach
@@ -257,6 +257,7 @@
                 links,
                 {
                 index: link, event: event,
+                slideshowInterval: 2000,
                 onopen: function () {
                         // Callback function executed when the Gallery is initialized.
                 },
@@ -309,9 +310,9 @@
     //     },);
 
     // });
-    $('.hover-me').on('click', function(){
-        $('#img-1').click()
-        galleryImg.play()
-    })
+    $('.show-thumbnail').magnificPopup({
+        type: 'image'
+        // other options
+    });
 </script>
 @endsection

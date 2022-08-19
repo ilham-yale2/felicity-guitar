@@ -97,13 +97,19 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Gear Type: *</label>
+                                        <label>Gear Type *</label>
                                         <select class="select" title="Choose Gear Type" name="gear_type" required>
-                                            <option value="1">Type 1</option>
-                                            <option value="2">Type 2</option>
-                                            <option value="3">Type 3</option>
-                                            <option value="4">Type 4</option>
-                                            <option value="5">Type 5</option>
+                                            <option value="Electric Guitar">Electric Guitar</option>
+                                            <option value="Acoustic Guitar">Acoustic Guitar</option>
+                                            <option value="Classical Guitar ">Classical Guitar </option>
+                                            <option value="Bass Guitar">Bass Guitar</option>
+                                            <option value="Resonator Guitar">Resonator Guitar</option>
+                                            <option value="Lap Steel Guitar">Lap Steel Guitar</option>
+                                            <option value="Amplifier">Amplifier</option>
+                                            <option value="Effects Pedal">Effects Pedal</option>
+                                            <option value="Keyboard">Keyboard</option>
+                                            <option value="Percussion">Percussion</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                 </div>
@@ -125,10 +131,13 @@
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Condition </label>
+                                        <label>Condition * </label>
                                         <select class="select" title="Choose Condition" name="condition" required>
-                                            <option value="1">Condition 1</option>
-                                            <option value="2">Condition 2</option>
+                                            <option value="Brand New (unplayed)">Brand New (unplayed)</option>
+                                            <option value="Used, Mint Condition">Used, Mint Condition</option>
+                                            <option value="Used, Excellent Condition">Used, Excellent Condition</option>
+                                            <option value="Used, Good Condition">Used, Good Condition</option>
+                                            <option value="Used, Fair Condition">Used, Fair Condition</option>
                                         </select>
                                     </div>
                                 </div>
@@ -140,13 +149,10 @@
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="form-group">
-                                        <label>Case Include: *</label>
+                                        <label>Case Included *</label>
                                         <select class="select" title="Choose Included" name="case_include">
-                                            <option value="Included 1">Included 1</option>
-                                            <option value="Included 2">Included 2</option>
-                                            <option value="Included 3">Included 3</option>
-                                            <option value="Included 4">Included 4</option>
-                                            <option value="Included 5">Included 5</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -157,35 +163,35 @@
                             <div class="group-chkbox">
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" id="applicable1" type="checkbox"
-                                        name="applicable_1" />
+                                        name="applicable_1" value="true" required/>
                                     <label class="custom-control-label" for="applicable1">Item has known issues or
                                         damage</label>
                                 </div>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" id="applicable2" type="checkbox"
-                                        name="applicable_2" />
+                                        name="applicable_2" value="true" required />
                                     <label class="custom-control-label" for="applicable2">Item has been modified</label>
                                 </div>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" id="applicable3" type="checkbox"
-                                        name="applicable_3" />
+                                        name="applicable_3" value="true" required />
                                     <label class="custom-control-label" for="applicable3">I would like to provide additional
                                         information</label>
                                 </div>
                                 <div class="custom-control custom-checkbox">
                                     <input class="custom-control-input" id="applicable4" type="checkbox"
-                                        name="applicable_4" />
+                                        name="applicable_4" value="true" required />
                                     <label class="custom-control-label" for="applicable4">Gear is listed online and I have a
                                         URL to
                                         provide</label>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Describe/list issues, problems and/or damage. *</label>
+                                <label>Describe/list issues, problems and/or damage *</label>
                                 <textarea required class="form-control" placeholder="Describe" name="description_problem"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>Describe/list modifications. *</label>
+                                <label>Describe/list modifications *</label>
                                 <textarea required class="form-control" placeholder="Describe" name="description_modification"></textarea>
                             </div>
                             <div class="form-group">
@@ -193,7 +199,7 @@
                                 <textarea required class="form-control" placeholder="Information" name="information"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>Listing URL *</label>
+                                <label>URL listing *</label>
                                 <input class="form-control" type="url" placeholder=""  name="url" required />
                             </div>
                         </div>

@@ -1,10 +1,11 @@
-function addToCart(code){
+function addToCart(code, type = 'non-private-vault'){
     $.ajax({
         url: `${base_url}/cart`,
         method: "POST",
         data: {
             _token: token,
-            code: code
+            code: code,
+            type: type,
         },
         success: function(res){
             Swal.fire({
@@ -13,5 +14,13 @@ function addToCart(code){
                 text: res.text
             })
         }
+    })
+}
+
+function loginMessage(){
+    Swal.fire({
+        icon: 'error',
+        title: 'Oopss...!',
+        text: 'You must login First'
     })
 }

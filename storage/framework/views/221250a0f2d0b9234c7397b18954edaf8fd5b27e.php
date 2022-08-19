@@ -44,7 +44,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <div class="d-flex mb-3">
+                <div class="d-flex mb-3 justify-content-center w-100">
                     <a href="#description" class="btn-navigate bg-orange px-3 py-1">
                         Description
                     </a>
@@ -63,7 +63,7 @@
 
                     </h1>
                     <div class="short-desc">  
-                        <?php echo $product->text; ?>
+                         <?php echo $product->text; ?>
 
                     </div>
                     
@@ -72,8 +72,9 @@
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="hover-me position-relative custom-cursor">
-                    
-                    <img src="<?php echo e(asset('storage').'/'.$product->thumbnail_2); ?>" class="w-100 img-details custom-cursor" alt="<?php echo e($product->alt_text); ?>">
+                    <a class="show-thumbnail" href="<?php echo e(asset('storage').'/'.$product->thumbnail_2); ?>" target="_blank">
+                        <img src="<?php echo e(asset('storage').'/'.$product->thumbnail_2); ?>" class="w-100 img-details custom-cursor" alt="<?php echo e($product->alt_text); ?>">
+                    </a>
                 </div>
                 <p class="price mt-3 pb-3">IDR <?php echo e(number_format($product->price)); ?></p>
                 <span>Price inclusive of VAT ● Shipping costs will be calculated at check out</span>
@@ -85,6 +86,9 @@
                         <input type="hidden" name="product[]" value="<?php echo e(\Crypt::encryptString($product->id)); ?>">
                     </form>
                     <a href="<?php echo e($product->wa_link); ?>"  class="btn cta-product w-100">Buy Now</a>
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn cta-product w-100 disabled" onclick="loginMessage()" >Add to Cart </button>
                 </div>
                 <?php if(Auth::guard('user')->user()): ?>
                         
@@ -105,7 +109,7 @@
                 <div class="col-md-12" id="description">
                     <p class="detail-more-title">description</p>
                     <div class="desc-more   text-detail ">
-                        <?php echo $product->description ?? '-'; ?>
+                         <?php echo $product->description ?? '-'; ?>
 
 
                     </div>
@@ -118,104 +122,66 @@
             <div class="row">
                 <div class="col-md-12" id="specifications">
                     <p class="detail-more-title">Specifications</p>
-                    <table class="w-100 table-spec">
-                        <thead>
-                            <tr>
-                                <td colspan="2">general</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $general; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td><?php echo e($item->title); ?></td>
-                                <td><?php echo e($item->value); ?></td>
-                            </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                    <table class="w-100 table-spec mt-3">
-                        <thead>
-                            <tr>
-                                <td colspan="2">body</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $body; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                            <tr>
-                                <td><?php echo e($item->title); ?></td>
-                                <td><?php echo e($item->value); ?></td>
-                            </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                    <table class="w-100 table-spec mt-3">
-                        <thead>
-                            <tr>
-                                <td colspan="2">neck</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $neck; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td><?php echo e($item->title); ?></td>
-                                    <td><?php echo e($item->value); ?></td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                    <table class="w-100 table-spec mt-3">
-                        <thead>
-                            <tr>
-                                <td colspan="2">hardware</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $hardware; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td><?php echo e($item->title); ?></td>
-                                    <td><?php echo e($item->value); ?></td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                    <table class="w-100 table-spec mt-3">
-                        <thead>
-                            <tr>
-                                <td colspan="2">electronics</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $electronic; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td>
-                                        <?php echo e($item->title); ?>
+                    <div>
+                        <h4 class="text-uppercase text-gold" >
+                            General
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->general; ?>
 
-                                    </td>
-                                    <td><?php echo e($item->value); ?></td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
-                    <table class="w-100 table-spec mt-3">
-                        <thead>
-                            <tr>
-                                <td colspan="2">miscellaneous</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $__currentLoopData = $miscellaneous; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td><?php echo e($item->title); ?></td>
-                                    <td><?php echo e($item->value); ?></td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
+                    <div class="">
+                        <h4 class="text-uppercase text-gold" >
+                            body
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->body; ?>    
+                        </div>
+                    </div>
+                    <div class="">
+                        <h4 class="text-uppercase text-gold" >
+                            neck
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->neck; ?>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <h4 class="text-uppercase text-gold" >
+                            hardware
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->hardware; ?>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <h4 class="text-uppercase text-gold" >
+                            electronic
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->electronic; ?>
+
+                        </div>
+                    </div>
+                    <div class="">
+                        <h4 class="text-uppercase text-gold" >
+                            miscellaneous
+                        </h4>
+                        <div class="table-spec">
+                            <?php echo $detail->miscellaneous; ?>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12 mt-3">
                     <p class="text-white">Thanks for looking !</p>
-                    <img src="<?php echo e(asset('images/felicity-signature.png')); ?>" width="200" alt="felicity-signature">
+                    <img src="<?php echo e(asset('images/felicity-signature.png')); ?>" width="150" alt="felicity-signature">
                 </div>
+                <img src="<?php echo e(asset('images/rose_and_guitar_pick.png')); ?>" class="col-md-7 col-11 mx-auto"alt="">
+                
             </div>
         </div>
     </section>
@@ -351,10 +317,10 @@
     //     },);
 
     // });
-    $('.hover-me').on('click', function(){
-        $('#img-1').click()
-        galleryImg.play()
-    })
+    $('.show-thumbnail').magnificPopup({
+        type: 'image'
+        // other options
+    });
 </script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layout.app' , ['tags' => $tags ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\felicity-guitar\resources\views/product_detail.blade.php ENDPATH**/ ?>

@@ -7,9 +7,9 @@
     <div class="privatevault">
         <section class="privatevault_description animate animate--up">
             <div class="container">
+                <?php if(count($products)>0): ?>
                 <div id="carouselExampleSlidesOnly" class="carousel slide privatevault_description-wrap" data-ride="carousel" data-interval="4000">
                     <div class="carousel-inner">
-                        <?php if(count($products)>0): ?>
                             <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <?php if($loop->iteration < 4): ?>
                                     <div class="carousel-item <?php echo e($loop->iteration == 1 ? 'active' : ''); ?>">
@@ -24,18 +24,19 @@
                                             </div>
                                             <div class="col-md-5 ml-auto">
                                                 <div class="privatevault_img">
-                                                    <img src="<?php echo e(asset('storage/'.$item->thumbnail_2)); ?>" alt="img" />
+                                                    <img src="<?php echo e(asset('storage/'.$item->thumbnail_2)); ?>" alt="<?php echo e($item->alt_text); ?>" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 <?php endif; ?>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        <?php else: ?>
-                            <div class="w-100 text-center"><h1>No Product</h1></div>
-                        <?php endif; ?>
                     </div>
                 </div>
+                <?php else: ?>
+                <h1 class="text-center text-orange copperplate mb-0 mt-5 pt-5">Coming soon!</h1>
+                <h3 class="text-center text-gold copperplate " style="font-size: 28px">~  Stay Tuned ~ </h3>
+                <?php endif; ?>
             </div>
         </section>
         <section class="privatevault_guitar animate animate--up">
@@ -47,7 +48,7 @@
                             <div class="privatevault_guitar-card">
                                 <div class="imgbox">
                                     <a href="<?php echo e(route('detail-vault', ['name' => $item->slug] )); ?>"> 
-                                        <img src="<?php echo e(asset('storage/'.$item->thumbnail)); ?>" alt="img-guitar" />
+                                        <img src="<?php echo e(asset('storage/'.$item->thumbnail)); ?>" alt=" <?php echo e($item->alt_text); ?>"/>
                                     </a>
                                 </div>
                                 <div class="textbox">

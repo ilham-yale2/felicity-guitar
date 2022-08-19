@@ -27,16 +27,16 @@
                 </div>
                 <div class="col-md-2 d-flex nav-filter">
                     <div class="col-10 px-0 mt-5 mt-md-0">
-                        <h4 class="border-bottom pb-2 text-gold">
-                            <?php if(isset($title)): ?>
-                                <li><?php echo e($title); ?></li>
-                            <?php endif; ?>
-                        </h4>
+                        <?php if(isset($title)): ?>
+                        <div class="border-gold-bottom">
+                            <h4 class="mb-0"><?php echo e($title); ?></h4>
+                        </div>
+                        <?php endif; ?>
                         <ul class="list-none mt-4 list-brand">
                             <?php if($brands): ?>    
                                 <?php $__currentLoopData = $brands; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>                                
                                 <li class="text-capitalize">
-                                    <a class="filter text-gold" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&brd=<?php echo e($item); ?>"><span class="text-country"><b><?php echo e($item); ?></b></span></a>
+                                    <a class="filter text-gold" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&brd=<?php echo e($item); ?><?php echo e($ctg); ?>"><span class="text-country"><b><?php echo e($item); ?></b></span></a>
                                 </li>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             
@@ -46,30 +46,30 @@
                         <ul class="list-none brand-list mt-4 mb-3">
                             <?php if($condition): ?>
                                 <li class="">
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&condition=new"><span>New</span></a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&condition=new"><span>New</span></a>
                                 </li>
                                 <li class="mt-0">
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&condition=Used"><span>Used</span></a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&condition=Used"><span>Used</span></a>
                                 </li>
                             <?php endif; ?>
                             <?php if($subject == 'Guitar'): ?>
                                 <?php if($type == 'all' || 'without acoustic'): ?>                        
                                     <li class="mt-4">
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($ctg); ?>&type=1"><span>Solidbody</span></a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar<?php echo e($ctg); ?>&type=1"><span>Solidbody</span></a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($ctg); ?>&type=2"><span>Semi-hollowbody</span></a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar<?php echo e($ctg); ?>&type=2"><span>Semi-hollowbody</span></a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($ctg); ?>&type=3"><span>Offset</span></a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar<?php echo e($ctg); ?>&type=3"><span>Offset</span></a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($ctg); ?>&type=4"><span>Hollowbody</span></a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar<?php echo e($ctg); ?>&type=4"><span>Hollowbody</span></a>
                                     </li>
                                 <?php endif; ?>
                                 <?php if($type == 'all'): ?>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar&ctg=<?php echo e($ctg); ?>&type=5"><span>Acoustic</span></a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=Guitar<?php echo e($ctg); ?>&type=5"><span>Acoustic</span></a>
                                     </li>
                                 <?php endif; ?>
                             <?php endif; ?>
@@ -123,7 +123,7 @@
                         <?php if($types): ?>
                             <ul class="list-none brand-list mt-3" >
                                 <?php $__currentLoopData = $types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <li style="margin-top: 4px">
+                                    <li class="my-0">
                                         <a class="<?php echo e($bold ? 'fw-bold' : ''); ?> <?php echo e(($subject == 'Exotic-Instruments') ? 'text-gold' : ''); ?>" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&type=<?php echo e(str_replace('_', '-', $item)); ?>"><?php echo e(str_replace('_',' - ', str_replace('-', ' / ', $item))); ?></a>
                                     </li>
                                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -147,38 +147,38 @@
                                 <li class="<?php echo e(($price || $price_list) ? '' : 'd-none'); ?>">$ Price Range</li>
                                 <?php if($price): ?>    
                                     <li class="">
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=0&to_price=999"><span class="mr-4">-  </span> 999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=0&to_price=999"><span class="mr-4">-  </span> 999</a>
                                     </li>
                                     <li>
                                         <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>ctg=<?php echo e($ctg); ?>&from_price=1000&to_price=1999"><span>1000 -  </span> 1999</a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=2000&to_price=2999"><span>2000 -  </span> 2999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=2000&to_price=2999"><span>2000 -  </span> 2999</a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=3000&to_price=3999"><span>3000 -  </span> 3999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=3000&to_price=3999"><span>3000 -  </span> 3999</a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=4000&to_price=4999"><span>4000 -  </span> 4999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=4000&to_price=4999"><span>4000 -  </span> 4999</a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=5000&to_price=5999"><span>5000 -  </span> 5999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=5000&to_price=5999"><span>5000 -  </span> 5999</a>
                                     </li>
                                     <li>
-                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=6000&to_price=6999"><span>6000 -  </span> 6999</a>
+                                        <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=6000&to_price=6999"><span>6000 -  </span> 6999</a>
                                     </li>
                                     <?php if($subject != 'Exotic-Instruments'): ?>
                                         <li>
-                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=7000&to_price=7999"><span>7000 -  </span> 7999</a>
+                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=7000&to_price=7999"><span>7000 -  </span> 7999</a>
                                         </li>
                                         <li>
-                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=8000&to_price=8999"><span>8000 -  </span> 8999</a>
+                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=8000&to_price=8999"><span>8000 -  </span> 8999</a>
                                         </li>
                                         <li>
-                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_price=9000&to_price=9999"><span>9000 -  </span> 9999</a>
+                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_price=9000&to_price=9999"><span>9000 -  </span> 9999</a>
                                         </li>
                                         <li>
-                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&up_to=10000"><span>10000 -  </span> </a>
+                                            <a class="filter" href="<?php echo e(route('browse-category')); ?>?subjet=<?php echo e($subject); ?><?php echo e($ctg); ?>&up_to=10000"><span>10000 -  </span> </a>
                                         </li>
                                     <?php endif; ?>
                                 <?php elseif($price_list): ?>
@@ -206,28 +206,28 @@
                             <ul class="mt-4 list-none brand-list ml-auto ml-md-0">
                                 <li> Year</li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=1950&to_year=1959"><span>1950 - </span>1959</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=1950&to_year=1959"><span>1950 - </span>1959</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=1960&to_year=1969"><span>1960 - </span>1969</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=1960&to_year=1969"><span>1960 - </span>1969</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=1970&to_year=1979"><span>1970 - </span>1979</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=1970&to_year=1979"><span>1970 - </span>1979</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=1980&to_year=1989"><span>1980 - </span>1989</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=1980&to_year=1989"><span>1980 - </span>1989</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=1990&to_year=1999"><span>1990 - </span>1999</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=1990&to_year=1999"><span>1990 - </span>1999</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=2000&to_year=2009"><span>2000 - </span>2009</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=2000&to_year=2009"><span>2000 - </span>2009</a>
                                 </li>
                                 <li>
-                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&from_year=2010&to_year=2019"><span>2010 - </span>2019</a>
+                                    <a class="filter" href="<?php echo e(route('browse-category')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&from_year=2010&to_year=2019"><span>2010 - </span>2019</a>
                                 </li>
                                 <li class="pb-5">
-                                    <a class="filter" href="<?php echo e(route('browse-brand')); ?>?subject=<?php echo e($subject); ?>&ctg=<?php echo e($ctg); ?>&up_year=2020"><span>2020 - </span></a>
+                                    <a class="filter" href="<?php echo e(route('browse-brand')); ?>?subject=<?php echo e($subject); ?><?php echo e($ctg); ?>&up_year=2020"><span>2020 - </span></a>
                                 </li>
                             </ul>
                             <?php endif; ?>
@@ -293,7 +293,10 @@
         $(this).find('.sub-type').slideToggle()
     })
 
+    $('a.page-link').each(function(index){
+        $(this).data('url', $(this).attr('href'))
+    })
     // setBrand('<?php echo e($ctg); ?>')
 </script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layout.app', ['background' => 'background-multi-item.jpg'], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\felicity-guitar\resources\views/browse-category.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layout.app', ['background' => 'background-multi-item.jpg'], ['subject' => $subject], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\xampp\htdocs\felicity-guitar\resources\views/browse-category.blade.php ENDPATH**/ ?>
